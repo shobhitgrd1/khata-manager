@@ -1,0 +1,111 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.dialogPaper {
+  background: var(--glass-card, $glass-card-dark) !important;
+  backdrop-filter: blur(24px) !important;
+  -webkit-backdrop-filter: blur(24px) !important;
+  border: 1px solid var(--border-color, $border-dark) !important;
+  border-radius: 20px !important;
+  color: var(--text-primary) !important;
+  max-width: 460px !important;
+  width: 100% !important;
+
+  :global([data-theme="light"]) & {
+    background: #FFFFFF !important;
+    border-color: #CBD5E1 !important;
+    box-shadow: 0 20px 40px rgba(15, 23, 42, 0.15) !important;
+  }
+}
+
+.dialogTitle {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  font-size: 1.15rem !important;
+  font-weight: 700 !important;
+  color: var(--text-primary) !important;
+  padding: 20px 24px 12px !important;
+}
+
+.warningIconBox {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(239, 68, 68, 0.14);
+  color: #EF4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  flex-shrink: 0;
+}
+
+.dialogContent {
+  padding: 8px 24px 20px !important;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dialogMessage {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.highlightName {
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.dialogActions {
+  padding: 12px 24px 20px !important;
+  gap: 12px;
+}
+
+.cancelBtn {
+  color: var(--text-secondary) !important;
+  border-color: rgba(148, 163, 184, 0.3) !important;
+  text-transform: none !important;
+  font-weight: 600 !important;
+  border-radius: 10px !important;
+
+  &:hover {
+    border-color: var(--text-secondary) !important;
+    background: rgba(148, 163, 184, 0.08) !important;
+  }
+}
+
+.confirmDangerBtn {
+  background: #EF4444 !important;
+  color: #FFFFFF !important;
+  text-transform: none !important;
+  font-weight: 700 !important;
+  border-radius: 10px !important;
+  padding: 6px 18px !important;
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.35) !important;
+
+  &:hover {
+    background: #DC2626 !important;
+  }
+
+  &:disabled {
+    opacity: 0.6 !important;
+  }
+}
+
+.confirmPrimaryBtn {
+  @include cyan-gradient-btn;
+  text-transform: none !important;
+  font-weight: 700 !important;
+  border-radius: 10px !important;
+  padding: 6px 18px !important;
+}
+
+.btnSpinner {
+  color: #FFFFFF !important;
+  margin-right: 8px;
+}
+

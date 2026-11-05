@@ -1,0 +1,67 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.wrapper {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.card {
+  @include glass-card;
+  padding: 48px;
+  text-align: center;
+  max-width: 500px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  border-radius: $radius-lg;
+
+  @include mobile {
+    padding: 32px 20px;
+  }
+}
+
+.errorCode {
+  font-size: 5rem;
+  font-weight: 900;
+  background: $gradient-accent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1;
+  margin: 0;
+}
+
+.title {
+  font-weight: 700;
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.description {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 0 0 8px;
+}
+
+.button {
+  border-radius: 12px !important;
+  background: $gradient-accent !important;
+  color: $bg-navy-dark !important;
+  font-weight: 700 !important;
+  padding: 10px 24px !important;
+  box-shadow: 0 4px 15px rgba($accent-cyan, 0.35) !important;
+  text-transform: none !important;
+
+  &:hover {
+    box-shadow: 0 6px 20px rgba($accent-cyan, 0.5) !important;
+    transform: translateY(-2px);
+  }
+}
+

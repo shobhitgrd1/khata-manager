@@ -1,0 +1,402 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.header {
+  margin-bottom: 4px;
+}
+
+.title {
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+  font-size: 1.85rem;
+}
+
+.subtitle {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.alert {
+  border-radius: 14px !important;
+  backdrop-filter: blur(12px) !important;
+
+  :global([data-theme='dark']) & {
+    background-color: rgba($accent-cyan, 0.15) !important;
+    border: 1px solid rgba($accent-cyan, 0.35) !important;
+    color: $accent-cyan-light !important;
+  }
+
+  :global([data-theme='light']) & {
+    background-color: rgba($primary-light-accent, 0.12) !important;
+    border: 1px solid rgba($primary-light-accent, 0.3) !important;
+    color: $primary-light-accent !important;
+  }
+}
+
+.panel {
+  @include glass-card;
+  padding: 32px;
+  border-radius: $radius-lg;
+
+  @include mobile {
+    padding: 20px;
+  }
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.sectionIcon {
+  font-size: 1.8rem !important;
+  color: var(--accent-cyan);
+}
+
+.sectionTitle {
+  font-weight: 700;
+  color: var(--text-primary);
+  font-size: 1.35rem;
+  margin: 0;
+}
+
+.sectionDesc {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.switchBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-radius: 16px;
+  margin-bottom: 28px;
+  transition: all $transition-smooth;
+
+  :global([data-theme='dark']) & {
+    background-color: rgba($bg-navy-dark, 0.65);
+    border: 1px solid $border-navy;
+  }
+
+  :global([data-theme='light']) & {
+    background-color: rgba(#F1F5F9, 0.85);
+    border: 1px solid #CBD5E1;
+  }
+
+  @include mobile {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+}
+
+.switchInfo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.switchIconBox {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-cyan);
+
+  :global([data-theme='dark']) & {
+    background: rgba($accent-cyan, 0.15);
+    border: 1px solid $accent-cyan;
+  }
+
+  :global([data-theme='light']) & {
+    background: rgba($primary-light-accent, 0.12);
+    border: 1px solid $primary-light-accent;
+  }
+}
+
+.switchText {
+  display: flex;
+  flex-direction: column;
+}
+
+.switchName {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 1rem;
+}
+
+.switchDesc {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+.themeSwitch {
+  :global(.MuiSwitch-switchBase.Mui-checked) {
+    color: var(--accent-cyan) !important;
+  }
+
+  :global(.MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track) {
+    background-color: var(--accent-cyan) !important;
+  }
+}
+
+.switchLabelText {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.88rem;
+}
+
+.cardsHeading {
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.themeCard {
+  border-radius: 20px !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  cursor: pointer;
+  overflow: hidden;
+
+  &:hover {
+    transform: translateY(-4px);
+  }
+}
+
+.darkThemeCard {
+  background-color: $bg-navy-dark !important;
+  color: $text-primary-dark !important;
+  border: 2px solid $border-navy !important;
+
+  &.activeTheme {
+    border-color: $accent-cyan !important;
+    box-shadow: 0 0 25px rgba($accent-cyan, 0.35) !important;
+  }
+
+  &:hover {
+    box-shadow: 0 10px 30px rgba($accent-cyan, 0.4) !important;
+  }
+}
+
+.lightThemeCard {
+  background-color: #FFFFFF !important;
+  color: #0F172A !important;
+  border: 2px solid #CBD5E1 !important;
+
+  &.activeTheme {
+    border-color: #0284C7 !important;
+    box-shadow: 0 0 25px rgba(2, 132, 199, 0.35) !important;
+  }
+
+  &:hover {
+    box-shadow: 0 10px 30px rgba(2, 132, 199, 0.3) !important;
+  }
+}
+
+.cardActionArea {
+  padding: 24px !important;
+}
+
+.cardContent {
+  padding: 0 !important;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.cardHeaderLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cardIconDark {
+  color: #36CFFF;
+  font-size: 1.8rem !important;
+}
+
+.cardIconLight {
+  color: #0284C7;
+  font-size: 1.8rem !important;
+}
+
+.cardTitle {
+  font-weight: 700 !important;
+  font-size: 1.15rem !important;
+  margin: 0 !important;
+}
+
+.cardTitleDark {
+  color: #F4F8FF !important;
+}
+
+.cardTitleLight {
+  color: #0F172A !important;
+}
+
+.activeChipDark {
+  background-color: #36CFFF !important;
+  color: #071526 !important;
+  font-weight: 700 !important;
+  font-size: 0.72rem !important;
+}
+
+.activeChipLight {
+  background-color: #0284C7 !important;
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+  font-size: 0.72rem !important;
+}
+
+.chipCheckIconDark {
+  font-size: 1rem !important;
+  color: #071526 !important;
+}
+
+.chipCheckIconLight {
+  font-size: 1rem !important;
+  color: #FFFFFF !important;
+}
+
+.cardDescriptionDark {
+  font-size: 0.88rem !important;
+  margin-bottom: 20px !important;
+  line-height: 1.5 !important;
+  color: #94A8C0 !important;
+}
+
+.cardDescriptionLight {
+  font-size: 0.88rem !important;
+  margin-bottom: 20px !important;
+  line-height: 1.5 !important;
+  color: #64748B !important;
+}
+
+.swatchesRow {
+  display: flex;
+  gap: 8px;
+}
+
+.swatch {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+}
+
+.swatchNavy {
+  background-color: #071526;
+  border: 1px solid #294B70;
+}
+
+.swatchDarkBlue {
+  background-color: #10243D;
+  border: 1px solid #294B70;
+}
+
+.swatchCyan {
+  background-color: #36CFFF;
+  box-shadow: 0 0 10px #36CFFF;
+}
+
+.swatchLightCyan {
+  background-color: #75DFFF;
+}
+
+.swatchSlate {
+  background-color: #F1F5F9;
+  border: 1px solid #CBD5E1;
+}
+
+.swatchWhite {
+  background-color: #FFFFFF;
+  border: 1px solid #CBD5E1;
+}
+
+.swatchSky {
+  background-color: #0284C7;
+  box-shadow: 0 0 10px rgba(2, 132, 199, 0.5);
+}
+
+.swatchLightSky {
+  background-color: #38BDF8;
+}
+
+.prefItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+
+  &.withBorder {
+    border-bottom: 1px solid var(--border-color);
+  }
+}
+
+.prefTitle {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.98rem;
+}
+
+.prefDescription {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+.securityCard {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.securityUser {
+  color: var(--text-secondary);
+  margin: 0;
+  font-size: 0.92rem;
+}
+
+.securityEmail {
+  color: var(--text-secondary);
+  margin: 0;
+  font-size: 0.85rem;
+}
+
+.roleChip {
+  font-weight: 700 !important;
+  font-size: 0.72rem !important;
+  margin-left: 6px;
+
+  :global([data-theme='dark']) & {
+    background-color: rgba($accent-cyan, 0.2) !important;
+    color: $accent-cyan !important;
+  }
+
+  :global([data-theme='light']) & {
+    background-color: rgba($primary-light-accent, 0.15) !important;
+    color: $primary-light-accent !important;
+  }
+}

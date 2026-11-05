@@ -1,0 +1,142 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.paymentMiniCard {
+  width: 100%;
+  max-width: 210px;
+  min-width: 155px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: rgba(16, 36, 61, 0.45);
+  border: 1px solid rgba(54, 207, 255, 0.22);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+
+  &:hover {
+    border-color: rgba(54, 207, 255, 0.4);
+    transform: translateY(-1px);
+  }
+
+  :global([data-theme='light']) & {
+    background: rgba(241, 245, 249, 0.9);
+    border-color: rgba(2, 132, 199, 0.25);
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+  }
+}
+
+.creditCardTheme {
+  border-color: rgba(54, 207, 255, 0.28);
+}
+
+.debitCardTheme {
+  border-color: rgba(16, 185, 129, 0.28);
+}
+
+.upiTheme {
+  border-color: rgba(245, 158, 11, 0.28);
+}
+
+.otherTheme {
+  border-color: rgba(148, 163, 184, 0.28);
+}
+
+.cardTopRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.logoBadgeBox {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.bankLogo {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.methodIcon {
+  font-size: 15px !important;
+  color: var(--accent-cyan, #36cfff);
+}
+
+.bankNameTag {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: right;
+  flex: 1;
+}
+
+.cardDigitsRow {
+  margin: 1px 0;
+}
+
+.cardDigits {
+  font-size: 0.85rem;
+  font-weight: 700;
+  font-family: monospace;
+  color: var(--text-primary);
+  letter-spacing: 0.8px;
+}
+
+.upiIdText {
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+.referenceText {
+  font-size: 0.76rem;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+.cardBottomRow {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.cardOwnerName {
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cardProductTag {
+  font-size: 0.7rem;
+  color: var(--accent-cyan, #36cfff);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+

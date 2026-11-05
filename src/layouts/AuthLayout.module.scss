@@ -1,0 +1,124 @@
+@use '../styles/variables' as *;
+@use '../styles/mixins' as *;
+
+.container {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  position: relative;
+  z-index: 1;
+
+  @media (min-width: 600px) {
+    padding: 24px;
+  }
+}
+
+.themeToggleWrapper {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 10;
+
+  @media (min-width: 600px) {
+    top: 24px;
+    right: 24px;
+  }
+}
+
+.ambientGlow {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 280px;
+  height: 180px;
+  background: radial-gradient(circle, rgba(54, 207, 255, 0.22) 0%, rgba(54, 207, 255, 0.05) 50%, transparent 75%);
+  filter: blur(40px);
+  pointer-events: none;
+  z-index: 0;
+
+  @media (min-width: 600px) {
+    width: 420px;
+    height: 260px;
+  }
+
+  :global([data-theme="light"]) & {
+    background: radial-gradient(circle, rgba(14, 165, 233, 0.18) 0%, rgba(14, 165, 233, 0.04) 50%, transparent 75%);
+  }
+}
+
+.glassCard {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 450px;
+  border-radius: 24px;
+  background-color: var(--glass-card, $glass-card-dark);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1.5px solid var(--border-glow, $border-dark-glow);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 35px var(--border-glow, $border-dark-glow), inset 0 1px 1.5px rgba(255, 255, 255, 0.25);
+  padding: 28px 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+
+  @media (min-width: 600px) {
+    border-radius: 28px;
+    padding: 38px 34px;
+  }
+
+  &:hover {
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.75), 0 0 45px var(--border-glow, $border-dark-glow), inset 0 1px 1.5px rgba(255, 255, 255, 0.3);
+  }
+
+  :global([data-theme="light"]) & {
+    box-shadow: 0 20px 50px rgba(15, 23, 42, 0.08), 0 0 25px rgba(2, 132, 199, 0.08), inset 0 1px 1.5px rgba(255, 255, 255, 0.9);
+    border-color: rgba(2, 132, 199, 0.2);
+
+    &:hover {
+      box-shadow: 0 25px 60px rgba(15, 23, 42, 0.12), 0 0 30px rgba(2, 132, 199, 0.14);
+    }
+  }
+}
+
+.topEdgeGlare {
+  position: absolute;
+  top: 0;
+  left: 25%;
+  right: 25%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent-cyan, #36CFFF), transparent);
+  box-shadow: 0 0 12px var(--accent-cyan, #36CFFF);
+}
+
+.themeBtn {
+  width: 42px !important;
+  height: 42px !important;
+  border-radius: 12px !important;
+  backdrop-filter: blur(16px) !important;
+  transition: all 0.25s ease !important;
+  border: 1px solid var(--border-color, $border-dark) !important;
+  background-color: var(--glass-card, $glass-card-dark) !important;
+  color: var(--accent-cyan, $accent-cyan) !important;
+  box-shadow: 0 0 15px var(--border-glow, $accent-cyan-glow) !important;
+
+  &:hover {
+    border-color: var(--accent-cyan, $accent-cyan) !important;
+    transform: scale(1.05) !important;
+  }
+
+  :global([data-theme="light"]) & {
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08) !important;
+  }
+}
+
+.themeIcon {
+  font-size: 1.35rem !important;
+}
+

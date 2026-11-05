@@ -1,0 +1,853 @@
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* ─── Header ─────────────────────────────────────────────────── */
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+
+  @media (min-width: 600px) {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.backBtn {
+  border-color: var(--border-color, $border-dark) !important;
+  color: var(--accent-cyan, $accent-cyan) !important;
+  border-radius: 10px !important;
+  text-transform: none !important;
+}
+
+.titleArea {
+  display: flex;
+  flex-direction: column;
+}
+
+.pageTitle {
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.2;
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.pageSubtitle {
+  color: var(--text-secondary);
+  margin: 2px 0 0;
+  font-size: 0.9rem;
+}
+
+.headerActionsRight {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.addBtn {
+  border-radius: 12px !important;
+  font-weight: 700 !important;
+  text-transform: none !important;
+  padding: 10px 22px !important;
+  font-size: 0.95rem !important;
+  @include cyan-gradient-btn;
+}
+
+.btnIcon {
+  font-size: 1.2rem !important;
+}
+
+/* ─── Summary Stats Strip ─────────────────────────────────────── */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.statCard {
+  @include glass-panel;
+  padding: 18px 20px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+.statIconBox {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(54, 207, 255, 0.12);
+  color: var(--accent-cyan, $accent-cyan);
+  border: 1px solid rgba(54, 207, 255, 0.25);
+}
+
+.statIconBoxPending {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(245, 158, 11, 0.12);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.25);
+}
+
+.statIconBoxDelivered {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(16, 185, 129, 0.12);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+.statIconBoxProfit {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(52, 211, 153, 0.14);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+.statIcon {
+  font-size: 1.5rem;
+}
+
+.statInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.statLabel {
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+}
+
+.statValue {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.statValueGreen {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #10b981;
+  line-height: 1.2;
+}
+
+.statSubValue {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #36CFFF;
+  margin-top: 2px;
+}
+
+/* ─── Controls & Filters Strip ───────────────────────────────── */
+.controlsBar {
+  @include glass-panel;
+  padding: 14px 18px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.filterGroupLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  flex-wrap: wrap;
+  min-width: 280px;
+}
+
+.searchField {
+  flex: 1;
+  min-width: 240px;
+
+  :global(.MuiOutlinedInput-root) {
+    border-radius: 12px;
+    background: rgba(7, 21, 38, 0.4);
+
+    :global([data-theme="light"]) & {
+      background: #ffffff;
+    }
+
+    fieldset {
+      border-color: var(--border-color, $border-dark);
+    }
+
+    &:hover fieldset {
+      border-color: var(--accent-cyan, $accent-cyan);
+    }
+
+    &.Mui-focused fieldset {
+      border-color: var(--accent-cyan, $accent-cyan);
+    }
+  }
+
+  :global(.MuiInputBase-input) {
+    color: var(--text-primary);
+    font-size: 0.92rem;
+  }
+}
+
+.searchIcon {
+  color: var(--text-secondary);
+}
+
+.clearSearchBtn {
+  color: var(--text-secondary);
+  cursor: pointer;
+
+  &:hover {
+    color: var(--accent-cyan, $accent-cyan);
+  }
+}
+
+.filterField {
+  width: 100%;
+}
+
+.filterSelect {
+  min-width: 150px;
+
+  :global(.MuiOutlinedInput-root) {
+    border-radius: 12px;
+    background: rgba(7, 21, 38, 0.4);
+
+    :global([data-theme="light"]) & {
+      background: #ffffff;
+    }
+
+    fieldset {
+      border-color: var(--border-color, $border-dark);
+    }
+  }
+
+  :global(.MuiSelect-select) {
+    color: var(--text-primary);
+    font-size: 0.88rem;
+    font-weight: 500;
+    padding-top: 8.5px;
+    padding-bottom: 8.5px;
+  }
+}
+
+.filterGroupRight {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.viewToggleGroup {
+  display: flex;
+  align-items: center;
+  padding: 3px;
+  border-radius: 12px;
+
+  :global([data-theme="dark"]) & {
+    background: rgba(16, 36, 61, 0.8);
+    border: 1px solid rgba(41, 75, 112, 0.8);
+  }
+
+  :global([data-theme="light"]) & {
+    background: #e2e8f0;
+    border: 1px solid #cbd5e1;
+  }
+}
+
+.toggleBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 9px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  color: var(--text-secondary);
+
+  &:hover {
+    color: var(--text-primary);
+  }
+}
+
+.toggleBtnActive {
+  composes: toggleBtn;
+
+  :global([data-theme="dark"]) & {
+    background: var(--accent-cyan, $accent-cyan);
+    color: #071526;
+    box-shadow: 0 2px 8px rgba(54, 207, 255, 0.35);
+  }
+
+  :global([data-theme="light"]) & {
+    background: #0284c7;
+    color: #ffffff;
+    box-shadow: 0 2px 8px rgba(2, 132, 199, 0.25);
+  }
+}
+
+.toggleIcon {
+  font-size: 18px;
+}
+
+.refreshBtn {
+  border-color: var(--border-color, $border-dark) !important;
+  color: var(--accent-cyan, $accent-cyan) !important;
+  border-radius: 10px !important;
+  text-transform: none !important;
+  font-weight: 600 !important;
+}
+
+/* ─── Card View Grid ──────────────────────────────────────────── */
+.ordersCardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 20px;
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ─── List View (MUI X Data Grid) Container ───────────────────── */
+.dataGridContainer {
+  @include glass-panel;
+  border-radius: 18px;
+  padding: 12px;
+  overflow: hidden;
+
+  :global([data-theme="dark"]) & {
+    border: 1.5px solid var(--border-glow, $border-dark-glow);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+  }
+
+  :global([data-theme="light"]) & {
+    border: 1.5px solid rgba(2, 132, 199, 0.2);
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+  }
+
+  :global(.MuiDataGrid-root) {
+    border: none;
+    color: var(--text-primary);
+    font-size: 0.88rem;
+
+    :global(.MuiDataGrid-columnHeaders) {
+      border-bottom: 1.5px solid rgba(41, 75, 112, 0.6);
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.76rem;
+      letter-spacing: 0.5px;
+      color: var(--text-secondary);
+    }
+
+    :global(.MuiDataGrid-row) {
+      min-height: 74px !important;
+    }
+
+    :global(.MuiDataGrid-cell) {
+      border-bottom: 1px solid rgba(41, 75, 112, 0.35);
+      display: flex;
+      align-items: center;
+      padding-top: 10px !important;
+      padding-bottom: 10px !important;
+    }
+
+    :global(.MuiDataGrid-row:hover) {
+      background: rgba(54, 207, 255, 0.05);
+    }
+
+    :global(.MuiDataGrid-footerContainer) {
+      border-top: 1.5px solid rgba(41, 75, 112, 0.6);
+      color: var(--text-secondary);
+    }
+  }
+}
+
+/* DataGrid Cells */
+.orderIdLink {
+  text-decoration: none;
+  font-family: monospace;
+  font-weight: 700;
+  color: var(--accent-cyan, $accent-cyan);
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.accountCell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.accountLogo {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 2px;
+  flex-shrink: 0;
+}
+
+.accountFallbackBadge {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.68rem;
+  font-weight: 700;
+  background: rgba(54, 207, 255, 0.12);
+  color: var(--accent-cyan, #36cfff);
+  border: 1px solid rgba(54, 207, 255, 0.25);
+  flex-shrink: 0;
+}
+
+.accountInfo {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.accountNameText {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.88rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.accountTypeSubText {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+}
+
+.dealerCell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.dealerNameText {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.addressBadgeBtn {
+  background: rgba(54, 207, 255, 0.1);
+  color: var(--accent-cyan, #36cfff);
+  border: 1px solid rgba(54, 207, 255, 0.28);
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 2px 7px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  line-height: 1.2;
+
+  &:hover {
+    background: rgba(54, 207, 255, 0.22);
+    border-color: var(--accent-cyan, #36cfff);
+    transform: translateY(-1px);
+  }
+}
+
+.dealerAddrText {
+  font-size: 0.74rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 180px;
+}
+
+.productCell {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 6px 0;
+}
+
+.productInfoBox {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.productNameText {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.86rem;
+  line-height: 1.35;
+  word-break: break-word;
+}
+
+.showMoreBtn {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  color: var(--accent-cyan, #36cfff);
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+  display: inline-block;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.colorDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+.paymentText {
+  font-size: 0.84rem;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pendingBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: rgba(148, 163, 184, 0.1);
+  border: 1px dashed rgba(148, 163, 184, 0.3);
+}
+
+.actionBtnPrimary {
+  padding: 6px !important;
+  color: var(--text-secondary) !important;
+  border-radius: 8px !important;
+  transition: all 0.2s ease !important;
+
+  &:hover {
+    color: var(--accent-cyan, $accent-cyan) !important;
+    background: rgba(54, 207, 255, 0.14) !important;
+  }
+}
+
+.actionBtnSuccess {
+  padding: 6px !important;
+  color: #10B981 !important;
+  border-radius: 8px !important;
+  transition: all 0.2s ease !important;
+
+  &:hover {
+    background: rgba(16, 185, 129, 0.18) !important;
+  }
+}
+
+.actionBtnWarning {
+  padding: 6px !important;
+  color: #F59E0B !important;
+  border-radius: 8px !important;
+  transition: all 0.2s ease !important;
+
+  &:hover {
+    background: rgba(245, 158, 11, 0.18) !important;
+  }
+}
+
+.actionBtnSecondary {
+  padding: 6px !important;
+  color: #A78BFA !important;
+  border-radius: 8px !important;
+  transition: all 0.2s ease !important;
+
+  &:hover {
+    color: #C4B5FD !important;
+    background: rgba(167, 139, 250, 0.18) !important;
+  }
+}
+
+.pctSubTag {
+  font-size: 0.76rem;
+  font-weight: 700;
+  opacity: 0.9;
+  margin-left: 3px;
+}
+
+.actionBtnDanger {
+  padding: 6px !important;
+  color: #F87171 !important;
+  border-radius: 8px !important;
+  transition: all 0.2s ease !important;
+
+  &:hover {
+    background: rgba(248, 113, 113, 0.18) !important;
+  }
+}
+
+.statusChipInProcessTable {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+}
+
+.statusChipDeliveredTable {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  height: 25px;
+}
+
+.profitTextGreen {
+  font-weight: 700;
+  color: #10B981 !important;
+  text-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+}
+
+.profitTextRed {
+  font-weight: 700;
+  color: #EF4444 !important;
+  text-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
+}
+
+.profitCellWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.cashbackTag {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #36CFFF;
+  background: rgba(54, 207, 255, 0.12);
+  border: 1px solid rgba(54, 207, 255, 0.3);
+  border-radius: 6px;
+  padding: 1px 5px;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+}
+
+.cashbackProfitCell {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #36CFFF;
+  background: rgba(54, 207, 255, 0.1);
+  border: 1px solid rgba(54, 207, 255, 0.28);
+  border-radius: 8px;
+  padding: 3px 9px;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+
+.cashbackNotAppliedBadge {
+  display: inline-block;
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: rgba(148, 163, 184, 0.08);
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 6px;
+  padding: 2px 7px;
+  white-space: nowrap;
+}
+
+.profitTextPending {
+  color: var(--text-secondary);
+  font-style: italic;
+  font-size: 0.8rem;
+}
+
+.tableActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tableActionBtn {
+  padding: 5px !important;
+  color: var(--text-secondary) !important;
+
+  &:hover {
+    color: var(--accent-cyan, $accent-cyan) !important;
+    background: rgba(54, 207, 255, 0.12) !important;
+  }
+}
+
+.tableDeliverBtn {
+  padding: 5px !important;
+  color: #10b981 !important;
+
+  &:hover {
+    background: rgba(16, 185, 129, 0.14) !important;
+  }
+}
+
+.tableDeleteBtn {
+  padding: 5px !important;
+  color: #f87171 !important;
+
+  &:hover {
+    background: rgba(248, 113, 113, 0.14) !important;
+  }
+}
+
+/* Loading & Empty States */
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 70px 20px;
+  gap: 14px;
+}
+
+.loadingSpinner {
+  color: var(--accent-cyan, $accent-cyan) !important;
+}
+
+.loadingText {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.emptyState {
+  @include glass-panel;
+  padding: 50px 30px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 14px;
+}
+
+.emptyIconBox {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(54, 207, 255, 0.1);
+  color: var(--accent-cyan, $accent-cyan);
+  border: 1px solid rgba(54, 207, 255, 0.25);
+}
+
+.emptyIcon {
+  font-size: 34px;
+}
+
+.emptyTitle {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.emptyDesc {
+  margin: 0;
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  max-width: 440px;
+}
+
+.emptyAddBtn {
+  margin-top: 10px !important;
+  border-radius: 12px !important;
+  font-weight: 700 !important;
+  text-transform: none !important;
+  padding: 10px 24px !important;
+  @include cyan-gradient-btn;
+}
+
+.alertBox {
+  border-radius: 12px;
+}

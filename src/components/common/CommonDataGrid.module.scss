@@ -1,0 +1,9 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+@use '../../styles/table-common' as *;
+
+.container {
+  @include shared-datagrid-table;
+  width: 100%;
+}
+

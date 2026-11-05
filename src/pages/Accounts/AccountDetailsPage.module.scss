@@ -1,0 +1,256 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* ─── Header ─────────────────────────────────────────────────── */
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+
+  @media (min-width: 600px) {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.backBtn {
+  border-color: var(--border-color, $border-dark) !important;
+  color: var(--accent-cyan, $accent-cyan) !important;
+  border-radius: 10px !important;
+  text-transform: none !important;
+}
+
+.titleArea {
+  display: flex;
+  flex-direction: column;
+}
+
+.pageTitle {
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.2;
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.pageSubtitle {
+  color: var(--text-secondary);
+  margin: 2px 0 0;
+  font-size: 0.9rem;
+}
+
+.editBtn {
+  border-radius: 12px !important;
+  font-weight: 700 !important;
+  text-transform: none !important;
+  padding: 10px 22px !important;
+  font-size: 0.95rem !important;
+  @include cyan-gradient-btn;
+}
+
+/* ─── Alerts ──────────────────────────────────────────────────── */
+.alertBox {
+  border-radius: 14px !important;
+  font-size: 0.9rem !important;
+
+  &.errorAlertBox {
+    background-color: rgba(239, 68, 68, 0.15) !important;
+    border: 1px solid rgba(239, 68, 68, 0.35) !important;
+    color: #fca5a5 !important;
+  }
+
+  &.successAlertBox {
+    background-color: rgba(54, 207, 255, 0.15) !important;
+    border: 1px solid rgba(54, 207, 255, 0.35) !important;
+    color: var(--accent-cyan-light) !important;
+
+    :global([data-theme='light']) & {
+      background-color: rgba(2, 132, 199, 0.12) !important;
+      border-color: rgba(2, 132, 199, 0.3) !important;
+      color: $primary-light-accent !important;
+    }
+  }
+}
+
+.errorAlert {
+  border-radius: 14px !important;
+}
+
+/* ─── Detail Card ─────────────────────────────────────────────── */
+.detailCard {
+  @include glass-panel;
+  padding: 28px;
+  border-radius: 24px;
+
+  @media (min-width: 600px) {
+    padding: 36px;
+  }
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.iconBox {
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  flex-shrink: 0;
+
+  :global([data-theme='dark']) & {
+    background: rgba(54, 207, 255, 0.12);
+    border: 1.5px solid var(--accent-cyan, $accent-cyan);
+    color: var(--accent-cyan, $accent-cyan);
+    box-shadow: 0 0 20px var(--border-glow, $accent-cyan-glow);
+  }
+
+  :global([data-theme='light']) & {
+    background: rgba(2, 132, 199, 0.1);
+    border: 1.5px solid #0284c7;
+    color: #0284c7;
+  }
+}
+
+.accountTypeLabel {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--accent-cyan, $accent-cyan);
+  margin-bottom: 4px;
+
+  :global([data-theme='light']) & {
+    color: #0284c7;
+  }
+}
+
+.accountFullName {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.divider {
+  height: 1px;
+  background: var(--border-color, $border-dark);
+  margin-bottom: 24px;
+  border-radius: 2px;
+}
+
+.fieldsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+
+  @include mobile {
+    grid-template-columns: 1fr;
+  }
+}
+
+.fieldRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.fieldIcon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+
+  :global([data-theme='dark']) & {
+    background: rgba(54, 207, 255, 0.08);
+    border: 1px solid rgba(54, 207, 255, 0.2);
+    color: var(--accent-cyan, $accent-cyan);
+  }
+
+  :global([data-theme='light']) & {
+    background: rgba(2, 132, 199, 0.08);
+    border: 1px solid rgba(2, 132, 199, 0.2);
+    color: #0284c7;
+  }
+}
+
+.fieldContent {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: hidden;
+}
+
+.fieldLabel {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--text-secondary);
+}
+
+.fieldValue {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  word-break: break-word;
+}
+
+.fieldValueEmpty {
+  font-size: 0.95rem;
+  font-style: italic;
+  color: var(--text-secondary);
+}
+
+/* ─── Loading / Error States ──────────────────────────────────── */
+.loadingWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100px 0;
+  gap: 16px;
+}
+
+.spinner {
+  color: var(--accent-cyan) !important;
+}
+
+.loadingText {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.errorWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 60px 0;
+}

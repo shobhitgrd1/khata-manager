@@ -1,0 +1,110 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.errorAlert {
+  background-color: rgba(239, 68, 68, 0.15) !important;
+  border: 1px solid rgba(239, 68, 68, 0.35) !important;
+  color: #FCA5A5 !important;
+  border-radius: 12px !important;
+  font-size: 0.88rem !important;
+
+  :global(.MuiAlert-icon) {
+    color: #F87171 !important;
+  }
+}
+
+.inputIcon {
+  color: var(--text-secondary) !important;
+  font-size: 1.25rem !important;
+}
+
+.iconBtn {
+  color: var(--text-secondary) !important;
+
+  &:hover {
+    color: var(--accent-cyan) !important;
+  }
+}
+
+.toggleIcon {
+  font-size: 1.2rem !important;
+}
+
+.rememberText {
+  color: var(--text-secondary);
+  font-size: 0.86rem;
+}
+
+.btnIcon {
+  font-size: 1.2rem !important;
+}
+
+.btnSpinner {
+  color: inherit !important;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.rowOptions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: -4px;
+}
+
+.submitBtn {
+  margin-top: 6px !important;
+  padding: 13px !important;
+  border-radius: $radius-md !important;
+  font-size: 1rem !important;
+  font-weight: 700 !important;
+  @include cyan-gradient-btn;
+}
+
+.orDivider {
+  display: flex;
+  align-items: center;
+  margin: -4px 0;
+}
+
+.dividerLine {
+  flex: 1;
+  border-color: var(--border-color, $border-dark) !important;
+}
+
+.orText {
+  padding: 0 16px;
+  color: var(--text-secondary);
+  font-weight: 600;
+  letter-spacing: 1px;
+  font-size: 0.75rem;
+}
+
+.footerText {
+  text-align: center;
+  margin-top: -4px;
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+}
+
+.linkCyan {
+  color: var(--accent-cyan, $accent-cyan) !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
+
+  &:hover {
+    color: var(--accent-cyan-hover, $accent-cyan-hover) !important;
+    text-decoration: underline !important;
+  }
+}
+

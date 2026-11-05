@@ -1,0 +1,55 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.emptyState {
+  @include glass-panel;
+  padding: 50px 30px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 14px;
+  width: 100%;
+}
+
+.emptyIconBox {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(54, 207, 255, 0.1);
+  color: var(--accent-cyan, $accent-cyan);
+  border: 1px solid rgba(54, 207, 255, 0.25);
+}
+
+.emptyIcon {
+  font-size: 34px !important;
+}
+
+.emptyTitle {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.emptyDesc {
+  margin: 0;
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  max-width: 440px;
+  line-height: 1.5;
+}
+
+.emptyActionBtn {
+  margin-top: 10px !important;
+  border-radius: 12px !important;
+  font-weight: 700 !important;
+  text-transform: none !important;
+  padding: 10px 24px !important;
+  @include cyan-gradient-btn;
+}
+

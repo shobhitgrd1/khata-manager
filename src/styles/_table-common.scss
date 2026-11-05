@@ -1,0 +1,99 @@
+@use './variables' as *;
+@use './mixins' as *;
+
+/* ─── Shared DataGrid Styling & Mixins ──────────────────────────────── */
+@mixin shared-datagrid-table {
+  @include glass-panel;
+  border-radius: 18px;
+  padding: 12px;
+  overflow: hidden;
+
+  :global([data-theme="dark"]) & {
+    border: 1.5px solid var(--border-glow, $border-dark-glow);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+  }
+
+  :global([data-theme="light"]) & {
+    border: 1.5px solid rgba(2, 132, 199, 0.2);
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+  }
+
+  :global(.MuiDataGrid-root) {
+    border: none;
+    color: var(--text-primary);
+    font-size: 0.88rem;
+
+    :global(.MuiDataGrid-columnHeaders) {
+      border-bottom: 1.5px solid rgba(41, 75, 112, 0.6);
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.76rem;
+      letter-spacing: 0.5px;
+      color: var(--text-secondary);
+    }
+
+    :global(.MuiDataGrid-row) {
+      min-height: 72px !important;
+    }
+
+    :global(.MuiDataGrid-cell) {
+      border-bottom: 1px solid rgba(41, 75, 112, 0.35);
+      display: flex;
+      align-items: center;
+      padding-top: 10px !important;
+      padding-bottom: 10px !important;
+    }
+
+    :global(.MuiDataGrid-row:hover) {
+      background: rgba(54, 207, 255, 0.05);
+    }
+
+    :global(.MuiDataGrid-footerContainer) {
+      border-top: 1.5px solid rgba(41, 75, 112, 0.6);
+      color: var(--text-secondary);
+    }
+  }
+}
+
+.dataGridWrapper {
+  @include shared-datagrid-table;
+}
+
+.tableActionGroup {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.tableStatusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.tablePendingBadge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #F59E0B;
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-radius: 6px;
+  padding: 2px 8px;
+}
+
+.tableProfitBadge {
+  color: #10B981 !important;
+  font-weight: 700;
+}
+
+.tableLossBadge {
+  color: #EF4444 !important;
+  font-weight: 700;
+}
+

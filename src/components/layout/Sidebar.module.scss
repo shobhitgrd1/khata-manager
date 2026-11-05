@@ -1,0 +1,273 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.drawerContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border-radius: 0 !important;
+  background-color: var(--glass-card, $glass-card-dark);
+  backdrop-filter: blur(20px);
+  border-right: 1px solid var(--border-glow, $border-dark-glow);
+  padding: 18px 14px;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  overflow: hidden;
+}
+
+/* ─── Top Main Navigation Area (Scrollable if needed) ────────── */
+.mainNavSection {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0 !important;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  /* Custom subtle scrollbar */
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(41, 75, 112, 0.5);
+    border-radius: 4px;
+  }
+}
+
+.navList {
+  padding: 0 !important;
+  margin: 0 !important;
+  list-style: none;
+}
+
+.navItem {
+  margin-bottom: 6px !important;
+  padding: 0 !important;
+  display: block;
+}
+
+.navButton {
+  border-radius: 12px !important;
+  padding: 10px 14px !important;
+  transition: $transition-default !important;
+  width: 100% !important;
+
+  &:hover {
+    background: rgba(54, 207, 255, 0.08) !important;
+
+    :global([data-theme="light"]) & {
+      background: rgba(2, 132, 199, 0.08) !important;
+    }
+  }
+}
+
+/* Active Main Nav State */
+.activeNav {
+  background: linear-gradient(135deg, rgba(0, 180, 216, 0.22) 0%, rgba(54, 207, 255, 0.28) 100%) !important;
+  border: 1px solid var(--border-glow, $border-dark-glow) !important;
+  box-shadow: 0 0 16px var(--border-glow, $accent-cyan-glow) !important;
+
+  :global([data-theme="light"]) & {
+    background: linear-gradient(135deg, rgba(2, 132, 199, 0.12) 0%, rgba(14, 165, 233, 0.2) 100%) !important;
+    border-color: rgba(2, 132, 199, 0.4) !important;
+    box-shadow: 0 0 12px rgba(2, 132, 199, 0.15) !important;
+  }
+}
+
+/* Parent Active State when child route is active but parent is collapsed/open */
+.parentActiveNav {
+  border: 1px solid rgba(54, 207, 255, 0.3) !important;
+  background: rgba(54, 207, 255, 0.06) !important;
+
+  :global([data-theme="light"]) & {
+    border-color: rgba(2, 132, 199, 0.3) !important;
+    background: rgba(2, 132, 199, 0.06) !important;
+  }
+}
+
+.navIcon {
+  font-size: 1.25rem !important;
+}
+
+.itemIcon {
+  min-width: 38px !important;
+  color: var(--text-secondary) !important;
+  transition: color 0.25s ease !important;
+}
+
+.itemIconActive {
+  color: var(--accent-cyan) !important;
+
+  :global([data-theme="light"]) & {
+    color: #0284C7 !important;
+  }
+}
+
+.itemText {
+  font-size: 0.92rem !important;
+  font-weight: 500 !important;
+  color: var(--text-secondary) !important;
+  transition: color 0.25s ease;
+}
+
+.itemTextActive {
+  font-weight: 600 !important;
+  color: var(--text-primary) !important;
+}
+
+.expandIcon {
+  color: var(--text-secondary);
+  font-size: 1.2rem;
+  transition: transform 0.25s ease, color 0.25s ease;
+}
+
+.expandIconActive {
+  color: var(--accent-cyan, $accent-cyan);
+
+  :global([data-theme="light"]) & {
+    color: #0284C7;
+  }
+}
+
+/* ─── System Management Submenu ───────────────────────────────── */
+.submenuContainer {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.submenuList {
+  list-style: none;
+  padding: 4px 0 6px 14px !important;
+  margin: 0 0 6px 14px !important;
+  border-left: 2px solid;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  :global([data-theme="dark"]) & {
+    border-left-color: rgba(41, 75, 112, 0.6);
+  }
+
+  :global([data-theme="light"]) & {
+    border-left-color: rgba(203, 213, 225, 0.9);
+  }
+}
+
+.subItem {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.subItemButton {
+  border-radius: 10px !important;
+  padding: 8px 12px !important;
+  transition: all 0.2s ease !important;
+  width: 100% !important;
+
+  &:hover {
+    background: rgba(54, 207, 255, 0.08) !important;
+
+    :global([data-theme="light"]) & {
+      background: rgba(2, 132, 199, 0.08) !important;
+    }
+  }
+}
+
+.subItemIcon {
+  min-width: 32px !important;
+  color: var(--text-secondary) !important;
+}
+
+.subItemIconActive {
+  color: var(--accent-cyan) !important;
+
+  :global([data-theme="light"]) & {
+    color: #0284C7 !important;
+  }
+}
+
+.subItemText {
+  font-size: 0.86rem !important;
+  font-weight: 500 !important;
+  color: var(--text-secondary) !important;
+}
+
+.subItemTextActive {
+  font-size: 0.86rem !important;
+  font-weight: 700 !important;
+  color: var(--text-primary) !important;
+}
+
+/* ─── Bottom Section (Settings & Logout) ───────────────────────── */
+.bottomSection {
+  margin-top: auto;
+  padding-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-top: 1px solid;
+
+  :global([data-theme="dark"]) & {
+    border-top-color: rgba(41, 75, 112, 0.5);
+  }
+
+  :global([data-theme="light"]) & {
+    border-top-color: rgba(226, 232, 240, 0.9);
+  }
+}
+
+.settingsItem {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.settingsButton {
+  border-radius: 12px !important;
+  padding: 10px 14px !important;
+  transition: $transition-default !important;
+  width: 100% !important;
+
+  &:hover {
+    background: rgba(54, 207, 255, 0.08) !important;
+
+    :global([data-theme="light"]) & {
+      background: rgba(2, 132, 199, 0.08) !important;
+    }
+  }
+}
+
+/* ─── Drawers (Mobile & Desktop) ──────────────────────────────── */
+.mobileDrawer {
+  display: block !important;
+
+  @media (min-width: 900px) {
+    display: none !important;
+  }
+
+  :global(.MuiDrawer-paper) {
+    box-sizing: border-box !important;
+    width: 260px !important;
+    border: none !important;
+    border-radius: 0 !important;
+  }
+}
+
+.desktopDrawer {
+  display: none !important;
+
+  @media (min-width: 900px) {
+    display: block !important;
+  }
+
+  :global(.MuiDrawer-paper) {
+    box-sizing: border-box !important;
+    width: 260px !important;
+    border: none !important;
+    border-radius: 0 !important;
+    position: relative !important;
+    height: 100% !important;
+  }
+}

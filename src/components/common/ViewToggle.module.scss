@@ -1,0 +1,86 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.viewToggleContainer {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(16, 36, 61, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color, $border-dark);
+  border-radius: $radius-md;
+  padding: 3px;
+  gap: 3px;
+  transition: $transition-default;
+
+  &:hover {
+    border-color: rgba(54, 207, 255, 0.4);
+  }
+
+  :global([data-theme="light"]) & {
+    background: rgba(241, 245, 249, 0.9);
+    border-color: $border-light;
+
+    &:hover {
+      border-color: $accent-blue;
+    }
+  }
+}
+
+.toggleBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 40px;
+  height: 36px;
+  padding: 0 12px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary, $text-secondary-dark);
+  border-radius: $radius-sm;
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 500;
+  font-family: $font-family;
+  transition: $transition-default;
+  outline: none;
+
+  &:hover:not(.active) {
+    color: var(--text-primary, $text-primary-dark);
+    background: rgba(54, 207, 255, 0.08);
+  }
+
+  :global([data-theme="light"]) & {
+    &:hover:not(.active) {
+      color: $text-primary-light;
+      background: rgba(2, 132, 199, 0.08);
+    }
+  }
+}
+
+.active {
+  background: rgba(54, 207, 255, 0.16) !important;
+  color: var(--accent-cyan, $accent-cyan) !important;
+  border: 1px solid rgba(54, 207, 255, 0.45);
+  box-shadow: 0 0 14px rgba(54, 207, 255, 0.25);
+  font-weight: 600;
+
+  :global([data-theme="light"]) & {
+    background: rgba(2, 132, 199, 0.14) !important;
+    color: $accent-blue !important;
+    border-color: rgba(2, 132, 199, 0.4);
+    box-shadow: 0 0 10px rgba(2, 132, 199, 0.2);
+  }
+}
+
+.btnIcon {
+  font-size: 1.15rem;
+}
+
+.btnText {
+  @include mobile {
+    display: none;
+  }
+}
+

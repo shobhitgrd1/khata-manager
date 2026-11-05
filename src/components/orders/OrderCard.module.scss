@@ -1,0 +1,564 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.orderCard {
+  @include glass-panel;
+  border-radius: 20px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 16px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+
+  :global([data-theme='dark']) & {
+    border: 1.5px solid var(--border-glow, $border-dark-glow);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 20px var(--border-glow, $accent-cyan-glow);
+
+    &:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent-cyan, $accent-cyan);
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.65), 0 0 30px var(--border-glow, $accent-cyan-glow);
+    }
+  }
+
+  :global([data-theme='light']) & {
+    border: 1.5px solid rgba(2, 132, 199, 0.22);
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08), 0 0 15px rgba(2, 132, 199, 0.08);
+
+    &:hover {
+      transform: translateY(-4px);
+      border-color: #0284C7;
+      box-shadow: 0 15px 35px rgba(2, 132, 199, 0.25);
+    }
+  }
+}
+
+.ambientGlare {
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(35px);
+
+  :global([data-theme='dark']) & {
+    background: radial-gradient(circle, rgba(54, 207, 255, 0.22) 0%, transparent 70%);
+  }
+
+  :global([data-theme='light']) & {
+    background: radial-gradient(circle, rgba(2, 132, 199, 0.18) 0%, transparent 70%);
+  }
+}
+
+.topRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.orderHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 180px;
+}
+
+.avatarBox {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  :global([data-theme='dark']) & {
+    background: linear-gradient(135deg, rgba(54, 207, 255, 0.2), rgba(16, 36, 61, 0.8));
+    border: 1px solid rgba(54, 207, 255, 0.35);
+    color: var(--accent-cyan, $accent-cyan);
+  }
+
+  :global([data-theme='light']) & {
+    background: linear-gradient(135deg, rgba(2, 132, 199, 0.15), rgba(240, 249, 255, 0.9));
+    border: 1px solid rgba(2, 132, 199, 0.3);
+    color: #0284C7;
+  }
+}
+
+.orderIcon {
+  font-size: 22px;
+}
+
+.idAndDate {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.orderIdLink {
+  text-decoration: none;
+  color: inherit;
+
+  &:hover .orderId {
+    color: var(--accent-cyan, $accent-cyan);
+  }
+}
+
+.orderId {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 800;
+  font-family: monospace;
+  letter-spacing: 0.5px;
+  color: var(--text-primary);
+  transition: color 0.2s ease;
+}
+
+.orderDate {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.calendarIcon {
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+/* Status Chips */
+.statusChipInProcess {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  background: rgba(245, 158, 11, 0.14);
+  color: #FBBF24;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+}
+
+.statusChipDelivered {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  background: rgba(16, 185, 129, 0.14);
+  color: #34D399;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+.statusIcon {
+  font-size: 14px;
+}
+
+/* Detail Rows */
+.detailsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 14px;
+
+  :global([data-theme='dark']) & {
+    background: rgba(10, 24, 43, 0.6);
+    border: 1px solid rgba(41, 75, 112, 0.6);
+  }
+
+  :global([data-theme='light']) & {
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+  }
+}
+
+.detailCol {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.detailLabel {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-secondary);
+}
+
+.detailValue {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.productVariantLine {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.colorSwatchDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  flex-shrink: 0;
+}
+
+/* Financial Strip */
+.financialStrip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 12px 16px;
+  border-radius: 12px;
+
+  :global([data-theme='dark']) & {
+    background: rgba(16, 36, 61, 0.7);
+    border: 1px solid rgba(41, 75, 112, 0.7);
+  }
+
+  :global([data-theme='light']) & {
+    background: #FFFFFF;
+    border: 1px solid #CBD5E1;
+  }
+}
+
+.financialCol {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.financialLabel {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.financialVal {
+  font-size: 0.96rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.financialDivider {
+  width: 1px;
+  height: 28px;
+  background: rgba(41, 75, 112, 0.5);
+
+  :global([data-theme='light']) & {
+    background: #CBD5E1;
+  }
+}
+
+.financialLabelGreen {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #10B981 !important;
+}
+
+.financialLabelRed {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #EF4444 !important;
+}
+
+.financialValGreen {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #10B981 !important;
+  letter-spacing: 0.3px;
+  text-shadow: 0 0 10px rgba(16, 185, 129, 0.35);
+}
+
+.financialValRed {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #EF4444 !important;
+  letter-spacing: 0.3px;
+  text-shadow: 0 0 10px rgba(239, 68, 68, 0.35);
+}
+
+.financialValMuted {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.profitBadge {
+  font-size: 0.96rem;
+  font-weight: 800;
+  color: #10B981;
+}
+
+.lossBadge {
+  font-size: 0.96rem;
+  font-weight: 800;
+  color: #EF4444;
+}
+
+.pendingBadge {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #F59E0B;
+  font-style: italic;
+}
+
+.cashbackCardBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 3px;
+}
+
+.cashbackBadge {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #36CFFF;
+  background: rgba(54, 207, 255, 0.12);
+  border: 1px solid rgba(54, 207, 255, 0.3);
+  border-radius: 6px;
+  padding: 1px 6px;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+}
+
+.netProfitBadge {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #10B981;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  border-radius: 6px;
+  padding: 1px 6px;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+}
+
+.grossProfitSubBadge {
+  display: inline-block;
+  font-size: 0.66rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+}
+
+.cashbackNotAppliedBadge {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: rgba(148, 163, 184, 0.08);
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 6px;
+  padding: 1px 6px;
+  margin-top: 2px;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+}
+
+.profitValWithPercent {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.profitPercentSubGreen {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #10B981;
+}
+
+.profitPercentSubRed {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #EF4444;
+}
+
+/* Card Actions Footer */
+.cardFooter {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 14px;
+  margin-top: 4px;
+  border-top: 1px solid rgba(41, 75, 112, 0.45);
+
+  :global([data-theme='light']) & {
+    border-top-color: rgba(226, 232, 240, 0.9);
+  }
+}
+
+.primaryActionRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+
+  button {
+    flex: 1;
+    height: 34px !important;
+    font-size: 0.82rem !important;
+    font-weight: 600 !important;
+    border-radius: 8px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 5px !important;
+    white-space: nowrap !important;
+  }
+}
+
+.managementActionRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+
+  button {
+    flex: 1;
+    height: 34px !important;
+    font-size: 0.8rem !important;
+    font-weight: 600 !important;
+    border-radius: 8px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    white-space: nowrap !important;
+  }
+}
+
+.viewBtn {
+  text-transform: none !important;
+  color: var(--accent-cyan, $accent-cyan) !important;
+  border: 1px solid rgba(54, 207, 255, 0.35) !important;
+  background: rgba(54, 207, 255, 0.08) !important;
+  transition: all 0.2s ease !important;
+
+  &:hover {
+    background: rgba(54, 207, 255, 0.18) !important;
+    border-color: var(--accent-cyan, $accent-cyan) !important;
+    transform: translateY(-1px);
+  }
+
+  :global([data-theme='light']) & {
+    color: #0284C7 !important;
+    border-color: rgba(2, 132, 199, 0.35) !important;
+    background: rgba(2, 132, 199, 0.08) !important;
+  }
+}
+
+.deliverBtn {
+  text-transform: none !important;
+  color: #10B981 !important;
+  border: 1px solid rgba(16, 185, 129, 0.4) !important;
+  background: rgba(16, 185, 129, 0.08) !important;
+  transition: all 0.2s ease !important;
+
+  &:hover {
+    background: rgba(16, 185, 129, 0.2) !important;
+    border-color: #10B981 !important;
+    transform: translateY(-1px);
+  }
+}
+
+.correctPriceBtn {
+  text-transform: none !important;
+  color: #38BDF8 !important;
+  border: 1px solid rgba(56, 189, 248, 0.38) !important;
+  background: rgba(56, 189, 248, 0.08) !important;
+  transition: all 0.2s ease !important;
+
+  &:hover {
+    background: rgba(56, 189, 248, 0.2) !important;
+    border-color: #38BDF8 !important;
+    transform: translateY(-1px);
+  }
+}
+
+.editBtn {
+  text-transform: none !important;
+  color: var(--accent-cyan, $accent-cyan) !important;
+  border: 1px solid rgba(54, 207, 255, 0.38) !important;
+  background: rgba(54, 207, 255, 0.08) !important;
+  transition: all 0.2s ease !important;
+
+  &:hover {
+    background: rgba(54, 207, 255, 0.2) !important;
+    border-color: var(--accent-cyan, $accent-cyan) !important;
+    transform: translateY(-1px);
+  }
+}
+
+.duplicateBtn {
+  text-transform: none !important;
+  color: #A78BFA !important;
+  border: 1px solid rgba(167, 139, 250, 0.38) !important;
+  background: rgba(167, 139, 250, 0.08) !important;
+  transition: all 0.2s ease !important;
+
+  &:hover {
+    background: rgba(167, 139, 250, 0.2) !important;
+    border-color: #A78BFA !important;
+    transform: translateY(-1px);
+  }
+
+  :global([data-theme='light']) & {
+    color: #7C3AED !important;
+    border-color: rgba(124, 58, 237, 0.35) !important;
+    background: rgba(124, 58, 237, 0.08) !important;
+  }
+}
+
+.deleteBtn {
+  text-transform: none !important;
+  color: #F87171 !important;
+  border: 1px solid rgba(248, 113, 113, 0.38) !important;
+  background: rgba(248, 113, 113, 0.08) !important;
+  transition: all 0.2s ease !important;
+
+  &:hover {
+    background: rgba(248, 113, 113, 0.2) !important;
+    border-color: #F87171 !important;
+    transform: translateY(-1px);
+  }
+}
+
+.btnIcon {
+  font-size: 15px !important;
+  margin-right: 2px;
+}
+

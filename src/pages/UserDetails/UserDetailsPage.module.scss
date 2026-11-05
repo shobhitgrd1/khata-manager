@@ -1,0 +1,321 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 96px 0;
+  gap: 16px;
+}
+
+.loadingSpinner {
+  color: var(--accent-cyan) !important;
+}
+
+.loadingText {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.errorWrapper {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.backBtn {
+  border-color: var(--border-color, $border-dark) !important;
+  color: var(--accent-cyan, $accent-cyan) !important;
+  border-radius: 10px !important;
+  text-transform: none !important;
+}
+
+.pageTitle {
+  font-weight: 800;
+  color: var(--text-primary);
+  font-size: 1.8rem;
+  margin: 0;
+}
+
+.editBtn {
+  border-radius: 12px !important;
+  font-weight: 700 !important;
+  text-transform: none !important;
+  @include cyan-gradient-btn;
+}
+
+.errorAlert {
+  background-color: rgba(239, 68, 68, 0.15) !important;
+  border: 1px solid rgba(239, 68, 68, 0.35) !important;
+  color: #FCA5A5 !important;
+  border-radius: 12px !important;
+}
+
+.successAlert {
+  background-color: rgba(54, 207, 255, 0.15) !important;
+  border: 1px solid rgba(54, 207, 255, 0.35) !important;
+  color: var(--accent-cyan-light) !important;
+  border-radius: 12px !important;
+
+  :global([data-theme="light"]) & {
+    background-color: rgba(2, 132, 199, 0.12) !important;
+    border-color: rgba(2, 132, 199, 0.3) !important;
+    color: $primary-light-accent !important;
+  }
+}
+
+.detailsCard {
+  @include glass-panel;
+  padding: 24px;
+
+  @media (min-width: 600px) {
+    padding: 36px;
+  }
+}
+
+.userTopIdentity {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--border-color, $border-dark);
+
+  @media (min-width: 600px) {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.avatar {
+  width: 72px !important;
+  height: 72px !important;
+  background: linear-gradient(135deg, #00B4D8 0%, #36CFFF 100%) !important;
+  color: #071526 !important;
+  font-weight: 800 !important;
+  font-size: 1.8rem !important;
+  border: 2px solid var(--accent-cyan, $accent-cyan) !important;
+  box-shadow: 0 0 20px var(--border-glow, $accent-cyan-glow) !important;
+
+  :global([data-theme="light"]) & {
+    background: linear-gradient(135deg, #0284C7 0%, #0EA5E9 100%) !important;
+    color: #FFFFFF !important;
+  }
+}
+
+.identityInfo {
+  flex: 1;
+}
+
+.identityTopRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+}
+
+.userName {
+  font-weight: 800;
+  color: var(--text-primary);
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.roleChipAdmin {
+  height: 24px !important;
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
+  background-color: rgba(54, 207, 255, 0.2) !important;
+  border: 1px solid var(--accent-cyan) !important;
+  color: var(--accent-cyan) !important;
+}
+
+.roleChipUser {
+  height: 24px !important;
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
+  background-color: rgba(148, 168, 192, 0.15) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-secondary) !important;
+}
+
+.statusChipActive {
+  height: 24px !important;
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
+  background-color: rgba(34, 197, 94, 0.15) !important;
+  border: 1px solid rgba(34, 197, 94, 0.4) !important;
+  color: #4ADE80 !important;
+}
+
+.statusChipInactive {
+  height: 24px !important;
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
+  background-color: rgba(239, 68, 68, 0.15) !important;
+  border: 1px solid rgba(239, 68, 68, 0.4) !important;
+  color: #F87171 !important;
+}
+
+.userMeta {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.infoGrid {
+  padding-top: 28px !important;
+}
+
+.infoRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.iconCyan {
+  color: var(--accent-cyan, $accent-cyan);
+  margin-top: 3px;
+}
+
+.infoLabel {
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  margin: 0 0 2px;
+}
+
+.infoValue {
+  color: var(--text-primary);
+  font-weight: 500;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.permissionsSection {
+  margin-top: 32px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border-color, $border-dark);
+}
+
+.permissionsSectionTitle {
+  color: var(--text-secondary);
+  font-weight: 600;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  margin: 0 0 12px;
+}
+
+.permissionsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.permChip {
+  background-color: rgba(54, 207, 255, 0.12) !important;
+  border: 1px solid rgba(54, 207, 255, 0.3) !important;
+  color: var(--accent-cyan-light) !important;
+  font-weight: 600 !important;
+  font-size: 0.82rem !important;
+
+  :global([data-theme="light"]) & {
+    background-color: rgba(2, 132, 199, 0.12) !important;
+    border-color: rgba(2, 132, 199, 0.3) !important;
+    color: $primary-light-accent !important;
+  }
+}
+
+.noPermsText {
+  color: var(--text-secondary);
+  font-style: italic;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.editTitle {
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 8px;
+  font-size: 1.4rem;
+}
+
+.editDesc {
+  color: var(--text-secondary);
+  margin: 0 0 24px;
+  font-size: 0.9rem;
+}
+
+.selectedPermsWrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.selectPermChip {
+  background-color: rgba(54, 207, 255, 0.2) !important;
+  color: var(--accent-cyan) !important;
+  border: 1px solid var(--accent-cyan) !important;
+
+  :global([data-theme="light"]) & {
+    background-color: rgba(2, 132, 199, 0.15) !important;
+    color: $primary-light-accent !important;
+    border-color: $primary-light-accent !important;
+  }
+}
+
+.checkboxPrimary {
+  color: var(--accent-cyan) !important;
+}
+
+.editActionsRow {
+  display: flex;
+  gap: 16px;
+  margin-top: 32px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-color, $border-dark);
+}
+
+.saveBtn {
+  border-radius: 12px !important;
+  font-weight: 700 !important;
+  text-transform: none !important;
+  @include cyan-gradient-btn;
+}
+
+.cancelBtn {
+  border-color: var(--border-color, $border-dark) !important;
+  color: var(--text-secondary) !important;
+  border-radius: 10px !important;
+  text-transform: none !important;
+}
+
+.spinner {
+  color: inherit !important;
+}

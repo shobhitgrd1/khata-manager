@@ -1,0 +1,228 @@
+@use './variables' as *;
+@use './mixins' as *;
+
+/* ─── Common Page Layout & Typography ───────────────────────────────── */
+.pageHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+
+  @include mobile {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+.pageTitleGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pageTitle {
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: var(--text-primary);
+  margin: 0;
+
+  @include mobile {
+    font-size: 1.4rem;
+  }
+}
+
+.pageSubtitle {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* ─── Common Action Icon Buttons (DataGrid & Cards) ─────────────────── */
+.rowActionBtn {
+  padding: 6px !important;
+  border-radius: 8px !important;
+  transition: all 0.2s ease !important;
+}
+
+.rowActionPrimary {
+  @extend .rowActionBtn;
+  color: var(--text-secondary) !important;
+
+  &:hover {
+    color: var(--accent-cyan, $accent-cyan) !important;
+    background: rgba(54, 207, 255, 0.14) !important;
+  }
+}
+
+.rowActionSuccess {
+  @extend .rowActionBtn;
+  color: #10B981 !important;
+
+  &:hover {
+    background: rgba(16, 185, 129, 0.18) !important;
+  }
+}
+
+.rowActionSecondary {
+  @extend .rowActionBtn;
+  color: #A78BFA !important;
+
+  &:hover {
+    color: #C4B5FD !important;
+    background: rgba(167, 139, 250, 0.18) !important;
+  }
+}
+
+.rowActionWarning {
+  @extend .rowActionBtn;
+  color: #F59E0B !important;
+
+  &:hover {
+    background: rgba(245, 158, 11, 0.18) !important;
+  }
+}
+
+.rowActionDanger {
+  @extend .rowActionBtn;
+  color: #F87171 !important;
+
+  &:hover {
+    background: rgba(248, 113, 113, 0.18) !important;
+  }
+}
+
+/* ─── Common Status & Value Chips ───────────────────────────────────── */
+.statusChipDelivered {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  background: rgba(16, 185, 129, 0.14);
+  color: #34D399;
+  border: 1px solid rgba(16, 185, 129, 0.35);
+}
+
+.statusChipInProcess {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  background: rgba(245, 158, 11, 0.14);
+  color: #FBBF24;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+}
+
+.statusChipCancelled {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  background: rgba(239, 68, 68, 0.14);
+  color: #F87171;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+}
+
+/* ─── Common Profit & Loss Colors ───────────────────────────────────── */
+.profitText {
+  color: #10B981 !important;
+  font-weight: 700;
+}
+
+.lossText {
+  color: #EF4444 !important;
+  font-weight: 700;
+}
+
+.profitBadge {
+  color: #10B981 !important;
+  font-weight: 700;
+  text-shadow: 0 0 10px rgba(16, 185, 129, 0.35);
+}
+
+.lossBadge {
+  color: #EF4444 !important;
+  font-weight: 700;
+  text-shadow: 0 0 10px rgba(239, 68, 68, 0.35);
+}
+
+/* ─── Common Empty States ───────────────────────────────────────────── */
+.emptyState {
+  @include glass-panel;
+  padding: 50px 30px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 14px;
+}
+
+.emptyIconBox {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(54, 207, 255, 0.1);
+  color: var(--accent-cyan, $accent-cyan);
+  border: 1px solid rgba(54, 207, 255, 0.25);
+}
+
+.emptyIcon {
+  font-size: 34px;
+}
+
+.emptyTitle {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.emptyDesc {
+  margin: 0;
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  max-width: 440px;
+}
+
+.emptyAddBtn {
+  margin-top: 10px !important;
+  border-radius: 12px !important;
+  font-weight: 700 !important;
+  text-transform: none !important;
+  padding: 10px 24px !important;
+  @include cyan-gradient-btn;
+}
+
+/* ─── Common Loading Wrappers ───────────────────────────────────────── */
+.loadingWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 80px 20px;
+}
+
+.loadingText {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+

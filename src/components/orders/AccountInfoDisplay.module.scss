@@ -1,0 +1,90 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.accountContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 100%;
+  padding: 6px 8px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.clickable {
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(54, 207, 255, 0.08);
+
+    .accountName {
+      color: var(--accent-cyan, $accent-cyan);
+      text-decoration: underline;
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent-cyan, $accent-cyan);
+    outline-offset: 2px;
+  }
+}
+
+.logoWrapper {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.accountLogo {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+
+.fallbackBadge {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.68rem;
+  font-weight: 700;
+  background: rgba(54, 207, 255, 0.12);
+  color: var(--accent-cyan, #36cfff);
+}
+
+.accountDetails {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 2px;
+}
+
+.accountName {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.88rem;
+  line-height: 1.25;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.18s ease;
+}
+
+.secondaryText {
+  font-size: 0.74rem;
+  color: var(--text-secondary);
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+

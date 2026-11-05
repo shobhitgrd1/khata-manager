@@ -1,0 +1,92 @@
+@use 'variables' as *;
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin glass-panel {
+  background: var(--glass-panel, $glass-panel-dark);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-color, $border-dark);
+  border-radius: $radius-xl;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45), 0 0 30px var(--border-glow, $border-dark-glow), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+
+  :global([data-theme="light"]) & {
+    background: $glass-panel-light;
+    border-color: rgba(2, 132, 199, 0.18);
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08), 0 0 20px rgba(2, 132, 199, 0.06);
+  }
+}
+
+@mixin glass-card {
+  background: var(--glass-card, $glass-card-dark);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--border-color, $border-dark);
+  border-radius: $radius-lg;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35), 0 0 20px var(--border-glow, $border-dark-glow);
+  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+
+  :global([data-theme="light"]) & {
+    background: $glass-card-light;
+    border-color: rgba(2, 132, 199, 0.15);
+    box-shadow: 0 8px 25px rgba(15, 23, 42, 0.06), 0 0 15px rgba(2, 132, 199, 0.05);
+  }
+}
+
+@mixin cyan-glow {
+  box-shadow: 0 0 20px var(--border-glow, $accent-cyan-glow);
+}
+
+@mixin cyan-gradient-btn {
+  background: linear-gradient(135deg, #00B4D8 0%, #36CFFF 60%, #75DFFF 100%);
+  color: #071526;
+  box-shadow: 0 4px 20px rgba(54, 207, 255, 0.35);
+  transition: $transition-default;
+
+  &:hover {
+    background: linear-gradient(135deg, #36CFFF 0%, #75DFFF 100%);
+    box-shadow: 0 6px 25px rgba(54, 207, 255, 0.55);
+    transform: translateY(-1px);
+  }
+
+  :global([data-theme="light"]) & {
+    background: linear-gradient(135deg, #0284C7 0%, #0EA5E9 100%);
+    color: #FFFFFF;
+    box-shadow: 0 4px 16px rgba(2, 132, 199, 0.3);
+
+    &:hover {
+      background: linear-gradient(135deg, #0369A1 0%, #0284C7 100%);
+      box-shadow: 0 6px 20px rgba(2, 132, 199, 0.45);
+    }
+  }
+}
+
+// Media Query Mixins
+@mixin mobile {
+  @media (max-width: 600px) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (max-width: 900px) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: 901px) {
+    @content;
+  }
+}

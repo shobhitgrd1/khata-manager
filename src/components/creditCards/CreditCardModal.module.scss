@@ -1,0 +1,230 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.dialogPaper {
+  background-color: var(--glass-card, $glass-card-dark) !important;
+  backdrop-filter: blur(24px) !important;
+  -webkit-backdrop-filter: blur(24px) !important;
+  border: 1.5px solid var(--border-glow, $border-dark-glow) !important;
+  border-radius: 24px !important;
+  padding: 12px !important;
+  max-width: 540px !important;
+  width: 100% !important;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 35px var(--border-glow, $accent-cyan-glow) !important;
+
+  @include mobile {
+    padding: 8px !important;
+  }
+
+  :global([data-theme='light']) & {
+    background-color: #FFFFFF !important;
+    border-color: rgba(2, 132, 199, 0.25) !important;
+    box-shadow: 0 20px 45px rgba(15, 23, 42, 0.12) !important;
+  }
+}
+
+.dialogTitle {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  padding: 16px 20px 8px !important;
+}
+
+.titleIconBox {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-cyan);
+
+  :global([data-theme='dark']) & {
+    background: rgba(54, 207, 255, 0.15);
+    border: 1px solid var(--accent-cyan);
+  }
+
+  :global([data-theme='light']) & {
+    background: rgba(2, 132, 199, 0.12);
+    border: 1px solid #0284C7;
+    color: #0284C7;
+  }
+}
+
+.modalHeading {
+  font-weight: 800;
+  color: var(--text-primary);
+  font-size: 1.35rem;
+  margin: 0;
+}
+
+.modalSubtitle {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  margin: 2px 0 0;
+}
+
+.dialogContent {
+  padding: 16px 20px !important;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.alertBox {
+  border-radius: 12px !important;
+  font-size: 0.88rem !important;
+
+  &.errorAlert {
+    background-color: rgba(239, 68, 68, 0.15) !important;
+    border: 1px solid rgba(239, 68, 68, 0.35) !important;
+    color: #FCA5A5 !important;
+
+    :global(.MuiAlert-icon) {
+      color: #F87171 !important;
+    }
+  }
+}
+
+.formGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.rowTwo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+
+  @include mobile {
+    grid-template-columns: 1fr;
+  }
+}
+
+.inputIcon {
+  color: var(--text-secondary) !important;
+  font-size: 1.25rem !important;
+}
+
+.rupeeAdornment {
+  color: var(--accent-cyan);
+  font-weight: 700;
+  font-size: 1.1rem;
+
+  :global([data-theme='light']) & {
+    color: #0284C7;
+  }
+}
+
+.calculationPreview {
+  border-radius: 14px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  :global([data-theme='dark']) & {
+    background: rgba(7, 21, 38, 0.65);
+    border: 1px solid var(--border-color, $border-dark);
+  }
+
+  :global([data-theme='light']) & {
+    background: rgba(248, 250, 252, 0.9);
+    border: 1px solid #E2E8F0;
+  }
+}
+
+.calcRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.calcLabel {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.calcValue {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.calcValueHighlight {
+  color: var(--accent-cyan);
+
+  :global([data-theme='light']) & {
+    color: #0284C7;
+  }
+}
+
+.calcFormula {
+  font-size: 0.74rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  margin-top: 2px;
+}
+
+.dialogActions {
+  padding: 12px 20px 18px !important;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.cancelBtn {
+  border-radius: 10px !important;
+  color: var(--text-secondary) !important;
+  border-color: var(--border-color) !important;
+  text-transform: none !important;
+}
+
+.submitBtn {
+  border-radius: 10px !important;
+  font-weight: 700 !important;
+  text-transform: none !important;
+  padding: 8px 20px !important;
+  @include cyan-gradient-btn;
+}
+
+.spinner {
+  color: inherit !important;
+}
+
+.utilizationBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
+  min-width: 50px;
+  padding: 0 10px;
+  border-radius: 12px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.3px;
+
+  &.utilLow {
+    background: rgba(16, 185, 129, 0.12);
+    color: #10B981;
+    border: 1px solid rgba(16, 185, 129, 0.35);
+  }
+
+  &.utilMedium {
+    background: rgba(245, 158, 11, 0.12);
+    color: #F59E0B;
+    border: 1px solid rgba(245, 158, 11, 0.35);
+  }
+
+  &.utilHigh {
+    background: rgba(239, 68, 68, 0.15);
+    color: #EF4444;
+    border: 1px solid rgba(239, 68, 68, 0.4);
+  }
+}
+
+

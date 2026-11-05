@@ -1,0 +1,103 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.logoWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.centered {
+  align-items: center;
+  text-align: center;
+}
+
+.leftAligned {
+  align-items: flex-start;
+  text-align: left;
+}
+
+.iconBox {
+  background: var(--glass-card, $glass-card-dark);
+  border: 1.5px solid var(--accent-cyan, $accent-cyan);
+  box-shadow: 0 0 20px var(--border-glow, $accent-cyan-glow), inset 0 0 12px var(--border-glow, $accent-cyan-glow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: scale(1.04);
+    box-shadow: 0 0 28px var(--border-glow, $accent-cyan-glow);
+  }
+
+  :global([data-theme="light"]) & {
+    box-shadow: 0 4px 15px rgba(2, 132, 199, 0.2), inset 0 0 10px rgba(2, 132, 199, 0.08);
+
+    &:hover {
+      box-shadow: 0 6px 20px rgba(2, 132, 199, 0.35);
+    }
+  }
+}
+
+.iconSmall {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+}
+
+.iconMedium {
+  width: 56px;
+  height: 56px;
+  border-radius: 16px;
+}
+
+.iconLarge {
+  width: 68px;
+  height: 68px;
+  border-radius: 18px;
+}
+
+.title {
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  color: var(--text-primary);
+  line-height: 1.2;
+  margin: 0;
+}
+
+.titleSmall {
+  font-size: 1.25rem;
+}
+
+.titleMedium {
+  font-size: 1.5rem;
+}
+
+.titleLarge {
+  font-size: 1.85rem;
+}
+
+.subtitle {
+  color: var(--text-secondary);
+  font-weight: 400;
+  margin-top: 4px;
+  margin-bottom: 0;
+  letter-spacing: 0.2px;
+}
+
+.subtitleSmall {
+  font-size: 0.78rem;
+}
+
+.subtitleMedium {
+  font-size: 0.86rem;
+}
+
+.subtitleLarge {
+  font-size: 0.95rem;
+}
+
+.svgIcon {
+  stroke: var(--accent-cyan);
+}

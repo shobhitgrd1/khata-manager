@@ -1,0 +1,362 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.statementPaper {
+  @include glass-card;
+  border-radius: 20px !important;
+  max-width: 900px !important;
+}
+
+.dialogHeader {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 18px 24px !important;
+  border-bottom: 1px solid var(--border-color, $border-dark);
+}
+
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  h3 {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--text-primary);
+  }
+
+  .headerSubtitle {
+    margin: 2px 0 0;
+    font-size: 0.78rem;
+    color: var(--text-secondary, #94A3B8);
+  }
+}
+
+.headerIcon {
+  font-size: 1.4rem !important;
+  color: var(--accent-cyan, #36CFFF);
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.csvBtn {
+  border-radius: 8px !important;
+  border-color: var(--border-color, $border-dark) !important;
+  color: var(--text-primary) !important;
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+}
+
+.printBtn {
+  border-radius: 8px !important;
+  background: var(--accent-cyan, #0284C7) !important;
+  color: #FFFFFF !important;
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  text-transform: none !important;
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: 6px;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-primary);
+  }
+}
+
+.dialogContent {
+  padding: 20px 24px !important;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.filterBar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.dateInputs {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.filterField {
+  width: 150px;
+
+  :global(.MuiOutlinedInput-root) {
+    border-radius: 8px;
+    height: 34px;
+    font-size: 0.8rem;
+  }
+}
+
+.applyBtn {
+  border-radius: 8px !important;
+  height: 34px !important;
+  font-size: 0.78rem !important;
+  text-transform: none !important;
+}
+
+.loadingBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  gap: 12px;
+  color: var(--text-secondary);
+}
+
+.printableStatement {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.statementHero {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 16px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-color, $border-dark);
+}
+
+.statementAccountName {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.statementMobile {
+  margin: 4px 0 0;
+  font-size: 0.82rem;
+  color: var(--text-secondary, #94A3B8);
+}
+
+.accountTypeTag {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  background: rgba(54, 207, 255, 0.1);
+  color: var(--accent-cyan);
+}
+
+.statementMetaRight {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+
+  p {
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+  }
+}
+
+.heroBalanceBadge {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 6px 12px;
+  border-radius: 10px;
+}
+
+.badgeLabel {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.badgeVal {
+  font-size: 1.15rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.badgePositive {
+  background: rgba(16, 185, 129, 0.14);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: #34D399;
+}
+
+.badgeNegative {
+  background: rgba(239, 68, 68, 0.14);
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  color: #F87171;
+}
+
+.badgeSettled {
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #34D399;
+}
+
+.summaryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 10px;
+}
+
+.summaryBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-color, $border-dark);
+  text-align: center;
+  gap: 3px;
+}
+
+.sumLabel {
+  font-size: 0.66rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-secondary, #94A3B8);
+}
+
+.sumVal {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.sumValGreen {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: #34D399;
+}
+
+.sumValRed {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: #F87171;
+}
+
+.sumValBlue {
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: #38BDF8;
+}
+
+.tableWrapper {
+  overflow-x: auto;
+  border-radius: 10px;
+  border: 1px solid var(--border-color, $border-dark);
+}
+
+.statementTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+
+  th {
+    background: rgba(255, 255, 255, 0.04);
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 700;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border-color, $border-dark);
+    white-space: nowrap;
+  }
+
+  td {
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    color: var(--text-primary);
+    white-space: nowrap;
+  }
+}
+
+.numCol {
+  text-align: right !important;
+  font-variant-numeric: tabular-nums;
+}
+
+.descCell {
+  white-space: normal !important;
+  max-width: 200px;
+}
+
+.greenText {
+  color: #34D399;
+  font-weight: 700;
+}
+
+.redText {
+  color: #F87171;
+  font-weight: 700;
+}
+
+.blueText {
+  color: #38BDF8;
+  font-weight: 700;
+}
+
+.balanceCell {
+  font-weight: 800;
+}
+
+.typeTag {
+  font-size: 0.72rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.reversedRow {
+  opacity: 0.5;
+  text-decoration: line-through;
+}
+
+.emptyRow {
+  text-align: center;
+  padding: 24px !important;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #printable-statement, #printable-statement * {
+    visibility: visible;
+  }
+  #printable-statement {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    color: #000;
+    background: #fff;
+  }
+}

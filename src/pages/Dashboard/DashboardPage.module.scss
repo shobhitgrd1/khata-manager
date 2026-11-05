@@ -1,0 +1,750 @@
+@use "../../styles/variables" as *;
+@use "../../styles/mixins" as *;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+/* ─── Section Headers ────────────────────────────────────────── */
+.dashboardSection {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.sectionHeaderRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2px;
+}
+
+.sectionHeading {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin: 0;
+  letter-spacing: -0.3px;
+}
+
+.sectionSubheading {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  margin: 4px 0 0;
+}
+
+/* ─── SECTION 1: Orders Top Card ─────────────────────────────── */
+.ordersTopCard {
+  @include glass-panel;
+  border-radius: 24px !important;
+  border: 1.5px solid var(--border-glow, $border-dark-glow) !important;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.5), 0 0 25px var(--border-glow, $accent-cyan-glow) !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  width: 100%;
+  overflow: hidden;
+
+  &:hover {
+    transform: translateY(-3px);
+    border-color: var(--accent-cyan, $accent-cyan) !important;
+    box-shadow: 0 16px 45px rgba(0, 0, 0, 0.6), 0 0 35px var(--border-glow, $accent-cyan-glow) !important;
+  }
+
+  :global([data-theme="light"]) & {
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08), 0 0 20px rgba(2, 132, 199, 0.08) !important;
+
+    &:hover {
+      box-shadow: 0 15px 35px rgba(2, 132, 199, 0.25) !important;
+    }
+  }
+}
+
+.ordersCardActionArea {
+  padding: 0 !important;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.ordersCardContent {
+  padding: 24px !important;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  box-sizing: border-box;
+
+  &:last-child {
+    padding-bottom: 24px !important;
+  }
+}
+
+.ordersCardHeader {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.orderIconBox {
+  width: 58px;
+  height: 58px;
+  border-radius: 16px;
+  background: var(--glass-card, $glass-card-dark);
+  border: 1.5px solid var(--accent-cyan, $accent-cyan);
+  box-shadow: 0 0 20px var(--border-glow, $accent-cyan-glow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-cyan, $accent-cyan);
+  flex-shrink: 0;
+}
+
+.ordersCardTitleArea {
+  flex: 1;
+  min-width: 220px;
+}
+
+.cardHeading {
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 4px;
+  letter-spacing: 0.2px;
+  font-size: 1.35rem;
+}
+
+.cardDesc {
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  line-height: 1.5;
+  margin: 0;
+  width: auto;
+}
+
+.ctaLinkInline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--accent-cyan);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  padding: 8px 16px;
+  border-radius: 12px;
+  background: rgba(54, 207, 255, 0.1);
+  border: 1px solid rgba(54, 207, 255, 0.3);
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(54, 207, 255, 0.2);
+    border-color: var(--accent-cyan);
+  }
+
+  :global([data-theme="light"]) & {
+    color: $primary-light-accent;
+    background: rgba(2, 132, 199, 0.08);
+    border-color: rgba(2, 132, 199, 0.3);
+
+    &:hover {
+      background: rgba(2, 132, 199, 0.16);
+    }
+  }
+}
+
+.arrowIcon {
+  font-size: 1.1rem;
+}
+
+.ordersMetricsGrid {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: var(--glass-card, $glass-card-dark);
+  border: 1px solid var(--border-color, $border-dark);
+  border-radius: 16px;
+  padding: 14px 20px;
+  flex-wrap: wrap;
+
+  @include mobile {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+.orderMetricItem {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+  min-width: 120px;
+}
+
+.metricItemLabel {
+  font-size: 0.74rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.metricItemVal {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.metricItemValWarning {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #f59e0b;
+  line-height: 1.2;
+}
+
+.metricItemValSuccess {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #10b981;
+  line-height: 1.2;
+}
+
+.metricItemValHighlight {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--accent-cyan);
+  line-height: 1.2;
+
+  :global([data-theme="light"]) & {
+    color: #0284c7;
+  }
+}
+
+.metricDivider {
+  width: 1px;
+  height: 36px;
+  background: var(--border-color, $border-dark);
+
+  @include mobile {
+    width: 100%;
+    height: 1px;
+  }
+}
+
+/* ─── SECTION 2: Order Performance & Profit ──────────────────── */
+.orderPerformanceSection {
+  @include glass-panel;
+  border-radius: 24px;
+  padding: 28px;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.perfHeaderRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.perfTitleArea {
+  display: flex;
+  flex-direction: column;
+}
+
+.dateFilterContainer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.datePresetSelect {
+  min-width: 170px;
+
+  :global(.MuiOutlinedInput-root) {
+    border-radius: 12px;
+    background: rgba(7, 21, 38, 0.6);
+    color: var(--text-primary);
+
+    :global([data-theme="light"]) & {
+      background: #ffffff;
+    }
+
+    fieldset {
+      border-color: var(--border-color, $border-dark);
+    }
+
+    &:hover fieldset {
+      border-color: var(--accent-cyan, $accent-cyan);
+    }
+  }
+
+  :global(.MuiSelect-select) {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    font-size: 0.88rem;
+    font-weight: 600;
+  }
+}
+
+.customDateInputs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.customDateField {
+  width: 150px;
+
+  :global(.MuiOutlinedInput-root) {
+    border-radius: 12px;
+    background: rgba(7, 21, 38, 0.6);
+    color: var(--text-primary);
+
+    :global([data-theme="light"]) & {
+      background: #ffffff;
+    }
+
+    fieldset {
+      border-color: var(--border-color, $border-dark);
+    }
+  }
+
+  :global(.MuiInputBase-input) {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    font-size: 0.84rem;
+  }
+}
+
+/* 6 Metrics Grid */
+.perfGrid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 16px;
+  width: 100%;
+
+  @media (max-width: 1150px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.perfCard {
+  @include glass-card;
+  border-radius: 18px;
+  padding: 20px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+.perfIconBoxCashback {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: rgba(54, 207, 255, 0.15);
+  border: 1px solid rgba(54, 207, 255, 0.4);
+  color: #36cfff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+}
+
+.perfIconBoxCashbackOrders {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: rgba(168, 85, 247, 0.15);
+  border: 1px solid rgba(168, 85, 247, 0.4);
+  color: #c084fc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+}
+
+.perfIconBoxPending {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  color: #f59e0b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+}
+
+.perfIconBoxCompleted {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: rgba(54, 207, 255, 0.15);
+  border: 1px solid rgba(54, 207, 255, 0.4);
+  color: var(--accent-cyan);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+}
+
+.perfIconBoxProfit {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  color: #10b981;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+}
+
+.perfIconBoxLoss {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #ef4444;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+}
+
+.perfIconBoxPurchase {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: rgba(99, 102, 241, 0.15);
+  border: 1px solid rgba(99, 102, 241, 0.4);
+  color: #818cf8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+}
+
+.perfIconBoxDelivery {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: rgba(6, 182, 212, 0.15);
+  border: 1px solid rgba(6, 182, 212, 0.4);
+  color: #22d3ee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+}
+
+.perfContent {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.perfLabel {
+  font-size: 0.74rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.perfValueCashback {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #36cfff;
+  line-height: 1.2;
+}
+
+.perfValueCyan {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #c084fc;
+  line-height: 1.2;
+}
+
+.perfValueWarning {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #f59e0b;
+  line-height: 1.2;
+}
+
+.perfValueSuccess {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #10b981;
+  line-height: 1.2;
+}
+
+.perfValueProfit {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #10b981;
+  line-height: 1.2;
+}
+
+.perfValueLoss {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #ef4444;
+  line-height: 1.2;
+}
+
+.perfValuePrimary {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.perfValueDelivery {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #38bdf8;
+  line-height: 1.2;
+}
+
+.perfSubtext {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+/* ─── SECTION 3: Operations Module (3 Equal Cards / Row Flexbox) ─ */
+.operationsSection {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.operationsFlexGrid {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 24px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.operationsFlexItem {
+  flex: 0 0 calc((100% - 2 * 24px) / 3);
+  max-width: calc((100% - 2 * 24px) / 3);
+  min-width: 0;
+  box-sizing: border-box;
+  display: flex;
+
+  @media (max-width: 1024px) {
+    flex: 0 0 calc((100% - 24px) / 2);
+    max-width: calc((100% - 24px) / 2);
+  }
+
+  @media (max-width: 600px) {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
+
+/* ─── Card Styling for Operations & Administration ─────────────── */
+.ccMgmtCard,
+.acctMgmtCard,
+.dealerMgmtCard,
+.productMgmtCard,
+.userMgmtCard {
+  @include glass-panel;
+  border-radius: 24px !important;
+  border: 1.5px solid var(--border-glow, $border-dark-glow) !important;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.5), 0 0 25px var(--border-glow, $accent-cyan-glow) !important;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent-cyan, $accent-cyan) !important;
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.6), 0 0 35px var(--border-glow, $accent-cyan-glow) !important;
+  }
+
+  :global([data-theme="light"]) & {
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08), 0 0 20px rgba(2, 132, 199, 0.08) !important;
+
+    &:hover {
+      box-shadow: 0 15px 35px rgba(2, 132, 199, 0.25) !important;
+    }
+  }
+}
+
+.cardActionArea {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  padding: 0 !important;
+}
+
+.cardContent {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+  padding: 24px !important;
+
+  &:last-child {
+    padding-bottom: 24px !important;
+  }
+}
+
+.cardTopRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.ccIconBox,
+.acctIconBox,
+.dealerIconBox,
+.productIconBox,
+.userMgmtIconBox {
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  background: var(--glass-card, $glass-card-dark);
+  border: 1.5px solid var(--accent-cyan, $accent-cyan);
+  box-shadow: 0 0 20px var(--border-glow, $accent-cyan-glow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-cyan, $accent-cyan);
+}
+
+.mgmtIcon {
+  font-size: 1.8rem !important;
+}
+
+.countBadge {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.countLabel {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 2px;
+}
+
+.countValue {
+  font-weight: 800;
+  color: var(--accent-cyan);
+  line-height: 1;
+  font-size: 1.4rem;
+  margin: 0;
+}
+
+.ccLimitsRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--glass-card, $glass-card-dark);
+  border: 1px solid var(--border-color, $border-dark);
+  border-radius: 14px;
+  padding: 10px 16px;
+  margin-bottom: 16px;
+  box-sizing: border-box;
+}
+
+.ccLimitCol {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.ccLimitDivider {
+  width: 1px;
+  height: 28px;
+  background: var(--border-color, $border-dark);
+}
+
+.ccLimitLabel {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.ccLimitVal {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.ccLimitValHighlight {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #10b981;
+}
+
+.ctaLink {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--accent-cyan);
+  font-size: 0.88rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  margin-top: auto;
+  padding-top: 12px;
+
+  :global([data-theme="light"]) & {
+    color: $primary-light-accent;
+  }
+}
+
+/* ─── SECTION 4: Administration / Other Sections ──────────────── */
+.userMgmtSection {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}

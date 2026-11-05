@@ -1,0 +1,161 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.dialogPaper {
+  @include glass-card;
+  border-radius: 20px !important;
+  max-width: 500px !important;
+  width: 100% !important;
+  overflow: hidden !important;
+}
+
+.dialogTitle {
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+  padding: 20px 24px 16px !important;
+  border-bottom: 1px solid var(--border-color, $border-dark);
+
+  h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    line-height: 1.2;
+  }
+
+  .subTitle {
+    margin: 3px 0 0;
+    font-size: 0.8rem;
+    color: var(--text-secondary, #94A3B8);
+
+    strong {
+      color: var(--text-primary);
+    }
+  }
+}
+
+.iconBox {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.iconBoxGreen {
+  background: linear-gradient(135deg, #10B981 0%, #34D399 100%);
+  color: #071526;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+}
+
+.iconBoxRed {
+  background: linear-gradient(135deg, #EF4444 0%, #F87171 100%);
+  color: #FFFFFF;
+  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35);
+}
+
+.headerIcon {
+  font-size: 1.3rem !important;
+}
+
+.dialogContent {
+  padding: 20px 24px !important;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.alert {
+  border-radius: 10px;
+}
+
+.explainerBanner {
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 0.8rem;
+  line-height: 1.4;
+
+  p {
+    margin: 0;
+  }
+}
+
+.bannerGreen {
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #34D399;
+}
+
+.bannerRed {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #F87171;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.twoColRow {
+  display: flex;
+  gap: 12px;
+}
+
+.textField {
+  :global(.MuiOutlinedInput-root) {
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.03);
+
+    :global([data-theme='light']) & {
+      background: rgba(0, 0, 0, 0.02);
+    }
+  }
+}
+
+.inputIcon {
+  font-size: 1.1rem !important;
+  color: var(--text-secondary, #94A3B8);
+}
+
+.dialogActions {
+  padding: 16px 24px !important;
+  border-top: 1px solid var(--border-color, $border-dark);
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.cancelBtn {
+  border-radius: 10px !important;
+  color: var(--text-secondary) !important;
+  text-transform: none !important;
+  font-weight: 600 !important;
+}
+
+.submitBtn {
+  border-radius: 10px !important;
+  font-weight: 700 !important;
+  text-transform: none !important;
+  padding: 6px 18px !important;
+}
+
+.btnGreen {
+  background: linear-gradient(135deg, #10B981 0%, #34D399 100%) !important;
+  color: #071526 !important;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35) !important;
+}
+
+.btnRed {
+  background: linear-gradient(135deg, #EF4444 0%, #F87171 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35) !important;
+}
+
+.spinner {
+  color: inherit !important;
+}

@@ -1,0 +1,82 @@
+@use 'variables' as *;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+:root, [data-theme="dark"] {
+  --bg-primary: #{$bg-primary-dark};
+  --bg-secondary: #{$bg-secondary-dark};
+  --accent-cyan: #{$accent-cyan};
+  --accent-cyan-hover: #{$accent-cyan-hover};
+  --border-color: #{$border-dark};
+  --border-glow: #{$border-dark-glow};
+  --text-primary: #{$text-primary-dark};
+  --text-secondary: #{$text-secondary-dark};
+  --glass-bg: #{$glass-panel-dark};
+  --glass-card: #{$glass-card-dark};
+  --grid-dot: rgba(54, 207, 255, 0.15);
+  --ambient-flare: rgba(54, 207, 255, 0.13);
+}
+
+[data-theme="light"] {
+  --bg-primary: #{$bg-primary-light};
+  --bg-secondary: #{$bg-secondary-light};
+  --accent-cyan: #{$accent-blue};
+  --accent-cyan-hover: #{$accent-blue-hover};
+  --border-color: #{$border-light};
+  --border-glow: #{$accent-blue-glow};
+  --text-primary: #{$text-primary-light};
+  --text-secondary: #{$text-secondary-light};
+  --glass-bg: #{$glass-panel-light};
+  --glass-card: #{$glass-card-light};
+  --grid-dot: rgba(2, 132, 199, 0.12);
+  --ambient-flare: rgba(14, 165, 233, 0.08);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+  background-image: 
+    radial-gradient(circle at 50% 25%, var(--ambient-flare) 0%, transparent 65%),
+    radial-gradient(var(--grid-dot) 1.2px, transparent 1.2px);
+  background-size: 100% 100%, 28px 28px;
+  background-attachment: fixed;
+  color: var(--text-primary);
+  font-family: $font-family;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+#root {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-cyan);
+}
+

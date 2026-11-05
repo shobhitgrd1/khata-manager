@@ -1,0 +1,101 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.dialogPaper {
+  @include glass-panel;
+  border-radius: 18px !important;
+  max-width: 480px !important;
+  width: 100% !important;
+  padding: 8px !important;
+
+  :global([data-theme='dark']) & {
+    border: 1.5px solid rgba(248, 113, 113, 0.4) !important;
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.7), 0 0 25px rgba(248, 113, 113, 0.18) !important;
+  }
+
+  :global([data-theme='light']) & {
+    border: 1.5px solid rgba(220, 38, 38, 0.3) !important;
+    box-shadow: 0 15px 35px rgba(15, 23, 42, 0.12) !important;
+  }
+}
+
+.dialogTitle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.15rem !important;
+  font-weight: 700 !important;
+
+  :global([data-theme='dark']) & {
+    color: #F87171;
+  }
+
+  :global([data-theme='light']) & {
+    color: #DC2626;
+  }
+}
+
+.warningIcon {
+  font-size: 26px;
+}
+
+.dialogContent {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px 24px !important;
+}
+
+.dialogPrompt {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+}
+
+.orderHighlight {
+  color: var(--accent-cyan, $accent-cyan);
+}
+
+.dialogWarning {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: var(--text-secondary);
+}
+
+.dialogActions {
+  padding: 16px 20px !important;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.cancelBtn {
+  text-transform: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+  border-radius: 8px;
+  color: var(--text-secondary);
+
+  &:hover {
+    color: var(--text-primary);
+  }
+}
+
+.deleteBtn {
+  text-transform: none;
+  font-size: 0.88rem;
+  font-weight: 600;
+  border-radius: 8px;
+  background: #DC2626 !important;
+  color: #FFFFFF !important;
+
+  &:hover {
+    background: #B91C1C !important;
+  }
+}
+
+.spinner {
+  color: #FFFFFF !important;
+}
+

@@ -1,0 +1,47 @@
+// Khata Manager SCSS Variables & Color Palette
+
+// Dark Mode Palette (Futuristic Neon / Glassmorphism)
+$bg-primary-dark: #071526;
+$bg-secondary-dark: #10243D;
+$bg-navy-dark: #071526;
+$accent-cyan: #36CFFF;
+$accent-cyan-hover: #75DFFF;
+$accent-cyan-light: #75DFFF;
+$accent-cyan-glow: rgba(54, 207, 255, 0.35);
+$border-dark: #294B70;
+$border-navy: #294B70;
+$border-dark-glow: rgba(54, 207, 255, 0.25);
+$text-primary-dark: #F4F8FF;
+$text-primary: #F4F8FF;
+$text-secondary-dark: #94A8C0;
+$text-secondary: #94A8C0;
+$glass-card-dark: rgba(11, 26, 46, 0.78);
+$glass-panel-dark: rgba(16, 36, 61, 0.72);
+
+// Light Mode Palette (Clean Slate / Sky Blue)
+$bg-primary-light: #F1F5F9;
+$bg-secondary-light: #FFFFFF;
+$accent-blue: #0284C7;
+$primary-light-accent: #0284C7;
+$accent-blue-hover: #0369A1;
+$accent-blue-glow: rgba(2, 132, 199, 0.25);
+$border-light: #CBD5E1;
+$border-light-subtle: #E2E8F0;
+$text-primary-light: #0F172A;
+$text-secondary-light: #64748B;
+$glass-card-light: rgba(255, 255, 255, 0.92);
+$glass-panel-light: rgba(255, 255, 255, 0.88);
+
+// Gradients & Effects
+$gradient-accent: linear-gradient(135deg, #00B4D8 0%, #36CFFF 60%, #75DFFF 100%);
+$gradient-accent-light: linear-gradient(135deg, #0284C7 0%, #0EA5E9 100%);
+
+// Typography & Geometry
+$font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+$radius-sm: 8px;
+$radius-md: 12px;
+$radius-lg: 18px;
+$radius-xl: 24px;
+$radius-pill: 30px;
+$transition-default: all 0.25s ease;
+$transition-smooth: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);

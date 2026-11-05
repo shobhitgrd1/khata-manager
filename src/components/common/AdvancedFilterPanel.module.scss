@@ -1,0 +1,224 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.filterWrapper {
+  display: inline-flex;
+  flex-direction: column;
+  width: auto;
+
+  &.open {
+    width: 100%;
+  }
+}
+
+.standaloneDrawerWrapper {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.filterTriggerBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 16px;
+  background: rgba(16, 36, 61, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color, $border-dark);
+  border-radius: $radius-md;
+  color: var(--text-primary, $text-primary-dark);
+  font-family: $font-family;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: $transition-default;
+  outline: none;
+
+  &:hover {
+    border-color: var(--accent-cyan, $accent-cyan);
+    box-shadow: 0 0 12px rgba(54, 207, 255, 0.25);
+    color: var(--accent-cyan, $accent-cyan);
+  }
+
+  &.open {
+    border-color: var(--accent-cyan, $accent-cyan);
+    background: rgba(54, 207, 255, 0.12);
+    color: var(--accent-cyan, $accent-cyan);
+  }
+
+  :global([data-theme="light"]) & {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: $border-light;
+    color: $text-primary-light;
+
+    &:hover,
+    &.open {
+      border-color: $accent-blue;
+      color: $accent-blue;
+      background: rgba(2, 132, 199, 0.08);
+      box-shadow: 0 0 8px rgba(2, 132, 199, 0.2);
+    }
+  }
+}
+
+.filterBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  background: var(--accent-cyan, $accent-cyan);
+  color: #071526;
+  font-size: 0.72rem;
+  font-weight: 700;
+
+  :global([data-theme="light"]) & {
+    background: $accent-blue;
+    color: #FFFFFF;
+  }
+}
+
+.panelDrawer {
+  margin-top: 14px;
+  padding: 20px;
+  background: rgba(11, 26, 46, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-color, $border-dark);
+  border-radius: $radius-lg;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45), 0 0 20px rgba(54, 207, 255, 0.1);
+  animation: slideDown 0.25s ease-out;
+
+  :global([data-theme="light"]) & {
+    background: rgba(255, 255, 255, 0.98);
+    border-color: $border-light;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+  }
+}
+
+.panelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(54, 207, 255, 0.15);
+
+  :global([data-theme="light"]) & {
+    border-bottom-color: rgba(2, 132, 199, 0.15);
+  }
+}
+
+.panelTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary, $text-primary-dark);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  :global([data-theme="light"]) & {
+    color: $text-primary-light;
+  }
+}
+
+.titleIcon {
+  color: var(--accent-cyan, $accent-cyan);
+  font-size: 1.15rem;
+
+  :global([data-theme="light"]) & {
+    color: $accent-blue;
+  }
+}
+
+.panelContent {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+
+  @include mobile {
+    grid-template-columns: 1fr;
+  }
+}
+
+.panelFooter {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+
+  :global([data-theme="light"]) & {
+    border-top-color: rgba(15, 23, 42, 0.06);
+  }
+
+  @include mobile {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+.resetBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 38px;
+  padding: 0 16px;
+  border: 1px solid var(--border-color, $border-dark);
+  background: transparent;
+  color: var(--text-secondary, $text-secondary-dark);
+  border-radius: $radius-md;
+  font-family: $font-family;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: $transition-default;
+
+  &:hover {
+    color: #ff5252;
+    border-color: rgba(255, 82, 82, 0.4);
+    background: rgba(255, 82, 82, 0.08);
+  }
+
+  :global([data-theme="light"]) & {
+    border-color: $border-light;
+    color: $text-secondary-light;
+  }
+}
+
+.btnActionIcon {
+  font-size: 1.05rem;
+}
+
+.applyBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 38px;
+  padding: 0 20px;
+  border: none;
+  border-radius: $radius-md;
+  @include cyan-gradient-btn;
+  font-family: $font-family;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
