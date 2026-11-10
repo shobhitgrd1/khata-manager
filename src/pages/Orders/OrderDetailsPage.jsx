@@ -152,6 +152,7 @@ const OrderDetailsPage = () => {
   const {
     _id,
     orderId = 'N/A',
+    originalOrderId = '',
     dealerNameSnapshot = 'Unknown Dealer',
     dealerMobileSnapshot = '',
     dealerAddressSnapshot = {},
@@ -287,6 +288,11 @@ const OrderDetailsPage = () => {
             </div>
             <div className={styles.heroDetails}>
               <h2 className={styles.heroOrderId}>{orderId}</h2>
+              {originalOrderId && (
+                <div style={{ fontSize: '0.84rem', color: '#64748b', fontWeight: 500, marginTop: '2px', marginBottom: '2px' }}>
+                  Original Order ID: <strong style={{ color: 'var(--text-primary, #0f172a)' }}>{originalOrderId}</strong>
+                </div>
+              )}
               <span className={styles.heroDateText}>Created: {formattedOrderDate}</span>
             </div>
           </div>

@@ -1,0 +1,188 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.dialogPaper {
+  @include glass-panel;
+  background: var(--bg-card, rgba(15, 23, 42, 0.95)) !important;
+  color: var(--text-primary, #ffffff) !important;
+  border-radius: 18px !important;
+  max-width: 520px !important;
+  width: 100% !important;
+  border: 1px solid var(--border-glow, rgba(54, 207, 255, 0.25)) !important;
+  overflow: hidden;
+}
+
+.dialogTitle {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px 24px 16px !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+  :global([data-theme='light']) & {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  }
+}
+
+.titleIconBox {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+
+  &.payIcon {
+    background: rgba(16, 185, 129, 0.15);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+  }
+
+  &.useIcon {
+    background: rgba(245, 158, 11, 0.15);
+    color: #f59e0b;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+  }
+}
+
+.modalHeading {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text-primary, #ffffff);
+
+  :global([data-theme='light']) & {
+    color: #0f172a;
+  }
+}
+
+.modalSubtitle {
+  margin: 3px 0 0;
+  font-size: 0.8rem;
+  color: var(--text-secondary, #94a3b8);
+}
+
+.dialogContent {
+  padding: 20px 24px !important;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.formGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.rowTwo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+
+  @media (max-width: 500px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.rupeeAdornment {
+  font-weight: 700;
+  color: var(--text-secondary, #94a3b8);
+  font-size: 1rem;
+}
+
+.inputIcon {
+  color: var(--text-secondary, #94a3b8);
+  font-size: 1.15rem;
+}
+
+.calculationPreview {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  :global([data-theme='light']) & {
+    background: #f8fafc;
+    border-color: #e2e8f0;
+  }
+}
+
+.calcRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.84rem;
+}
+
+.calcLabel {
+  color: var(--text-secondary, #94a3b8);
+}
+
+.calcValue {
+  font-weight: 700;
+  color: var(--text-primary, #ffffff);
+
+  :global([data-theme='light']) & {
+    color: #0f172a;
+  }
+
+  &.highlightGreen {
+    color: #10b981;
+  }
+
+  &.highlightOrange {
+    color: #f59e0b;
+  }
+}
+
+.dialogActions {
+  padding: 14px 24px 20px !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+
+  :global([data-theme='light']) & {
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+  }
+}
+
+.cancelBtn {
+  color: var(--text-secondary, #94a3b8) !important;
+  text-transform: none !important;
+}
+
+.submitBtnPay {
+  background: linear-gradient(135deg, #10b981, #059669) !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  text-transform: none !important;
+  padding: 8px 22px !important;
+  border-radius: 10px !important;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+
+  &:hover {
+    background: linear-gradient(135deg, #059669, #047857) !important;
+  }
+}
+
+.submitBtnUse {
+  background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  text-transform: none !important;
+  padding: 8px 22px !important;
+  border-radius: 10px !important;
+  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);
+
+  &:hover {
+    background: linear-gradient(135deg, #d97706, #b45309) !important;
+  }
+}

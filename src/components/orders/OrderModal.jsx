@@ -85,6 +85,9 @@ const OrderModal = ({
   const [validationError, setValidationError] = useState('');
   const [hasLinkedKhataBook, setHasLinkedKhataBook] = useState(false);
   const [addToKhataBook, setAddToKhataBook] = useState(true);
+  const [customProductName, setCustomProductName] = useState('');
+  const [payUsingCreditCard, setPayUsingCreditCard] = useState(false);
+  const [originalOrderId, setOriginalOrderId] = useState('');
 
   // Check if selected dealer has a linked Khata Book account
   useEffect(() => {
@@ -150,12 +153,26 @@ const OrderModal = ({
       if (activeOrder) {
         setDealerId(activeOrder.dealerId?._id || activeOrder.dealerId || '');
         setDealerAddressId(activeOrder.dealerAddressId || '');
-        setProductId(activeOrder.productId?._id || activeOrder.productId || '');
+        if (activeOrder.productId?._id) {
+          setProductId(activeOrder.productId._id);
+          setCustomProductName('');
+        } else if (activeOrder.productId && typeof activeOrder.productId === 'string') {
+          setProductId(activeOrder.productId);
+          setCustomProductName('');
+        } else if (activeOrder.customProductName) {
+          setProductId('OTHER');
+          setCustomProductName(activeOrder.customProductName);
+        } else {
+          setProductId('');
+          setCustomProductName('');
+        }
         setVariant(activeOrder.variant || '');
         setColorName(activeOrder.color?.colorName || '');
         setAccountId(activeOrder.accountId?._id || activeOrder.accountId || '');
         setPaymentMethod(activeOrder.paymentMethod === 'Credit Card' ? 'Credit Card' : 'Other');
         setCreditCardId(activeOrder.creditCardId?._id || activeOrder.creditCardId || '');
+        setPayUsingCreditCard(Boolean(activeOrder.payUsingCreditCard));
+        setOriginalOrderId(activeOrder.originalOrderId || '');
         setPurchasePrice(
           activeOrder.purchasePrice !== undefined && activeOrder.purchasePrice !== null
             ? String(activeOrder.purchasePrice)
@@ -229,11 +246,14 @@ const OrderModal = ({
         setDealerId('');
         setDealerAddressId('');
         setProductId('');
+        setCustomProductName('');
         setVariant('');
         setColorName('');
         setAccountId('');
         setPaymentMethod('Credit Card');
         setCreditCardId('');
+        setPayUsingCreditCard(false);
+        setOriginalOrderId('');
         setOtherPaymentType('Debit Card');
         setDebitCardHolder('');
         setDebitLastFour('');
@@ -275,8 +295,26 @@ const OrderModal = ({
 
   const handleProductChange = (newProductId) => {
     setProductId(newProductId);
-    setVariant('');
-    setColorName('');
+    if (newProductId === 'OTHER') {
+      setVariant('');
+      setColorName('');
+      return;
+    }
+    const prod = products.find((p) => p._id === newProductId);
+    const variants = prod?.variants || [];
+    const colors = prod?.colors || [];
+
+    if (variants.length === 1) {
+      setVariant(variants[0].variantName);
+    } else {
+      setVariant('');
+    }
+
+    if (colors.length === 1) {
+      setColorName(colors[0].colorName);
+    } else {
+      setColorName('');
+    }
   };
 
   const selectedColorObj = productColors.find((c) => c.colorName === colorName);
@@ -287,6 +325,16 @@ const OrderModal = ({
 
   const numPurchase = parseFloat(purchasePrice) || 0;
   const numDelivery = parseFloat(deliveryPrice) || 0;
+
+  // Selected Credit Card Limits & Exceed check
+  const cardTotalLimit = Number(selectedCreditCard?.totalLimit || 0);
+  const cardAvailableLimit = selectedCreditCard
+    ? (selectedCreditCard.availableLimit !== undefined
+        ? Number(selectedCreditCard.availableLimit)
+        : Math.max(0, cardTotalLimit - Number(selectedCreditCard.usedLimit || 0)))
+    : 0;
+  const isCreditLimitExceeded = Boolean(selectedCreditCard && numPurchase > cardAvailableLimit);
+
   const default5PctCashback = Math.round(((numPurchase * 5) / 100) * 100) / 100;
   const liveProfit = status === 'Delivered' && numPurchase > 0 && numDelivery > 0
     ? Math.round((numDelivery - numPurchase) * 100) / 100
@@ -334,17 +382,24 @@ const OrderModal = ({
     }
 
     // Product validation
-    if (!productId) {
-      setValidationError('Please select a product.');
-      return;
-    }
-    if (!variant) {
-      setValidationError('Please select a product variant.');
-      return;
-    }
-    if (!colorName) {
-      setValidationError('Please select a product color.');
-      return;
+    if (productId === 'OTHER') {
+      if (!customProductName || !customProductName.trim()) {
+        setValidationError('Please enter a custom product name.');
+        return;
+      }
+    } else {
+      if (!productId) {
+        setValidationError('Please select a product.');
+        return;
+      }
+      if (!variant) {
+        setValidationError('Please select a product variant.');
+        return;
+      }
+      if (!colorName) {
+        setValidationError('Please select a product color.');
+        return;
+      }
     }
 
     // Account validation
@@ -430,16 +485,19 @@ const OrderModal = ({
       orderDate: isoOrderDate,
       dealerId,
       dealerAddressId: dealerAddressId || (dealerAddresses.length === 1 ? dealerAddresses[0]._id : ''),
-      productId,
-      variant,
+      productId: productId === 'OTHER' ? 'OTHER' : productId,
+      customProductName: productId === 'OTHER' ? customProductName.trim() : undefined,
+      variant: variant || 'Standard',
       color: {
-        colorName,
+        colorName: colorName || 'Standard',
         colorCode: selectedColorObj?.colorCode || '#36CFFF',
       },
       accountId,
       paymentMethod: finalPaymentMethod,
       creditCardId: paymentMethod === 'Credit Card' ? creditCardId : null,
+      payUsingCreditCard: paymentMethod === 'Credit Card' ? Boolean(payUsingCreditCard) : false,
       paymentDetails: finalPaymentDetails,
+      originalOrderId: originalOrderId.trim() || undefined,
       purchasePrice: numPrice,
       status,
     };
@@ -650,73 +708,122 @@ const OrderModal = ({
                       {p.productName}
                     </MenuItem>
                   ))}
+                  <MenuItem value="OTHER">
+                    <span style={{ color: '#38bdf8', fontWeight: 700 }}>+ Other (Add Custom Product)</span>
+                  </MenuItem>
                 </TextField>
               </div>
+
+              {/* Custom Product Name (when Other selected) */}
+              {productId === 'OTHER' && (
+                <div className={styles.formGroup} style={{ gridColumn: '1 / -1' }}>
+                  <label className={styles.fieldLabel} htmlFor="customProductNameInput">
+                    Custom Product Name <span className={styles.requiredStar}>*</span>
+                  </label>
+                  <TextField
+                    id="customProductNameInput"
+                    size="small"
+                    placeholder="Enter custom product name..."
+                    value={customProductName}
+                    onChange={(e) => setCustomProductName(e.target.value)}
+                    disabled={isFormBusy}
+                    className={styles.customInput}
+                    helperText="This product will automatically be created in your Products catalog upon saving."
+                    required
+                  />
+                </div>
+              )}
 
               {/* Variant */}
               <div className={styles.formGroup}>
                 <label className={styles.fieldLabel} htmlFor="variantSelect">
-                  Variant <span className={styles.requiredStar}>*</span>
+                  Variant {productId !== 'OTHER' && <span className={styles.requiredStar}>*</span>}
                 </label>
-                <TextField
-                  id="variantSelect"
-                  select
-                  size="small"
-                  value={variant}
-                  onChange={(e) => setVariant(e.target.value)}
-                  disabled={isFormBusy || !productId || productVariants.length === 0}
-                  className={styles.customSelect}
-                  helperText={!productId ? 'Select product first' : `${productVariants.length} available`}
-                >
-                  <MenuItem value="">
-                    <em>Select Variant</em>
-                  </MenuItem>
-                  {productVariants.map((v, idx) => (
-                    <MenuItem key={idx} value={v.variantName}>
-                      {v.variantName}
+                {productId === 'OTHER' ? (
+                  <TextField
+                    id="customVariantInput"
+                    size="small"
+                    placeholder="e.g. 256 GB (Optional)"
+                    value={variant}
+                    onChange={(e) => setVariant(e.target.value)}
+                    disabled={isFormBusy}
+                    className={styles.customInput}
+                    helperText="Optional for custom product"
+                  />
+                ) : (
+                  <TextField
+                    id="variantSelect"
+                    select
+                    size="small"
+                    value={variant}
+                    onChange={(e) => setVariant(e.target.value)}
+                    disabled={isFormBusy || !productId || productVariants.length === 0}
+                    className={styles.customSelect}
+                    helperText={!productId ? 'Select product first' : `${productVariants.length} available`}
+                  >
+                    <MenuItem value="">
+                      <em>Select Variant</em>
                     </MenuItem>
-                  ))}
-                </TextField>
+                    {productVariants.map((v, idx) => (
+                      <MenuItem key={idx} value={v.variantName}>
+                        {v.variantName}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                )}
               </div>
 
               {/* Color */}
               <div className={styles.formGroup}>
                 <label className={styles.fieldLabel} htmlFor="colorSelect">
-                  Color <span className={styles.requiredStar}>*</span>
+                  Color {productId !== 'OTHER' && <span className={styles.requiredStar}>*</span>}
                 </label>
-                <TextField
-                  id="colorSelect"
-                  select
-                  size="small"
-                  value={colorName}
-                  onChange={(e) => setColorName(e.target.value)}
-                  disabled={isFormBusy || !productId || productColors.length === 0}
-                  className={styles.customSelect}
-                  helperText={!productId ? 'Select product first' : `${productColors.length} available`}
-                >
-                  <MenuItem value="">
-                    <em>Select Color</em>
-                  </MenuItem>
-                  {productColors.map((c, idx) => (
-                    <MenuItem key={idx} value={c.colorName}>
-                      <div className={styles.menuItemOption}>
-                        <div className={styles.colorOptionWrap}>
-                          <svg width="14" height="14" viewBox="0 0 14 14" className={styles.colorPreviewDot}>
-                            <circle
-                              cx="7"
-                              cy="7"
-                              r="6"
-                              fill={c.colorCode || '#36CFFF'}
-                              stroke="rgba(255, 255, 255, 0.4)"
-                              strokeWidth="1"
-                            />
-                          </svg>
-                          <span>{c.colorName}</span>
-                        </div>
-                      </div>
+                {productId === 'OTHER' ? (
+                  <TextField
+                    id="customColorInput"
+                    size="small"
+                    placeholder="e.g. Black (Optional)"
+                    value={colorName}
+                    onChange={(e) => setColorName(e.target.value)}
+                    disabled={isFormBusy}
+                    className={styles.customInput}
+                    helperText="Optional for custom product"
+                  />
+                ) : (
+                  <TextField
+                    id="colorSelect"
+                    select
+                    size="small"
+                    value={colorName}
+                    onChange={(e) => setColorName(e.target.value)}
+                    disabled={isFormBusy || !productId || productColors.length === 0}
+                    className={styles.customSelect}
+                    helperText={!productId ? 'Select product first' : `${productColors.length} available`}
+                  >
+                    <MenuItem value="">
+                      <em>Select Color</em>
                     </MenuItem>
-                  ))}
-                </TextField>
+                    {productColors.map((c, idx) => (
+                      <MenuItem key={idx} value={c.colorName}>
+                        <div className={styles.menuItemOption}>
+                          <div className={styles.colorOptionWrap}>
+                            <svg width="14" height="14" viewBox="0 0 14 14" className={styles.colorPreviewDot}>
+                              <circle
+                                cx="7"
+                                cy="7"
+                                r="6"
+                                fill={c.colorCode || '#36CFFF'}
+                                stroke="rgba(255, 255, 255, 0.4)"
+                                strokeWidth="1"
+                              />
+                            </svg>
+                            <span>{c.colorName}</span>
+                          </div>
+                        </div>
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                )}
               </div>
             </div>
           </div>
@@ -902,33 +1009,130 @@ const OrderModal = ({
                   />
 
                   {selectedCreditCard && (
-                    <div className={styles.selectedCreditCardPreview}>
-                      <div className={styles.cardOptionLeft}>
-                        <div className={styles.cardBankLogoBox}>
-                          {getBankLogo(selectedCreditCard.bankName) ? (
-                            <img
-                              src={getBankLogo(selectedCreditCard.bankName)}
-                              alt={selectedCreditCard.bankName}
-                              className={styles.cardBankLogo}
-                            />
-                          ) : (
-                            <CreditCardIcon className={styles.cardFallbackIcon} />
-                          )}
+                    <>
+                      <div className={styles.selectedCreditCardPreview}>
+                        <div className={styles.cardOptionLeft}>
+                          <div className={styles.cardBankLogoBox}>
+                            {getBankLogo(selectedCreditCard.bankName) ? (
+                              <img
+                                src={getBankLogo(selectedCreditCard.bankName)}
+                                alt={selectedCreditCard.bankName}
+                                className={styles.cardBankLogo}
+                              />
+                            ) : (
+                              <CreditCardIcon className={styles.cardFallbackIcon} />
+                            )}
+                          </div>
+                          <div className={styles.cardLeftDetails}>
+                            <span className={styles.cardBankName}>{selectedCreditCard.bankName}</span>
+                            <span className={styles.cardHolderName}>
+                              {selectedCreditCard.cardOwner || 'Card Owner'}
+                            </span>
+                          </div>
                         </div>
-                        <div className={styles.cardLeftDetails}>
-                          <span className={styles.cardBankName}>{selectedCreditCard.bankName}</span>
-                          <span className={styles.cardHolderName}>
-                            {selectedCreditCard.cardOwner || 'Card Owner'}
+                        <div className={styles.cardOptionRight}>
+                          <span className={styles.cardNameText}>
+                            {selectedCreditCard.cardName || 'Card'}
+                          </span>
+                          <span className={styles.cardLastFour}>•••• {selectedCreditCard.lastFourDigits}</span>
+                          <span
+                            style={{
+                              fontSize: '0.72rem',
+                              color: isCreditLimitExceeded ? '#ef4444' : '#10b981',
+                              fontWeight: 700,
+                              marginTop: 2,
+                            }}
+                          >
+                            Avail: {formatINR(cardAvailableLimit)}
                           </span>
                         </div>
                       </div>
-                      <div className={styles.cardOptionRight}>
-                        <span className={styles.cardNameText}>
-                          {selectedCreditCard.cardName || 'Card'}
-                        </span>
-                        <span className={styles.cardLastFour}>•••• {selectedCreditCard.lastFourDigits}</span>
+
+                      {/* Pay Using Credit Card Checkbox */}
+                      <div
+                        style={{
+                          marginTop: 10,
+                          padding: '10px 14px',
+                          borderRadius: 8,
+                          background: isCreditLimitExceeded
+                            ? 'rgba(239, 68, 68, 0.08)'
+                            : 'rgba(54, 207, 255, 0.05)',
+                          border: isCreditLimitExceeded
+                            ? '1px solid rgba(239, 68, 68, 0.35)'
+                            : '1px solid rgba(54, 207, 255, 0.25)',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          gap: 4,
+                          transition: 'all 0.2s ease',
+                        }}
+                      >
+                        <label
+                          style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 10,
+                            cursor: 'pointer',
+                            fontWeight: 600,
+                            fontSize: '0.88rem',
+                            color: 'var(--text-primary, #ffffff)',
+                          }}
+                        >
+                          <input
+                            type="checkbox"
+                            checked={payUsingCreditCard}
+                            onChange={(e) => setPayUsingCreditCard(e.target.checked)}
+                            style={{
+                              width: 17,
+                              height: 17,
+                              accentColor: isCreditLimitExceeded ? '#ef4444' : '#38bdf8',
+                              cursor: 'pointer',
+                            }}
+                          />
+                          <span>Pay Using Credit Card</span>
+                        </label>
+                        <div style={{ fontSize: '0.78rem', color: '#94a3b8', paddingLeft: 27 }}>
+                          When enabled, deducts order amount ({formatINR(numPurchase)}) from credit card remaining limit (increasing Used Credit Limit) and adds an itemized transaction in the card history.
+                          <div
+                            style={{
+                              marginTop: 4,
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: 6,
+                              flexWrap: 'wrap',
+                            }}
+                          >
+                            <span
+                              style={{
+                                color: isCreditLimitExceeded ? '#ef4444' : '#10b981',
+                                fontWeight: 700,
+                                transition: 'color 0.2s ease',
+                              }}
+                            >
+                              Available Limit: {formatINR(cardAvailableLimit)}
+                            </span>
+                            <span style={{ color: '#64748b' }}>•</span>
+                            <span style={{ color: '#38bdf8', fontWeight: 600 }}>
+                              Total Limit: {formatINR(cardTotalLimit)}
+                            </span>
+                            {isCreditLimitExceeded && (
+                              <span
+                                style={{
+                                  color: '#ef4444',
+                                  background: 'rgba(239, 68, 68, 0.15)',
+                                  border: '1px solid rgba(239, 68, 68, 0.3)',
+                                  borderRadius: 4,
+                                  padding: '1px 6px',
+                                  fontSize: '0.72rem',
+                                  fontWeight: 700,
+                                }}
+                              >
+                                (Exceeds available limit by {formatINR(numPurchase - cardAvailableLimit)})
+                              </span>
+                            )}
+                          </div>
+                        </div>
                       </div>
-                    </div>
+                    </>
                   )}
                 </div>
               ) : (
@@ -1066,6 +1270,29 @@ const OrderModal = ({
             </div>
 
             <div className={styles.stepGrid}>
+              {/* Original Order ID */}
+              <div className={styles.formGroup}>
+                <label className={styles.fieldLabel} htmlFor="originalOrderIdInput">
+                  Original Order ID (Optional)
+                </label>
+                <TextField
+                  id="originalOrderIdInput"
+                  size="small"
+                  placeholder="e.g. OD432198765432 or 402-1234567"
+                  value={originalOrderId}
+                  onChange={(e) => setOriginalOrderId(e.target.value)}
+                  disabled={isFormBusy}
+                  className={styles.customInput}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <ReceiptLongOutlinedIcon fontSize="small" />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </div>
+
               {/* Order Date */}
               <div className={styles.formGroup}>
                 <label className={styles.fieldLabel} htmlFor="orderDateInput">
@@ -1429,6 +1656,13 @@ const OrderModal = ({
                     : otherPaymentType}
                 </span>
               </div>
+
+              {originalOrderId && (
+                <div className={styles.summaryItem}>
+                  <span className={styles.summaryItemLabel}>Original Order ID</span>
+                  <span className={styles.summaryItemValue}>{originalOrderId}</span>
+                </div>
+              )}
 
               <div className={styles.summaryItem}>
                 <span className={styles.summaryItemLabel}>Purchase Price</span>

@@ -3,6 +3,7 @@ import { Tooltip } from '@mui/material';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import { getBankLogo } from '../../utils/bankLogos';
 import styles from './CreditCardsPage.module.scss';
 
@@ -27,6 +28,7 @@ export const getCreditCardColumns = ({
   onEdit,
   onDuplicate,
   onDelete,
+  onViewHistory,
 }) => [
   {
     field: 'cardName',
@@ -37,7 +39,11 @@ export const getCreditCardColumns = ({
       const row = params?.row || {};
       const logoSrc = getBankLogo(row.bankName);
       return (
-        <div className={styles.cardAndBankRow}>
+        <div
+          className={styles.cardAndBankRow}
+          style={{ cursor: 'pointer' }}
+          onClick={() => onViewHistory && onViewHistory(row)}
+        >
           {logoSrc ? (
             <img
               src={logoSrc}
@@ -88,30 +94,44 @@ export const getCreditCardColumns = ({
     ),
   },
   {
-    field: 'availableLimit',
-    headerName: 'Available Limit',
-    width: 140,
-    renderCell: (params) => (
-      <span className={styles.availableText}>
-        {formatINR(params?.row?.availableLimit)}
-      </span>
-    ),
-  },
-  {
     field: 'usedLimit',
-    headerName: 'Used Amount',
-    width: 140,
+    headerName: 'Used Credit Limit',
+    width: 150,
     valueGetter: (value, row) => {
       const item = row || value?.row || value || {};
-      return (item.totalLimit || 0) - (item.availableLimit || 0);
+      return item.usedLimit !== undefined
+        ? item.usedLimit
+        : Math.max(0, (item.totalLimit || 0) - (item.availableLimit || 0));
     },
     renderCell: (params) => {
       const row = params?.row || {};
-      const used = Math.max(
-        0,
-        (row.totalLimit || 0) - (row.availableLimit || 0),
-      );
+      const used =
+        row.usedLimit !== undefined
+          ? row.usedLimit
+          : Math.max(0, (row.totalLimit || 0) - (row.availableLimit || 0));
       return <span className={styles.usedText}>{formatINR(used)}</span>;
+    },
+  },
+  {
+    field: 'remainingLimit',
+    headerName: 'Remaining Limit',
+    width: 140,
+    valueGetter: (value, row) => {
+      const item = row || value?.row || value || {};
+      const used =
+        item.usedLimit !== undefined
+          ? item.usedLimit
+          : Math.max(0, (item.totalLimit || 0) - (item.availableLimit || 0));
+      return Math.max(0, (item.totalLimit || 0) - used);
+    },
+    renderCell: (params) => {
+      const row = params?.row || {};
+      const used =
+        row.usedLimit !== undefined
+          ? row.usedLimit
+          : Math.max(0, (row.totalLimit || 0) - (row.availableLimit || 0));
+      const remaining = Math.max(0, (row.totalLimit || 0) - used);
+      return <span className={styles.availableText}>{formatINR(remaining)}</span>;
     },
   },
   {
@@ -121,17 +141,19 @@ export const getCreditCardColumns = ({
     valueGetter: (value, row) => {
       const item = row || value?.row || value || {};
       if (!item.totalLimit || item.totalLimit === 0) return 0;
-      const used = Math.max(
-        0,
-        item.totalLimit - (item.availableLimit || 0),
-      );
+      const used =
+        item.usedLimit !== undefined
+          ? item.usedLimit
+          : Math.max(0, item.totalLimit - (item.availableLimit || 0));
       return Math.round((used / item.totalLimit) * 100);
     },
     renderCell: (params) => {
       const row = params?.row || {};
       const total = row.totalLimit || 0;
-      const available = row.availableLimit || 0;
-      const used = Math.max(0, total - available);
+      const used =
+        row.usedLimit !== undefined
+          ? row.usedLimit
+          : Math.max(0, total - (row.availableLimit || 0));
       const pct = total > 0 ? Math.round((used / total) * 100) : 0;
       let tierClass = styles.utilLow;
       if (pct >= 80) tierClass = styles.utilHigh;
@@ -157,13 +179,23 @@ export const getCreditCardColumns = ({
   {
     field: 'actions',
     headerName: 'Actions',
-    width: 160,
+    width: 180,
     sortable: false,
     filterable: false,
     renderCell: (params) => {
       const row = params?.row;
       return (
         <div className={styles.actionsCell}>
+          <Tooltip title="Transaction History" arrow>
+            <button
+              type="button"
+              onClick={() => onViewHistory && onViewHistory(row)}
+              className={styles.rowActionBtn}
+              aria-label={`View transactions for ${row?.cardName}`}
+            >
+              <ReceiptLongIcon fontSize="inherit" />
+            </button>
+          </Tooltip>
           {canEdit && (
             <Tooltip title="Edit Card" arrow>
               <button

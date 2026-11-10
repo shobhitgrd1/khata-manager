@@ -36,6 +36,24 @@ export const creditCardService = {
     const response = await api.delete(`/credit-cards/${id}`);
     return response.data;
   },
+
+  // Get transaction history for a specific credit card
+  async getTransactions(id, params = {}) {
+    const response = await api.get(`/credit-cards/${id}/transactions`, { params });
+    return response.data;
+  },
+
+  // Record a transaction (Pay Credit Card or Use Credit Card)
+  async addTransaction(id, data) {
+    const response = await api.post(`/credit-cards/${id}/transactions`, data);
+    return response.data;
+  },
+
+  // Reverse an incorrect credit card transaction
+  async reverseTransaction(id, transactionId, data = {}) {
+    const response = await api.post(`/credit-cards/${id}/transactions/${transactionId}/reverse`, data);
+    return response.data;
+  },
 };
 
 export default creditCardService;

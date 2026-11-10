@@ -62,7 +62,7 @@ const CreditCardModal = ({
     cardName: '',
     lastFourDigits: '',
     totalLimit: '',
-    availableLimit: '',
+    usedLimit: '0',
   });
 
   const [validationError, setValidationError] = useState('');
@@ -70,6 +70,11 @@ const CreditCardModal = ({
   // Populate data when editing or duplicating, reset when adding
   useEffect(() => {
     if (activeData) {
+      const activeUsed =
+        activeData.usedLimit !== undefined
+          ? String(activeData.usedLimit)
+          : String(Math.max(0, (activeData.totalLimit || 0) - (activeData.availableLimit || 0)));
+
       if (isDuplicateMode) {
         // Safe duplication: copy bank, card name, owner, total limit; never copy sensitive last 4 digits
         setFormData({
@@ -78,7 +83,7 @@ const CreditCardModal = ({
           cardName: activeData.cardName || '',
           lastFourDigits: '',
           totalLimit: activeData.totalLimit !== undefined ? String(activeData.totalLimit) : '',
-          availableLimit: activeData.totalLimit !== undefined ? String(activeData.totalLimit) : '',
+          usedLimit: '0',
         });
       } else {
         setFormData({
@@ -87,8 +92,7 @@ const CreditCardModal = ({
           cardName: activeData.cardName || '',
           lastFourDigits: activeData.lastFourDigits || '',
           totalLimit: activeData.totalLimit !== undefined ? String(activeData.totalLimit) : '',
-          availableLimit:
-            activeData.availableLimit !== undefined ? String(activeData.availableLimit) : '',
+          usedLimit: activeUsed,
         });
       }
     } else {
@@ -98,7 +102,7 @@ const CreditCardModal = ({
         cardName: '',
         lastFourDigits: '',
         totalLimit: '',
-        availableLimit: '',
+        usedLimit: '0',
       });
     }
     setValidationError('');
@@ -122,16 +126,16 @@ const CreditCardModal = ({
 
   // Real-time calculations
   const numTotal = Number(formData.totalLimit) || 0;
-  const numAvailable = Number(formData.availableLimit) || 0;
-  const calculatedUsed = Math.max(0, numTotal - numAvailable);
+  const numUsed = Number(formData.usedLimit) || 0;
+  const calculatedRemaining = Math.max(0, numTotal - numUsed);
   const calculatedUtilization =
-    numTotal > 0 ? Math.min(100, Math.round((calculatedUsed / numTotal) * 100)) : 0;
+    numTotal > 0 ? Math.min(100, Math.round((numUsed / numTotal) * 100)) : 0;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setValidationError('');
 
-    const { cardOwner, bankName, cardName, lastFourDigits, totalLimit, availableLimit } = formData;
+    const { cardOwner, bankName, cardName, lastFourDigits, totalLimit, usedLimit } = formData;
 
     if (!cardOwner || !cardOwner.trim()) {
       setValidationError('Please enter credit card owner name');
@@ -154,20 +158,20 @@ const CreditCardModal = ({
     }
 
     const tLimit = Number(totalLimit);
-    const aLimit = Number(availableLimit);
+    const uLimit = Number(usedLimit);
 
     if (isNaN(tLimit) || tLimit <= 0) {
       setValidationError('Total credit limit must be greater than zero');
       return;
     }
 
-    if (isNaN(aLimit) || aLimit < 0) {
-      setValidationError('Available credit limit cannot be negative');
+    if (isNaN(uLimit) || uLimit < 0) {
+      setValidationError('Used credit limit cannot be negative');
       return;
     }
 
-    if (aLimit > tLimit) {
-      setValidationError('Available credit limit cannot exceed total credit limit');
+    if (uLimit > tLimit) {
+      setValidationError('Used credit limit cannot exceed total credit limit');
       return;
     }
 
@@ -177,7 +181,8 @@ const CreditCardModal = ({
       cardName: cardName.trim(),
       lastFourDigits,
       totalLimit: tLimit,
-      availableLimit: aLimit,
+      usedLimit: uLimit,
+      availableLimit: Math.max(0, tLimit - uLimit),
     };
 
     if (typeof onSubmit === 'function') {
@@ -363,18 +368,19 @@ const CreditCardModal = ({
                 }}
               />
 
-              {/* Available Credit Limit */}
+              {/* Used Credit Limit */}
               <TextField
                 fullWidth
-                id="availableLimit"
-                name="availableLimit"
-                label="Available Credit Limit"
-                placeholder="75000"
+                id="usedLimit"
+                name="usedLimit"
+                label="Used Credit Limit"
+                placeholder="0"
                 type="number"
-                value={formData.availableLimit}
+                value={formData.usedLimit}
                 onChange={handleChange}
                 disabled={loading}
                 required
+                helperText="Current outstanding or used amount"
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -388,26 +394,27 @@ const CreditCardModal = ({
             {/* Live Calculation Preview */}
             <div className={styles.calculationPreview}>
               <div className={styles.calcRow}>
-                <span className={styles.calcLabel}>Calculated Used Credit:</span>
+                <span className={styles.calcLabel}>Remaining Credit Limit:</span>
                 <span className={`${styles.calcValue} ${styles.calcValueHighlight}`}>
-                  {formatINR(calculatedUsed)}
+                  {formatINR(calculatedRemaining)}
                 </span>
               </div>
               <div className={styles.calcRow}>
                 <span className={styles.calcLabel}>Credit Utilization:</span>
                 <span
-                  className={`${styles.utilizationBadge} ${calculatedUtilization >= 80
+                  className={`${styles.utilizationBadge} ${
+                    calculatedUtilization >= 80
                       ? styles.utilHigh
                       : calculatedUtilization >= 50
-                        ? styles.utilMedium
-                        : styles.utilLow
-                    }`}
+                      ? styles.utilMedium
+                      : styles.utilLow
+                  }`}
                 >
                   {calculatedUtilization}%
                 </span>
               </div>
               <div className={styles.calcFormula}>
-                Used Credit = Total Limit ({formatINR(numTotal)}) - Available Limit ({formatINR(numAvailable)})
+                Remaining = Total Limit ({formatINR(numTotal)}) - Used Limit ({formatINR(numUsed)})
               </div>
             </div>
           </div>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Tooltip } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
@@ -32,16 +33,19 @@ const CreditCardItem = ({
   onEdit,
   onDuplicate,
   onDelete,
+  onCardClick,
   canEdit = true,
   canDelete = true,
   canCreate = true,
 }) => {
+  const navigate = useNavigate();
   const {
     bankName,
     cardName,
     lastFourDigits,
     totalLimit = 0,
     availableLimit = 0,
+    usedLimit,
     cardOwner,
     userId,
   } = card || {};
@@ -51,21 +55,30 @@ const CreditCardItem = ({
     (userId && typeof userId === 'object' && userId.name) ||
     'CARDHOLDER';
 
-  const usedAmount = Math.max(0, totalLimit - availableLimit);
+  const usedAmount =
+    usedLimit !== undefined ? Number(usedLimit) : Math.max(0, totalLimit - availableLimit);
   const utilization =
     totalLimit > 0 ? Math.min(100, Math.round((usedAmount / totalLimit) * 100)) : 0;
   const bankLogo = getBankLogo(bankName);
 
+  const handleCardClick = () => {
+    if (onCardClick) {
+      onCardClick(card);
+    } else if (card?._id) {
+      navigate(`/credit-cards/${card._id}`);
+    }
+  };
+
   return (
     <div
       className={styles.compactFigmaCard}
-      onClick={() => canEdit && onEdit && onEdit(card)}
+      onClick={handleCardClick}
       role="button"
       tabIndex={0}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          if (canEdit && onEdit) onEdit(card);
+          handleCardClick();
         }
       }}
     >
@@ -106,11 +119,16 @@ const CreditCardItem = ({
             Total:  {formatINR(totalLimit)}
           </span>
           <span className={styles.limitDetailText}>
-            Avail: <strong className={styles.availText}>{formatINR(availableLimit)}</strong>
+            Used: <strong className={styles.usedText}>{formatINR(usedAmount)}</strong>
           </span>
           <span
-            className={`${styles.utilBadge} ${utilization >= 80 ? styles.utilHigh : utilization >= 50 ? styles.utilMedium : styles.utilLow
-              }`}
+            className={`${styles.utilBadge} ${
+              utilization >= 80
+                ? styles.utilHigh
+                : utilization >= 50
+                ? styles.utilMedium
+                : styles.utilLow
+            }`}
           >
             {utilization}%
           </span>

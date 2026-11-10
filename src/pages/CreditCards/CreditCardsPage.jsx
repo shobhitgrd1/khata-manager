@@ -301,8 +301,9 @@ const CreditCardsPage = () => {
         onEdit: handleOpenEdit,
         onDuplicate: handleOpenDuplicate,
         onDelete: handleOpenDelete,
+        onViewHistory: (card) => navigate(`/credit-cards/${card._id}`),
       }),
-    [canEditCreditCard, canDeleteCreditCard, canCreateCreditCard],
+    [canEditCreditCard, canDeleteCreditCard, canCreateCreditCard, navigate],
   );
 
   return (

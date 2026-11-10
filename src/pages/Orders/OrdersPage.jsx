@@ -20,6 +20,9 @@ import ReceiptLongOutlinedIcon from '@mui/icons-material/ReceiptLongOutlined';
 import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalanceWalletOutlined';
+import PaymentsOutlinedIcon from '@mui/icons-material/PaymentsOutlined';
+import PriceCheckIcon from '@mui/icons-material/PriceCheck';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
@@ -224,12 +227,22 @@ const OrdersPage = () => {
     }
   }, []);
 
+  // Active Tab state: 'In Process' | 'Delivered' | 'All'
+  const [activeTab, setActiveTab] = useState(() => {
+    return localStorage.getItem('khata_orders_active_tab') || 'In Process';
+  });
+
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    localStorage.setItem('khata_orders_active_tab', tab);
+  };
+
   // Fetch orders list
   const fetchOrders = useCallback(async () => {
     setLoading(true);
     setError('');
     try {
-      const params = {};
+      const params = { limit: 500 };
       if (debouncedSearch.trim()) params.search = debouncedSearch.trim();
       if (appliedFilters.status && appliedFilters.status !== 'ALL') params.status = appliedFilters.status;
       if (appliedFilters.paymentMethod && appliedFilters.paymentMethod !== 'ALL') params.paymentMethod = appliedFilters.paymentMethod;
@@ -430,6 +443,96 @@ const OrdersPage = () => {
     [canEditOrder, canCreateOrder, canDeleteOrder, navigate]
   );
 
+  // Status segmentation
+  const inProcessOrders = useMemo(
+    () => orders.filter((o) => o.status === 'Order In Process'),
+    [orders]
+  );
+
+  const deliveredOrders = useMemo(
+    () => orders.filter((o) => o.status === 'Delivered'),
+    [orders]
+  );
+
+  // Tab-filtered orders for display
+  const displayedOrders = useMemo(() => {
+    if (activeTab === 'In Process') {
+      return inProcessOrders;
+    }
+    if (activeTab === 'Delivered') {
+      return deliveredOrders;
+    }
+    return orders;
+  }, [activeTab, inProcessOrders, deliveredOrders, orders]);
+
+  // Tab 1: In Process Summary Calculations
+  // - Total In Process Orders
+  // - Total Profit
+  // - Total Amount Spent
+  const inProcessStats = useMemo(() => {
+    const totalCount = inProcessOrders.length;
+    const totalProfit = inProcessOrders.reduce((sum, o) => sum + (Number(o.profit) || 0), 0);
+    const totalSpent = inProcessOrders.reduce((sum, o) => sum + (Number(o.purchasePrice) || 0), 0);
+    return {
+      totalCount,
+      totalProfit,
+      totalSpent,
+    };
+  }, [inProcessOrders]);
+
+  // Tab 2: Delivered Summary Calculations
+  // - Total Orders
+  // - Total Transactions (delivery price total)
+  // - Total Profit (net profit + cashback or profit)
+  // - Total Cashback
+  const deliveredStats = useMemo(() => {
+    const totalCount = deliveredOrders.length;
+    const totalTransactions = deliveredOrders.reduce(
+      (sum, o) => sum + (Number(o.deliveryPrice) || 0),
+      0
+    );
+    const totalProfit = deliveredOrders.reduce((sum, o) => {
+      const p =
+        o.netProfit !== null && o.netProfit !== undefined
+          ? Number(o.netProfit)
+          : Number(o.profit || o.grossProfit || 0) +
+            (o.cashbackApplied ? Number(o.cashbackAmount || 0) : 0);
+      return sum + p;
+    }, 0);
+    const totalCashback = deliveredOrders.reduce(
+      (sum, o) => sum + (o.cashbackApplied ? Number(o.cashbackAmount || 0) : 0),
+      0
+    );
+
+    return {
+      totalCount,
+      totalTransactions,
+      totalProfit,
+      totalCashback,
+    };
+  }, [deliveredOrders]);
+
+  // Tab 3: All Summary Calculations
+  // - Total Orders
+  // - In Process Orders
+  // - Delivered Orders
+  // - Total Profit
+  // - Total Amount Spent
+  const allStats = useMemo(() => {
+    const totalCount = orders.length;
+    const totalInProcess = inProcessOrders.length;
+    const totalDelivered = deliveredOrders.length;
+    const totalProfit = deliveredStats.totalProfit + inProcessStats.totalProfit;
+    const totalSpent = orders.reduce((sum, o) => sum + (Number(o.purchasePrice) || 0), 0);
+    return {
+      totalCount,
+      totalInProcess,
+      totalDelivered,
+      totalProfit,
+      totalSpent,
+    };
+  }, [orders, inProcessOrders, deliveredOrders, deliveredStats, inProcessStats]);
+
   return (
     <div className={styles.container}>
       {/* Page Header */}
@@ -471,53 +574,177 @@ const OrdersPage = () => {
         </div>
       </div>
 
-      {/* Summary Stats Strip */}
-      <div className={styles.statsGrid}>
-        <div className={styles.statCard}>
-          <div className={styles.statIconBox}>
-            <ReceiptLongOutlinedIcon className={styles.statIcon} />
-          </div>
-          <div className={styles.statInfo}>
-            <span className={styles.statLabel}>Total Orders</span>
-            <span className={styles.statValue}>{summary.totalOrders}</span>
-          </div>
-        </div>
+      {/* 3 Order Tabs: In Process | Delivered | All */}
+      <div className={styles.tabsContainer} role="tablist">
+        <button
+          type="button"
+          role="tab"
+          aria-selected={activeTab === 'In Process'}
+          onClick={() => handleTabChange('In Process')}
+          className={`${styles.tabBtn} ${activeTab === 'In Process' ? styles.tabActive : ''}`}
+        >
+          <HourglassEmptyIcon className={styles.tabIcon} />
+          <span className={styles.tabLabel}>In Process</span>
+          <span className={styles.tabCount}>{inProcessOrders.length}</span>
+        </button>
 
-        <div className={styles.statCard}>
-          <div className={styles.statIconBoxPending}>
-            <HourglassEmptyIcon className={styles.statIcon} />
-          </div>
-          <div className={styles.statInfo}>
-            <span className={styles.statLabel}>In Process</span>
-            <span className={styles.statValue}>{summary.inProcessOrders}</span>
-          </div>
-        </div>
+        <button
+          type="button"
+          role="tab"
+          aria-selected={activeTab === 'Delivered'}
+          onClick={() => handleTabChange('Delivered')}
+          className={`${styles.tabBtn} ${activeTab === 'Delivered' ? styles.tabActive : ''}`}
+        >
+          <CheckCircleOutlinedIcon className={styles.tabIcon} />
+          <span className={styles.tabLabel}>Delivered</span>
+          <span className={styles.tabCount}>{deliveredOrders.length}</span>
+        </button>
 
-        <div className={styles.statCard}>
-          <div className={styles.statIconBoxDelivered}>
-            <CheckCircleOutlinedIcon className={styles.statIcon} />
-          </div>
-          <div className={styles.statInfo}>
-            <span className={styles.statLabel}>Delivered</span>
-            <span className={styles.statValue}>{summary.deliveredOrders}</span>
-          </div>
-        </div>
-
-        <div className={styles.statCard}>
-          <div className={styles.statIconBoxProfit}>
-            <TrendingUpIcon className={styles.statIcon} />
-          </div>
-          <div className={styles.statInfo}>
-            <span className={styles.statLabel}>Total Profit</span>
-            <span className={styles.statValueGreen}>{formatINR(summary.totalProfit)}</span>
-            {summary.totalCashbackAmount > 0 && (
-              <span className={styles.statSubValue}>
-                Net: {formatINR(summary.netProfitAfterCashback)}
-              </span>
-            )}
-          </div>
-        </div>
+        <button
+          type="button"
+          role="tab"
+          aria-selected={activeTab === 'All'}
+          onClick={() => handleTabChange('All')}
+          className={`${styles.tabBtn} ${activeTab === 'All' ? styles.tabActive : ''}`}
+        >
+          <ReceiptLongOutlinedIcon className={styles.tabIcon} />
+          <span className={styles.tabLabel}>All</span>
+          <span className={styles.tabCount}>{orders.length}</span>
+        </button>
       </div>
+
+      {/* Dynamic Summary Cards based on active tab */}
+      {activeTab === 'In Process' && (
+        <div className={styles.statsGrid3}>
+          <div className={styles.statCard}>
+            <div className={styles.statIconBoxPending}>
+              <HourglassEmptyIcon className={styles.statIcon} />
+            </div>
+            <div className={styles.statInfo}>
+              <span className={styles.statLabel}>Total In Process Orders</span>
+              <span className={styles.statValue}>{inProcessStats.totalCount}</span>
+            </div>
+          </div>
+
+          <div className={styles.statCard}>
+            <div className={styles.statIconBoxProfit}>
+              <TrendingUpIcon className={styles.statIcon} />
+            </div>
+            <div className={styles.statInfo}>
+              <span className={styles.statLabel}>Total Profit</span>
+              <span className={styles.statValueGreen}>{formatINR(inProcessStats.totalProfit)}</span>
+            </div>
+          </div>
+
+          <div className={styles.statCard}>
+            <div className={styles.statIconBoxSpent}>
+              <AccountBalanceWalletOutlinedIcon className={styles.statIcon} />
+            </div>
+            <div className={styles.statInfo}>
+              <span className={styles.statLabel}>Total Amount Spent</span>
+              <span className={styles.statValue}>{formatINR(inProcessStats.totalSpent)}</span>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'Delivered' && (
+        <div className={styles.statsGrid4}>
+          <div className={styles.statCard}>
+            <div className={styles.statIconBoxDelivered}>
+              <CheckCircleOutlinedIcon className={styles.statIcon} />
+            </div>
+            <div className={styles.statInfo}>
+              <span className={styles.statLabel}>Total Orders</span>
+              <span className={styles.statValue}>{deliveredStats.totalCount}</span>
+            </div>
+          </div>
+
+          <div className={styles.statCard}>
+            <div className={styles.statIconBox}>
+              <PaymentsOutlinedIcon className={styles.statIcon} />
+            </div>
+            <div className={styles.statInfo}>
+              <span className={styles.statLabel}>Total Transactions</span>
+              <span className={styles.statValue}>{formatINR(deliveredStats.totalTransactions)}</span>
+            </div>
+          </div>
+
+          <div className={styles.statCard}>
+            <div className={styles.statIconBoxProfit}>
+              <TrendingUpIcon className={styles.statIcon} />
+            </div>
+            <div className={styles.statInfo}>
+              <span className={styles.statLabel}>Total Profit</span>
+              <span className={styles.statValueGreen}>{formatINR(deliveredStats.totalProfit)}</span>
+            </div>
+          </div>
+
+          <div className={styles.statCard}>
+            <div className={styles.statIconBoxCashback}>
+              <PriceCheckIcon className={styles.statIcon} />
+            </div>
+            <div className={styles.statInfo}>
+              <span className={styles.statLabel}>Total Cashback</span>
+              <span className={styles.statValuePurple}>{formatINR(deliveredStats.totalCashback)}</span>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {activeTab === 'All' && (
+        <div className={styles.statsGrid5}>
+          <div className={styles.statCard}>
+            <div className={styles.statIconBox}>
+              <ReceiptLongOutlinedIcon className={styles.statIcon} />
+            </div>
+            <div className={styles.statInfo}>
+              <span className={styles.statLabel}>Total Orders</span>
+              <span className={styles.statValue}>{allStats.totalCount}</span>
+            </div>
+          </div>
+
+          <div className={styles.statCard}>
+            <div className={styles.statIconBoxPending}>
+              <HourglassEmptyIcon className={styles.statIcon} />
+            </div>
+            <div className={styles.statInfo}>
+              <span className={styles.statLabel}>In Process</span>
+              <span className={styles.statValue}>{allStats.totalInProcess}</span>
+            </div>
+          </div>
+
+          <div className={styles.statCard}>
+            <div className={styles.statIconBoxDelivered}>
+              <CheckCircleOutlinedIcon className={styles.statIcon} />
+            </div>
+            <div className={styles.statInfo}>
+              <span className={styles.statLabel}>Delivered</span>
+              <span className={styles.statValue}>{allStats.totalDelivered}</span>
+            </div>
+          </div>
+
+          <div className={styles.statCard}>
+            <div className={styles.statIconBoxProfit}>
+              <TrendingUpIcon className={styles.statIcon} />
+            </div>
+            <div className={styles.statInfo}>
+              <span className={styles.statLabel}>Total Profit</span>
+              <span className={styles.statValueGreen}>{formatINR(allStats.totalProfit)}</span>
+            </div>
+          </div>
+
+          <div className={styles.statCard}>
+            <div className={styles.statIconBoxSpent}>
+              <AccountBalanceWalletOutlinedIcon className={styles.statIcon} />
+            </div>
+            <div className={styles.statInfo}>
+              <span className={styles.statLabel}>Total Amount Spent</span>
+              <span className={styles.statValue}>{formatINR(allStats.totalSpent)}</span>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Controls Bar: Search, Filters */}
       <div className={styles.controlsBar}>
@@ -662,20 +889,28 @@ const OrdersPage = () => {
           <CircularProgress size={44} className={styles.loadingSpinner} />
           <span className={styles.loadingText}>Loading orders...</span>
         </div>
-      ) : orders.length === 0 ? (
+      ) : displayedOrders.length === 0 ? (
         <CommonEmptyState
           icon={ReceiptLongOutlinedIcon}
           title={
             search || activeChips.length > 0
               ? 'No orders match your filter criteria'
+              : activeTab === 'In Process'
+              ? 'No In Process Orders'
+              : activeTab === 'Delivered'
+              ? 'No Delivered Orders'
               : 'No orders created yet'
           }
           description={
             search || activeChips.length > 0
               ? 'Try adjusting your search terms or clearing active filters.'
+              : activeTab === 'In Process'
+              ? 'All orders have been delivered or none are currently in process.'
+              : activeTab === 'Delivered'
+              ? 'Delivered orders will appear here once marked as delivered.'
               : 'Create your first order to track product deliveries, payment methods, and dealer profit margins.'
           }
-          actionLabel={!search && activeChips.length === 0 && canCreateOrder() ? 'Add First Order' : undefined}
+          actionLabel={!search && activeChips.length === 0 && canCreateOrder() && activeTab !== 'Delivered' ? 'Add Order' : undefined}
           onAction={() => {
             setEditingOrder(null);
             setModalOpen(true);
@@ -684,7 +919,7 @@ const OrdersPage = () => {
         />
       ) : viewMode === 'card' ? (
         <div className={styles.ordersCardGrid}>
-          {orders.map((order) => (
+          {displayedOrders.map((order) => (
             <OrderCard
               key={order._id}
               order={order}
@@ -705,7 +940,7 @@ const OrdersPage = () => {
       ) : (
         <div className={styles.dataGridContainer}>
           <DataGrid
-            rows={orders}
+            rows={displayedOrders}
             columns={columns}
             getRowId={(row) => row._id}
             getRowHeight={() => 'auto'}

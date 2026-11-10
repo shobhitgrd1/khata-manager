@@ -82,7 +82,167 @@
   font-size: 1.2rem !important;
 }
 
-/* ─── Summary Stats Strip (Image 2 Figma: 3 in row 1, 1 in row 2) ── */
+/* ─── Order Tabs: In Process, Delivered, All ─────────────────── */
+.tabsContainer {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(16, 36, 61, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-color, $border-dark);
+  border-radius: 12px;
+  padding: 4px;
+  gap: 6px;
+  width: fit-content;
+  transition: all 0.2s ease;
+
+  :global([data-theme='light']) & {
+    background: rgba(241, 245, 249, 0.9);
+    border-color: #CBD5E1;
+  }
+
+  @media (max-width: 600px) {
+    width: 100%;
+    display: flex;
+    padding: 3px;
+    gap: 4px;
+  }
+}
+
+.tabBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 18px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-secondary, #94A3B8);
+  border-radius: 9px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-weight: 600;
+  font-family: inherit;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  outline: none;
+
+  @media (max-width: 600px) {
+    flex: 1;
+    padding: 0 8px;
+    min-height: 36px;
+    font-size: 0.8rem;
+    gap: 5px;
+  }
+
+  &:hover {
+    color: var(--text-primary, #FFFFFF);
+    background: rgba(255, 255, 255, 0.05);
+
+    :global([data-theme='light']) & {
+      background: rgba(0, 0, 0, 0.04);
+      color: #0F172A;
+    }
+  }
+
+  &.tabActive {
+    background: rgba(2, 132, 199, 0.2);
+    border-color: rgba(56, 189, 248, 0.4);
+    color: #38BDF8;
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(2, 132, 199, 0.2);
+
+    :global([data-theme='light']) & {
+      background: #FFFFFF;
+      border-color: #0284C7;
+      color: #0284C7;
+      box-shadow: 0 2px 6px rgba(2, 132, 199, 0.15);
+    }
+
+    .tabCount {
+      background: #0284C7;
+      color: #FFFFFF;
+    }
+  }
+}
+
+.tabIcon {
+  font-size: 1.1rem !important;
+
+  @media (max-width: 600px) {
+    font-size: 0.95rem !important;
+  }
+}
+
+.tabLabel {
+  white-space: nowrap;
+}
+
+.tabCount {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 7px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-secondary, #94A3B8);
+  transition: all 0.2s ease;
+
+  :global([data-theme='light']) & {
+    background: rgba(0, 0, 0, 0.08);
+    color: #475569;
+  }
+}
+
+/* ─── Summary Stats Grids (Dynamic based on Tab) ─────────────── */
+.statsGrid3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}
+
+.statsGrid4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}
+
+.statsGrid5 {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 14px;
+
+  @media (max-width: 1200px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ─── Summary Stats Strip (Legacy / Fallback) ── */
 .statsGrid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -200,6 +360,44 @@
   }
 }
 
+.statIconBoxSpent {
+  width: 46px;
+  height: 46px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(56, 189, 248, 0.12);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.25);
+
+  @media (max-width: 768px) {
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    border-radius: 6px;
+  }
+}
+
+.statIconBoxCashback {
+  width: 46px;
+  height: 46px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(167, 139, 250, 0.12);
+  color: #a78bfa;
+  border: 1px solid rgba(167, 139, 250, 0.25);
+
+  @media (max-width: 768px) {
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    border-radius: 6px;
+  }
+}
+
 .statIcon {
   font-size: 1.5rem;
 
@@ -242,6 +440,21 @@
   font-weight: 800;
   color: #10b981;
   line-height: 1.2;
+
+  @media (max-width: 768px) {
+    font-size: 1.15rem;
+  }
+}
+
+.statValuePurple {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #a78bfa;
+  line-height: 1.2;
+
+  :global([data-theme='light']) & {
+    color: #7c3aed;
+  }
 
   @media (max-width: 768px) {
     font-size: 1.15rem;

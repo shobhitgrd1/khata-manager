@@ -17,6 +17,7 @@ import DashboardPage from '../pages/Dashboard/DashboardPage';
 import UsersPage from '../pages/Users/UsersPage';
 import UserDetailsPage from '../pages/UserDetails/UserDetailsPage';
 import CreditCardsPage from '../pages/CreditCards/CreditCardsPage';
+import CreditCardDetailsPage from '../pages/CreditCards/CreditCardDetailsPage';
 import AccountsPage from '../pages/Accounts/AccountsPage';
 import AccountDetailsPage from '../pages/Accounts/AccountDetailsPage';
 import DealersPage from '../pages/Dealers/DealersPage';
@@ -93,6 +94,7 @@ const AppRoutes = () => {
           {/* Credit Card Management */}
           <Route element={<ProtectedRoute checkCreditCards={true} />}>
             <Route path="/credit-cards" element={<CreditCardsPage />} />
+            <Route path="/credit-cards/:id" element={<CreditCardDetailsPage />} />
           </Route>
 
           {/* Account Management */}
