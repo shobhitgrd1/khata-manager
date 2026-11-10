@@ -108,28 +108,16 @@ const CreditCardsPage = () => {
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [filterPanelOpen, setFilterPanelOpen] = useState(false);
 
-  // Advanced Filter state
+  // Advanced Filter state (Bank, Card Owner)
   const [filters, setFilters] = useState({
     bank: "",
-    minLimit: "",
-    maxLimit: "",
-    minAvailable: "",
-    maxAvailable: "",
     cardOwner: "",
-    startDate: "",
-    endDate: "",
   });
 
   // Applied filter state (applied on button click or chip remove)
   const [appliedFilters, setAppliedFilters] = useState({
     bank: "",
-    minLimit: "",
-    maxLimit: "",
-    minAvailable: "",
-    maxAvailable: "",
     cardOwner: "",
-    startDate: "",
-    endDate: "",
   });
 
   const debounceTimer = useRef(null);
@@ -159,15 +147,7 @@ const CreditCardsPage = () => {
       const params = {};
       if (debouncedSearch.trim()) params.search = debouncedSearch.trim();
       if (appliedFilters.bank) params.bank = appliedFilters.bank;
-      if (appliedFilters.minLimit) params.minLimit = appliedFilters.minLimit;
-      if (appliedFilters.maxLimit) params.maxLimit = appliedFilters.maxLimit;
-      if (appliedFilters.minAvailable)
-        params.minAvailable = appliedFilters.minAvailable;
-      if (appliedFilters.maxAvailable)
-        params.maxAvailable = appliedFilters.maxAvailable;
       if (appliedFilters.cardOwner) params.cardOwner = appliedFilters.cardOwner;
-      if (appliedFilters.startDate) params.startDate = appliedFilters.startDate;
-      if (appliedFilters.endDate) params.endDate = appliedFilters.endDate;
 
       const [cardsData, summaryData] = await Promise.all([
         creditCardService.getCreditCards(params),
@@ -208,13 +188,7 @@ const CreditCardsPage = () => {
   const handleResetFilters = () => {
     const empty = {
       bank: "",
-      minLimit: "",
-      maxLimit: "",
-      minAvailable: "",
-      maxAvailable: "",
       cardOwner: "",
-      startDate: "",
-      endDate: "",
     };
     setFilters(empty);
     setAppliedFilters(empty);
@@ -226,7 +200,7 @@ const CreditCardsPage = () => {
     setAppliedFilters(updated);
   };
 
-  // Build active chips
+  // Build active chips (Bank, Card Owner)
   const activeChips = useMemo(() => {
     const chips = [];
     if (appliedFilters.bank) {
@@ -247,48 +221,6 @@ const CreditCardsPage = () => {
         value: appliedFilters.cardOwner,
         displayValue: appliedFilters.cardOwner,
         onRemove: () => handleRemoveFilter("cardOwner"),
-      });
-    }
-    if (appliedFilters.minLimit || appliedFilters.maxLimit) {
-      const displayVal = `${appliedFilters.minLimit ? "₹" + appliedFilters.minLimit : "₹0"} - ${appliedFilters.maxLimit ? "₹" + appliedFilters.maxLimit : "Any"}`;
-      chips.push({
-        id: "limitRange",
-        key: "limitRange",
-        label: "Total Limit",
-        value: displayVal,
-        displayValue: displayVal,
-        onRemove: () => {
-          handleRemoveFilter("minLimit");
-          handleRemoveFilter("maxLimit");
-        },
-      });
-    }
-    if (appliedFilters.minAvailable || appliedFilters.maxAvailable) {
-      const displayVal = `${appliedFilters.minAvailable ? "₹" + appliedFilters.minAvailable : "₹0"} - ${appliedFilters.maxAvailable ? "₹" + appliedFilters.maxAvailable : "Any"}`;
-      chips.push({
-        id: "availableRange",
-        key: "availableRange",
-        label: "Available Limit",
-        value: displayVal,
-        displayValue: displayVal,
-        onRemove: () => {
-          handleRemoveFilter("minAvailable");
-          handleRemoveFilter("maxAvailable");
-        },
-      });
-    }
-    if (appliedFilters.startDate || appliedFilters.endDate) {
-      const displayVal = `${appliedFilters.startDate || "Start"} to ${appliedFilters.endDate || "End"}`;
-      chips.push({
-        id: "dateRange",
-        key: "dateRange",
-        label: "Date",
-        value: displayVal,
-        displayValue: displayVal,
-        onRemove: () => {
-          handleRemoveFilter("startDate");
-          handleRemoveFilter("endDate");
-        },
       });
     }
     return chips;
@@ -562,62 +494,6 @@ const CreditCardsPage = () => {
           value={filters.cardOwner}
           onChange={(e) => handleFilterChange("cardOwner", e.target.value)}
           placeholder="e.g. John Doe"
-          className={styles.filterField}
-        />
-
-        <TextField
-          label="Min Total Limit (₹)"
-          type="number"
-          size="small"
-          value={filters.minLimit}
-          onChange={(e) => handleFilterChange("minLimit", e.target.value)}
-          className={styles.filterField}
-        />
-
-        <TextField
-          label="Max Total Limit (₹)"
-          type="number"
-          size="small"
-          value={filters.maxLimit}
-          onChange={(e) => handleFilterChange("maxLimit", e.target.value)}
-          className={styles.filterField}
-        />
-
-        <TextField
-          label="Min Available (₹)"
-          type="number"
-          size="small"
-          value={filters.minAvailable}
-          onChange={(e) => handleFilterChange("minAvailable", e.target.value)}
-          className={styles.filterField}
-        />
-
-        <TextField
-          label="Max Available (₹)"
-          type="number"
-          size="small"
-          value={filters.maxAvailable}
-          onChange={(e) => handleFilterChange("maxAvailable", e.target.value)}
-          className={styles.filterField}
-        />
-
-        <TextField
-          label="Created After"
-          type="date"
-          size="small"
-          InputLabelProps={{ shrink: true }}
-          value={filters.startDate}
-          onChange={(e) => handleFilterChange("startDate", e.target.value)}
-          className={styles.filterField}
-        />
-
-        <TextField
-          label="Created Before"
-          type="date"
-          size="small"
-          InputLabelProps={{ shrink: true }}
-          value={filters.endDate}
-          onChange={(e) => handleFilterChange("endDate", e.target.value)}
           className={styles.filterField}
         />
       </AdvancedFilterPanel>

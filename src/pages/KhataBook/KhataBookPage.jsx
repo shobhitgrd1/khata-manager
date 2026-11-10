@@ -18,13 +18,15 @@ import MenuBookIcon from '@mui/icons-material/MenuBook';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import TrendingDownIcon from '@mui/icons-material/TrendingDown';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
+import StorefrontIcon from '@mui/icons-material/Storefront';
+import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 
 import ViewToggle from '../../components/common/ViewToggle';
 import CommonEmptyState from '../../components/common/CommonEmptyState';
 import KhataBookCard from '../../components/khatabook/KhataBookCard';
 import KhataBookModal from '../../components/khatabook/KhataBookModal';
 import { getKhataBookColumns } from './TableColumns';
-import { KHATA_ACCOUNT_TYPES, KHATA_BALANCE_FILTERS } from '../../constants/khatabook.constants';
+import { KHATA_BALANCE_FILTERS } from '../../constants/khatabook.constants';
 import khatabookService from '../../services/khatabookService';
 import useAuth from '../../hooks/useAuth';
 import { useMobileHeader } from '../../context/MobileHeaderContext';
@@ -45,13 +47,32 @@ const KhataBookPage = () => {
   const [error, setError] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
 
-  // Top Summary Cards (Exclusive to Khata Book module)
-  const [summary, setSummary] = useState({
+  // Tabs: Dealer vs Other
+  const [activeTab, setActiveTab] = useState(() => {
+    return localStorage.getItem('khata_active_tab') || 'Dealer';
+  });
+
+  // Top Summary Cards per tab (completely separate calculations)
+  const [dealerSummary, setDealerSummary] = useState({
     totalAccounts: 0,
     totalToReceive: 0,
     totalToPay: 0,
     netBalance: 0,
   });
+
+  const [otherSummary, setOtherSummary] = useState({
+    totalAccounts: 0,
+    totalToReceive: 0,
+    totalToPay: 0,
+    netBalance: 0,
+  });
+
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    localStorage.setItem('khata_active_tab', tab);
+  };
+
+  const currentSummary = activeTab === 'Dealer' ? dealerSummary : otherSummary;
 
   // View mode
   const [viewMode, setViewMode] = useState(() => {
@@ -66,9 +87,9 @@ const KhataBookPage = () => {
   useMobileHeader(
     canCreateKhataBook()
       ? {
-          title: 'Khata Book',
+          title: `Khata Book`,
           action: {
-            label: '+ Add Account',
+            label: `+ Add ${activeTab}`,
             onClick: () => {
               setEditingAccount(null);
               setModalOpen(true);
@@ -81,7 +102,6 @@ const KhataBookPage = () => {
   // Search & Filter state
   const [search, setSearch] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
-  const [accountTypeFilter, setAccountTypeFilter] = useState('');
   const [balanceFilter, setBalanceFilter] = useState('');
   const debounceTimer = useRef(null);
 
@@ -103,21 +123,28 @@ const KhataBookPage = () => {
     return () => clearTimeout(debounceTimer.current);
   }, [search]);
 
-  // Fetch accounts list
+  // Fetch accounts list and summaries
   const fetchAccounts = useCallback(async () => {
     setLoading(true);
     setError('');
     try {
-      const params = {};
+      const params = {
+        accountType: activeTab,
+      };
       if (debouncedSearch.trim()) params.search = debouncedSearch.trim();
-      if (accountTypeFilter) params.accountType = accountTypeFilter;
       if (balanceFilter) params.balanceFilter = balanceFilter;
 
       const data = await khatabookService.getKhataBooks(params);
       if (data?.success) {
         setAccounts(data.accounts || []);
+        if (data.dealerSummary) setDealerSummary(data.dealerSummary);
+        if (data.otherSummary) setOtherSummary(data.otherSummary);
         if (data.summary) {
-          setSummary(data.summary);
+          if (activeTab === 'Dealer') {
+            setDealerSummary(data.summary);
+          } else {
+            setOtherSummary(data.summary);
+          }
         }
       }
     } catch (err) {
@@ -126,7 +153,7 @@ const KhataBookPage = () => {
     } finally {
       setLoading(false);
     }
-  }, [debouncedSearch, accountTypeFilter, balanceFilter]);
+  }, [debouncedSearch, activeTab, balanceFilter]);
 
   useEffect(() => {
     fetchAccounts();
@@ -228,6 +255,33 @@ const KhataBookPage = () => {
         </div>
       </div>
 
+      {/* Khata Book Tabs: Dealer vs Other */}
+      <div className={styles.tabsContainer} role="tablist">
+        <button
+          type="button"
+          role="tab"
+          aria-selected={activeTab === 'Dealer'}
+          onClick={() => handleTabChange('Dealer')}
+          className={`${styles.tabBtn} ${activeTab === 'Dealer' ? styles.tabActive : ''}`}
+        >
+          <StorefrontIcon className={styles.tabIcon} />
+          <span className={styles.tabLabel}>Dealer</span>
+          <span className={styles.tabCount}>{dealerSummary.totalAccounts || 0}</span>
+        </button>
+
+        <button
+          type="button"
+          role="tab"
+          aria-selected={activeTab === 'Other'}
+          onClick={() => handleTabChange('Other')}
+          className={`${styles.tabBtn} ${activeTab === 'Other' ? styles.tabActive : ''}`}
+        >
+          <PersonOutlinedIcon className={styles.tabIcon} />
+          <span className={styles.tabLabel}>Other</span>
+          <span className={styles.tabCount}>{otherSummary.totalAccounts || 0}</span>
+        </button>
+      </div>
+
       {/* 3 Summary Cards (Specific to Khata Book module) */}
       <div className={styles.summarySection}>
         {/* Card 1: Total to Receive */}
@@ -237,7 +291,7 @@ const KhataBookPage = () => {
           </div>
           <div className={styles.summaryContent}>
             <span className={styles.summaryLabel}>Total to Receive</span>
-            <span className={styles.summaryValGreen}>+{formatINR(summary.totalToReceive)}</span>
+            <span className={styles.summaryValGreen}>+{formatINR(currentSummary.totalToReceive)}</span>
             <span className={styles.summarySub}>Total outstanding owed to you</span>
           </div>
         </div>
@@ -249,7 +303,7 @@ const KhataBookPage = () => {
           </div>
           <div className={styles.summaryContent}>
             <span className={styles.summaryLabel}>Total to Pay</span>
-            <span className={styles.summaryValRed}>-{formatINR(summary.totalToPay)}</span>
+            <span className={styles.summaryValRed}>-{formatINR(currentSummary.totalToPay)}</span>
             <span className={styles.summarySub}>Total outstanding you owe to others</span>
           </div>
         </div>
@@ -263,21 +317,21 @@ const KhataBookPage = () => {
             <span className={styles.summaryLabel}>Net Ledger Balance</span>
             <span
               className={
-                summary.netBalance > 0
+                currentSummary.netBalance > 0
                   ? styles.summaryValGreen
-                  : summary.netBalance < 0
+                  : currentSummary.netBalance < 0
                     ? styles.summaryValRed
                     : styles.summaryValSettled
               }
             >
-              {summary.netBalance > 0 && `+${formatINR(summary.netBalance)}`}
-              {summary.netBalance < 0 && `-${formatINR(summary.netBalance)}`}
-              {summary.netBalance === 0 && '₹0 (Settled)'}
+              {currentSummary.netBalance > 0 && `+${formatINR(currentSummary.netBalance)}`}
+              {currentSummary.netBalance < 0 && `-${formatINR(currentSummary.netBalance)}`}
+              {currentSummary.netBalance === 0 && '₹0 (Settled)'}
             </span>
             <span className={styles.summarySub}>
-              {summary.netBalance > 0
+              {currentSummary.netBalance > 0
                 ? 'Net positive (Receivables exceed Payables)'
-                : summary.netBalance < 0
+                : currentSummary.netBalance < 0
                   ? 'Net negative (Payables exceed Receivables)'
                   : 'All accounts balanced'}
             </span>
@@ -324,23 +378,6 @@ const KhataBookPage = () => {
         </div>
 
         <div className={styles.filterControls}>
-          {/* Account Type Filter */}
-          <TextField
-            select
-            size="small"
-            value={accountTypeFilter}
-            onChange={(e) => setAccountTypeFilter(e.target.value)}
-            className={styles.dropdownFilter}
-            SelectProps={{ displayEmpty: true }}
-          >
-            <MenuItem value="">All Account Types</MenuItem>
-            {KHATA_ACCOUNT_TYPES.map((t) => (
-              <MenuItem key={t.value} value={t.value}>
-                {t.label}
-              </MenuItem>
-            ))}
-          </TextField>
-
           {/* Balance Filter */}
           <TextField
             select
@@ -369,14 +406,14 @@ const KhataBookPage = () => {
         </div>
       ) : accounts.length === 0 ? (
         <CommonEmptyState
-          icon={MenuBookIcon}
-          title="No Khata Book Accounts Found"
+          icon={activeTab === 'Dealer' ? StorefrontIcon : PersonOutlinedIcon}
+          title={`No ${activeTab} Accounts Found`}
           description={
-            debouncedSearch || accountTypeFilter || balanceFilter
-              ? 'No ledger accounts matched your search query or filters.'
-              : 'You have not created any Khata Book accounts yet. Create your first ledger account to start tracking dues.'
+            debouncedSearch || balanceFilter
+              ? `No ${activeTab.toLowerCase()} ledger accounts matched your search query or filters.`
+              : `You have not created any ${activeTab.toLowerCase()} accounts yet. Create your first ${activeTab.toLowerCase()} account to start tracking dues.`
           }
-          actionLabel={canCreateKhataBook() ? '+ Create Khata Book' : undefined}
+          actionLabel={canCreateKhataBook() ? `+ Create ${activeTab} Account` : undefined}
           onAction={handleOpenAdd}
           actionIcon={<AddIcon />}
         />
@@ -422,6 +459,7 @@ const KhataBookPage = () => {
         onSubmit={handleSaveAccount}
         initialData={editingAccount}
         loading={actionLoading}
+        defaultAccountType={activeTab}
       />
 
       {/* Delete / Archive Confirmation Dialog */}

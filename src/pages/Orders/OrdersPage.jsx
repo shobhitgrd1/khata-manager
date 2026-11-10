@@ -159,13 +159,6 @@ const OrdersPage = () => {
     dealerId: '',
     productId: '',
     accountId: '',
-    profitType: 'ALL',
-    minPurchasePrice: '',
-    maxPurchasePrice: '',
-    minDeliveryPrice: '',
-    maxDeliveryPrice: '',
-    startDate: '',
-    endDate: '',
   });
 
   const [appliedFilters, setAppliedFilters] = useState({
@@ -174,13 +167,6 @@ const OrdersPage = () => {
     dealerId: '',
     productId: '',
     accountId: '',
-    profitType: 'ALL',
-    minPurchasePrice: '',
-    maxPurchasePrice: '',
-    minDeliveryPrice: '',
-    maxDeliveryPrice: '',
-    startDate: '',
-    endDate: '',
   });
 
   const debounceTimer = useRef(null);
@@ -250,17 +236,19 @@ const OrdersPage = () => {
       if (appliedFilters.dealerId) params.dealerId = appliedFilters.dealerId;
       if (appliedFilters.productId) params.productId = appliedFilters.productId;
       if (appliedFilters.accountId) params.accountId = appliedFilters.accountId;
-      if (appliedFilters.profitType && appliedFilters.profitType !== 'ALL') params.profitType = appliedFilters.profitType;
-      if (appliedFilters.minPurchasePrice) params.minPurchasePrice = appliedFilters.minPurchasePrice;
-      if (appliedFilters.maxPurchasePrice) params.maxPurchasePrice = appliedFilters.maxPurchasePrice;
-      if (appliedFilters.minDeliveryPrice) params.minDeliveryPrice = appliedFilters.minDeliveryPrice;
-      if (appliedFilters.maxDeliveryPrice) params.maxDeliveryPrice = appliedFilters.maxDeliveryPrice;
-      if (appliedFilters.startDate) params.startDate = appliedFilters.startDate;
-      if (appliedFilters.endDate) params.endDate = appliedFilters.endDate;
 
       const data = await orderService.getOrders(params);
       if (data?.orders) {
-        setOrders(data.orders);
+        // Default sorting: In Process orders appear first, Delivered orders after, then newest orderDate
+        const sorted = [...data.orders].sort((a, b) => {
+          const aInProc = a.status === 'Order In Process' ? 0 : 1;
+          const bInProc = b.status === 'Order In Process' ? 0 : 1;
+          if (aInProc !== bInProc) return aInProc - bInProc;
+          const dateA = new Date(a.orderDate || a.createdAt || 0).getTime();
+          const dateB = new Date(b.orderDate || b.createdAt || 0).getTime();
+          return dateB - dateA;
+        });
+        setOrders(sorted);
       }
     } catch (err) {
       console.error('Fetch orders error:', err);
@@ -295,26 +283,19 @@ const OrdersPage = () => {
       dealerId: '',
       productId: '',
       accountId: '',
-      profitType: 'ALL',
-      minPurchasePrice: '',
-      maxPurchasePrice: '',
-      minDeliveryPrice: '',
-      maxDeliveryPrice: '',
-      startDate: '',
-      endDate: '',
     };
     setFilters(empty);
     setAppliedFilters(empty);
   };
 
   const handleRemoveFilter = (key) => {
-    const defaultValue = ['status', 'paymentMethod', 'profitType'].includes(key) ? 'ALL' : '';
+    const defaultValue = ['status', 'paymentMethod'].includes(key) ? 'ALL' : '';
     const updated = { ...appliedFilters, [key]: defaultValue };
     setFilters((prev) => ({ ...prev, [key]: defaultValue }));
     setAppliedFilters(updated);
   };
 
-  // Build active chips
+  // Build active chips (Status, Payment Method, Dealer, Product, Account)
   const activeChips = useMemo(() => {
     const chips = [];
     if (appliedFilters.status && appliedFilters.status !== 'ALL') {
@@ -368,63 +349,6 @@ const OrdersPage = () => {
         value: appliedFilters.accountId,
         displayValue: match?.fullName || 'Selected Account',
         onRemove: () => handleRemoveFilter('accountId'),
-      });
-    }
-    if (appliedFilters.profitType && appliedFilters.profitType !== 'ALL') {
-      chips.push({
-        id: 'profitType',
-        key: 'profitType',
-        label: 'Margin',
-        value: appliedFilters.profitType,
-        displayValue:
-          appliedFilters.profitType === 'profit'
-            ? 'Profitable (+)'
-            : appliedFilters.profitType === 'loss'
-              ? 'Loss (-)'
-              : 'Break Even (0)',
-        onRemove: () => handleRemoveFilter('profitType'),
-      });
-    }
-    if (appliedFilters.minPurchasePrice || appliedFilters.maxPurchasePrice) {
-      const displayVal = `${appliedFilters.minPurchasePrice ? '₹' + appliedFilters.minPurchasePrice : '₹0'} - ${appliedFilters.maxPurchasePrice ? '₹' + appliedFilters.maxPurchasePrice : 'Any'}`;
-      chips.push({
-        id: 'purchasePriceRange',
-        key: 'purchasePriceRange',
-        label: 'Purchase Price',
-        value: displayVal,
-        displayValue: displayVal,
-        onRemove: () => {
-          handleRemoveFilter('minPurchasePrice');
-          handleRemoveFilter('maxPurchasePrice');
-        },
-      });
-    }
-    if (appliedFilters.minDeliveryPrice || appliedFilters.maxDeliveryPrice) {
-      const displayVal = `${appliedFilters.minDeliveryPrice ? '₹' + appliedFilters.minDeliveryPrice : '₹0'} - ${appliedFilters.maxDeliveryPrice ? '₹' + appliedFilters.maxDeliveryPrice : 'Any'}`;
-      chips.push({
-        id: 'deliveryPriceRange',
-        key: 'deliveryPriceRange',
-        label: 'Delivery Price',
-        value: displayVal,
-        displayValue: displayVal,
-        onRemove: () => {
-          handleRemoveFilter('minDeliveryPrice');
-          handleRemoveFilter('maxDeliveryPrice');
-        },
-      });
-    }
-    if (appliedFilters.startDate || appliedFilters.endDate) {
-      const displayVal = `${appliedFilters.startDate || 'Start'} to ${appliedFilters.endDate || 'End'}`;
-      chips.push({
-        id: 'dateRange',
-        key: 'dateRange',
-        label: 'Date',
-        value: displayVal,
-        displayValue: displayVal,
-        onRemove: () => {
-          handleRemoveFilter('startDate');
-          handleRemoveFilter('endDate');
-        },
       });
     }
     return chips;
@@ -705,76 +629,6 @@ const OrdersPage = () => {
                 </MenuItem>
               ))}
             </TextField>
-
-            <TextField
-              select
-              label="Margin / Profit"
-              size="small"
-              value={filters.profitType}
-              onChange={(e) => handleFilterChange('profitType', e.target.value)}
-              className={styles.filterField}
-            >
-              <MenuItem value="ALL">All Margins</MenuItem>
-              <MenuItem value="profit">Profitable (+)</MenuItem>
-              <MenuItem value="loss">Loss (-)</MenuItem>
-              <MenuItem value="break_even">Break Even (0)</MenuItem>
-            </TextField>
-
-            <TextField
-              label="Min Purchase Price (₹)"
-              type="number"
-              size="small"
-              value={filters.minPurchasePrice}
-              onChange={(e) => handleFilterChange('minPurchasePrice', e.target.value)}
-              className={styles.filterField}
-            />
-
-            <TextField
-              label="Max Purchase Price (₹)"
-              type="number"
-              size="small"
-              value={filters.maxPurchasePrice}
-              onChange={(e) => handleFilterChange('maxPurchasePrice', e.target.value)}
-              className={styles.filterField}
-            />
-
-            <TextField
-              label="Min Delivery Price (₹)"
-              type="number"
-              size="small"
-              value={filters.minDeliveryPrice}
-              onChange={(e) => handleFilterChange('minDeliveryPrice', e.target.value)}
-              className={styles.filterField}
-            />
-
-            <TextField
-              label="Max Delivery Price (₹)"
-              type="number"
-              size="small"
-              value={filters.maxDeliveryPrice}
-              onChange={(e) => handleFilterChange('maxDeliveryPrice', e.target.value)}
-              className={styles.filterField}
-            />
-
-            <TextField
-              label="Order Date From"
-              type="date"
-              size="small"
-              InputLabelProps={{ shrink: true }}
-              value={filters.startDate}
-              onChange={(e) => handleFilterChange('startDate', e.target.value)}
-              className={styles.filterField}
-            />
-
-            <TextField
-              label="Order Date To"
-              type="date"
-              size="small"
-              InputLabelProps={{ shrink: true }}
-              value={filters.endDate}
-              onChange={(e) => handleFilterChange('endDate', e.target.value)}
-              className={styles.filterField}
-            />
           </AdvancedFilterPanel>
         </div>
 

@@ -23,8 +23,10 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import WarningAmberIcon from '@mui/icons-material/WarningAmber';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import PersonAddAlt1OutlinedIcon from '@mui/icons-material/PersonAddAlt1Outlined';
 
 import UserCard from '../../components/users/UserCard';
+import UserModal from '../../components/users/UserModal';
 import ViewToggle from '../../components/common/ViewToggle';
 import AdvancedFilterPanel from '../../components/common/AdvancedFilterPanel';
 import ActiveFilterChips from '../../components/common/ActiveFilterChips';
@@ -46,6 +48,20 @@ const UsersPage = () => {
   const [error, setError] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
 
+  // User modal state (Add / Edit)
+  const [userModalOpen, setUserModalOpen] = useState(false);
+  const [editingUser, setEditingUser] = useState(null);
+
+  const handleOpenAdd = () => {
+    setEditingUser(null);
+    setUserModalOpen(true);
+  };
+
+  const handleOpenEdit = (user) => {
+    setEditingUser(user);
+    setUserModalOpen(true);
+  };
+
   // View mode
   const [viewMode, setViewMode] = useState(() => {
     return localStorage.getItem('khata_users_view_mode') || 'list';
@@ -59,7 +75,7 @@ const UsersPage = () => {
   useMobileHeader({
     title: 'User Management',
     action: currentUser?.role === 'admin'
-      ? { label: '+ Add User', onClick: () => navigate('/register') }
+      ? { label: '+ Add User', onClick: handleOpenAdd }
       : null,
   });
 
@@ -323,6 +339,17 @@ const UsersPage = () => {
             onChange={handleToggleView}
             ariaLabel="Users view switcher"
           />
+
+          {currentUser?.role === 'admin' && (
+            <Button
+              variant="contained"
+              startIcon={<PersonAddAlt1OutlinedIcon />}
+              onClick={handleOpenAdd}
+              className={styles.addUserBtn}
+            >
+              Add User
+            </Button>
+          )}
         </div>
       </div>
 
@@ -554,6 +581,20 @@ const UsersPage = () => {
           </Button>
         </DialogActions>
       </Dialog>
+
+      {/* Create / Edit User Modal */}
+      <UserModal
+        open={userModalOpen}
+        onClose={() => {
+          setUserModalOpen(false);
+          setEditingUser(null);
+        }}
+        onSaved={(msg) => {
+          setSuccessMsg(msg);
+          fetchUsers();
+        }}
+        user={editingUser}
+      />
     </div>
   );
 };

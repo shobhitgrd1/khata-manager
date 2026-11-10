@@ -178,7 +178,7 @@ const TransactionCard = ({
           <IconComponent className={styles.typeIcon} />
         </div>
 
-        {/* ─── Column 2: Title & [Order], Date & Time ──────── */}
+        {/* ─── Column 2: Title & [Order], Description, Date & Time ──────── */}
         <div className={styles.colMiddle}>
           <div className={styles.titleRow}>
             <span className={styles.txTitle}>{config.label}</span>
@@ -189,6 +189,12 @@ const TransactionCard = ({
               </span>
             )}
           </div>
+
+          {description && (
+            <div className={styles.descriptionRow} title={description}>
+              <span className={styles.descriptionText}>{description}</span>
+            </div>
+          )}
 
           <div className={styles.metaRow}>
             <span className={styles.metaItem}>

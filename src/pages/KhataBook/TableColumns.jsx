@@ -258,14 +258,16 @@ export const getTransactionColumns = ({
   {
     field: 'description',
     headerName: 'Description',
-    flex: 1.5,
-    minWidth: 180,
+    flex: 1.8,
+    minWidth: 200,
     renderCell: (params) => {
       const desc = params?.value || '-';
       const refType = params?.row?.referenceType;
       return (
         <div className={styles.descCell}>
-          <span title={desc}>{desc}</span>
+          <Tooltip title={desc !== '-' ? desc : ''} arrow enterDelay={250}>
+            <span className={styles.descText}>{desc}</span>
+          </Tooltip>
           {refType === 'Order' && <span className={styles.orderRefBadge}>Order Linked</span>}
         </div>
       );

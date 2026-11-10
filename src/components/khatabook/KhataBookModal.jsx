@@ -28,12 +28,13 @@ const KhataBookModal = ({
   onSubmit,
   initialData = null,
   loading = false,
+  defaultAccountType = 'Other',
 }) => {
   const isEditing = Boolean(initialData);
 
   const [name, setName] = useState('');
   const [mobileNumber, setMobileNumber] = useState('');
-  const [accountType, setAccountType] = useState('Other');
+  const [accountType, setAccountType] = useState(defaultAccountType);
   const [openingBalance, setOpeningBalance] = useState('');
   const [openingDirection, setOpeningDirection] = useState('RECEIVE');
   const [error, setError] = useState('');
@@ -43,19 +44,19 @@ const KhataBookModal = ({
       if (initialData) {
         setName(initialData.name || '');
         setMobileNumber(initialData.mobileNumber || '');
-        setAccountType(initialData.accountType || 'Other');
+        setAccountType(initialData.accountType || defaultAccountType);
         setOpeningBalance('');
         setOpeningDirection('RECEIVE');
       } else {
         setName('');
         setMobileNumber('');
-        setAccountType('Other');
+        setAccountType(defaultAccountType || 'Other');
         setOpeningBalance('');
         setOpeningDirection('RECEIVE');
       }
       setError('');
     }
-  }, [open, initialData]);
+  }, [open, initialData, defaultAccountType]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

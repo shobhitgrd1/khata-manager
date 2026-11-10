@@ -92,16 +92,12 @@ const AccountsPage = () => {
     accountType: '',
     mobileNumber: '',
     email: '',
-    startDate: '',
-    endDate: '',
   });
 
   const [appliedFilters, setAppliedFilters] = useState({
     accountType: '',
     mobileNumber: '',
     email: '',
-    startDate: '',
-    endDate: '',
   });
 
   // Pagination & sort
@@ -152,8 +148,6 @@ const AccountsPage = () => {
       if (appliedFilters.accountType) params.accountType = appliedFilters.accountType;
       if (appliedFilters.mobileNumber) params.mobileNumber = appliedFilters.mobileNumber;
       if (appliedFilters.email) params.email = appliedFilters.email;
-      if (appliedFilters.startDate) params.startDate = appliedFilters.startDate;
-      if (appliedFilters.endDate) params.endDate = appliedFilters.endDate;
 
       const data = await accountService.getAccounts(params);
       if (data?.accounts) {
@@ -192,8 +186,6 @@ const AccountsPage = () => {
       accountType: '',
       mobileNumber: '',
       email: '',
-      startDate: '',
-      endDate: '',
     };
     setFilters(empty);
     setAppliedFilters(empty);
@@ -207,7 +199,7 @@ const AccountsPage = () => {
     setPaginationModel((prev) => ({ ...prev, page: 0 }));
   };
 
-  // Build active chips
+  // Build active chips (Platform, Mobile, Email)
   const activeChips = useMemo(() => {
     const chips = [];
     if (appliedFilters.accountType) {
@@ -238,20 +230,6 @@ const AccountsPage = () => {
         value: appliedFilters.email,
         displayValue: appliedFilters.email,
         onRemove: () => handleRemoveFilter('email'),
-      });
-    }
-    if (appliedFilters.startDate || appliedFilters.endDate) {
-      const displayVal = `${appliedFilters.startDate || 'Start'} to ${appliedFilters.endDate || 'End'}`;
-      chips.push({
-        id: 'dateRange',
-        key: 'dateRange',
-        label: 'Date',
-        value: displayVal,
-        displayValue: displayVal,
-        onRemove: () => {
-          handleRemoveFilter('startDate');
-          handleRemoveFilter('endDate');
-        },
       });
     }
     return chips;
@@ -507,26 +485,6 @@ const AccountsPage = () => {
           value={filters.email}
           onChange={(e) => handleFilterChange('email', e.target.value)}
           placeholder="e.g. user@gmail.com"
-          className={styles.filterField}
-        />
-
-        <TextField
-          label="Created After"
-          type="date"
-          size="small"
-          InputLabelProps={{ shrink: true }}
-          value={filters.startDate}
-          onChange={(e) => handleFilterChange('startDate', e.target.value)}
-          className={styles.filterField}
-        />
-
-        <TextField
-          label="Created Before"
-          type="date"
-          size="small"
-          InputLabelProps={{ shrink: true }}
-          value={filters.endDate}
-          onChange={(e) => handleFilterChange('endDate', e.target.value)}
           className={styles.filterField}
         />
       </AdvancedFilterPanel>

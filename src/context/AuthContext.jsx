@@ -92,13 +92,10 @@ export const AuthProvider = ({ children }) => {
     [user]
   );
 
-  // Condition from master prompt:
-  // "The User Management card should only appear when the authenticated user has both: Admin role and User permission."
+  // User Management access: strictly Admin role only
   const canAccessUserManagement = useCallback(() => {
     if (!user) return false;
-    const isAdmin = user.role === 'admin';
-    const hasUserPerm = Array.isArray(user.permissions) && user.permissions.includes('user');
-    return isAdmin && hasUserPerm;
+    return user.role === 'admin';
   }, [user]);
 
   // Credit card access helper

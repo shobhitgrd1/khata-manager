@@ -43,6 +43,21 @@
   flex-wrap: wrap;
 }
 
+.addUserBtn {
+  background: linear-gradient(135deg, #0284c7, #0369a1) !important;
+  color: #ffffff !important;
+  border-radius: 8px !important;
+  font-weight: 700 !important;
+  text-transform: none !important;
+  padding: 6px 16px !important;
+  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35) !important;
+  font-size: 0.88rem !important;
+
+  &:hover {
+    background: linear-gradient(135deg, #0369a1, #075985) !important;
+  }
+}
+
 .backBtn {
   border-color: var(--border-color, $border-dark) !important;
   color: var(--accent-cyan, $accent-cyan) !important;

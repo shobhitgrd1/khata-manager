@@ -26,8 +26,6 @@ import ProductCard from '../../components/products/ProductCard';
 import ProductModal from '../../components/products/ProductModal';
 import DeleteProductDialog from '../../components/products/DeleteProductDialog';
 import ViewToggle from '../../components/common/ViewToggle';
-import AdvancedFilterPanel, { FilterTriggerButton } from '../../components/common/AdvancedFilterPanel';
-import ActiveFilterChips from '../../components/common/ActiveFilterChips';
 import CommonEmptyState from '../../components/common/CommonEmptyState';
 import { getProductColumns } from './TableColumns';
 import { PAGE_SIZE_OPTIONS } from '../../constants';
@@ -90,24 +88,9 @@ const ProductsPage = () => {
       : { title: 'Products', action: null }
   );
 
-  // Search & Filter state
+  // Search state (only search, filter is not required)
   const [search, setSearch] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
-  const [filterPanelOpen, setFilterPanelOpen] = useState(false);
-
-  const [filters, setFilters] = useState({
-    color: '',
-    minVariants: '',
-    startDate: '',
-    endDate: '',
-  });
-
-  const [appliedFilters, setAppliedFilters] = useState({
-    color: '',
-    minVariants: '',
-    startDate: '',
-    endDate: '',
-  });
 
   const debounceTimer = useRef(null);
 
@@ -147,10 +130,6 @@ const ProductsPage = () => {
     try {
       const params = {};
       if (debouncedSearch.trim()) params.search = debouncedSearch.trim();
-      if (appliedFilters.color) params.color = appliedFilters.color;
-      if (appliedFilters.minVariants) params.minVariants = appliedFilters.minVariants;
-      if (appliedFilters.startDate) params.startDate = appliedFilters.startDate;
-      if (appliedFilters.endDate) params.endDate = appliedFilters.endDate;
 
       const data = await productService.getProducts(params);
       if (data?.products) {
@@ -162,7 +141,7 @@ const ProductsPage = () => {
     } finally {
       setLoading(false);
     }
-  }, [debouncedSearch, appliedFilters]);
+  }, [debouncedSearch]);
 
   useEffect(() => {
     fetchProducts();
@@ -183,73 +162,6 @@ const ProductsPage = () => {
       [productId]: !prev[productId],
     }));
   };
-
-  // Filter actions
-  const handleFilterChange = (field, value) => {
-    setFilters((prev) => ({ ...prev, [field]: value }));
-  };
-
-  const handleApplyFilters = () => {
-    setAppliedFilters({ ...filters });
-    setFilterPanelOpen(false);
-  };
-
-  const handleResetFilters = () => {
-    const empty = {
-      color: '',
-      minVariants: '',
-      startDate: '',
-      endDate: '',
-    };
-    setFilters(empty);
-    setAppliedFilters(empty);
-  };
-
-  const handleRemoveFilter = (key) => {
-    const updated = { ...appliedFilters, [key]: '' };
-    setFilters((prev) => ({ ...prev, [key]: '' }));
-    setAppliedFilters(updated);
-  };
-
-  // Build active chips
-  const activeChips = useMemo(() => {
-    const chips = [];
-    if (appliedFilters.color) {
-      chips.push({
-        id: 'color',
-        key: 'color',
-        label: 'Color',
-        value: appliedFilters.color,
-        displayValue: appliedFilters.color,
-        onRemove: () => handleRemoveFilter('color'),
-      });
-    }
-    if (appliedFilters.minVariants) {
-      chips.push({
-        id: 'minVariants',
-        key: 'minVariants',
-        label: 'Min Variants',
-        value: appliedFilters.minVariants,
-        displayValue: `≥ ${appliedFilters.minVariants}`,
-        onRemove: () => handleRemoveFilter('minVariants'),
-      });
-    }
-    if (appliedFilters.startDate || appliedFilters.endDate) {
-      const displayVal = `${appliedFilters.startDate || 'Start'} to ${appliedFilters.endDate || 'End'}`;
-      chips.push({
-        id: 'dateRange',
-        key: 'dateRange',
-        label: 'Date',
-        value: displayVal,
-        displayValue: displayVal,
-        onRemove: () => {
-          handleRemoveFilter('startDate');
-          handleRemoveFilter('endDate');
-        },
-      });
-    }
-    return chips;
-  }, [appliedFilters]);
 
   // Handlers for Add, Edit, Delete
   const handleOpenAdd = () => {
@@ -454,13 +366,6 @@ const ProductsPage = () => {
               ) : null,
             }}
           />
-
-          <FilterTriggerButton
-            isOpen={filterPanelOpen}
-            onToggle={() => setFilterPanelOpen((prev) => !prev)}
-            filterCount={activeChips.length}
-            label="Filters"
-          />
         </div>
 
         <div className={styles.filterRight}>
@@ -473,61 +378,6 @@ const ProductsPage = () => {
           </div>
         </div>
       </div>
-
-      {/* Advanced Filter Drawer / Panel */}
-      <AdvancedFilterPanel
-        isOpen={filterPanelOpen}
-        onToggle={() => setFilterPanelOpen((prev) => !prev)}
-        filterCount={activeChips.length}
-        onApply={handleApplyFilters}
-        onReset={handleResetFilters}
-        title="Product Filters"
-      >
-        <TextField
-          label="Color Name"
-          size="small"
-          value={filters.color}
-          onChange={(e) => handleFilterChange('color', e.target.value)}
-          placeholder="e.g. Blue, Red, Midnight"
-          className={styles.filterField}
-        />
-
-        <TextField
-          label="Minimum Variants"
-          type="number"
-          size="small"
-          value={filters.minVariants}
-          onChange={(e) => handleFilterChange('minVariants', e.target.value)}
-          placeholder="e.g. 3"
-          className={styles.filterField}
-        />
-
-        <TextField
-          label="Created After"
-          type="date"
-          size="small"
-          InputLabelProps={{ shrink: true }}
-          value={filters.startDate}
-          onChange={(e) => handleFilterChange('startDate', e.target.value)}
-          className={styles.filterField}
-        />
-
-        <TextField
-          label="Created Before"
-          type="date"
-          size="small"
-          InputLabelProps={{ shrink: true }}
-          value={filters.endDate}
-          onChange={(e) => handleFilterChange('endDate', e.target.value)}
-          className={styles.filterField}
-        />
-      </AdvancedFilterPanel>
-
-      {/* Active Filter Chips */}
-      <ActiveFilterChips
-        filters={activeChips}
-        onClearAll={handleResetFilters}
-      />
 
       {/* Main Content Area */}
       {loading ? (
@@ -571,16 +421,16 @@ const ProductsPage = () => {
         <CommonEmptyState
           icon={Inventory2OutlinedIcon}
           title={
-            search || activeChips.length > 0
+            search
               ? 'No matching products found'
               : 'No products registered yet'
           }
           description={
-            search || activeChips.length > 0
-              ? 'Try modifying your search or clearing active filters.'
+            search
+              ? 'Try modifying your search query.'
               : 'Add products with variants and available colors to use them when recording orders.'
           }
-          actionLabel={!search && activeChips.length === 0 && canCreateProduct() ? 'Add First Product' : undefined}
+          actionLabel={!search && canCreateProduct() ? 'Add First Product' : undefined}
           onAction={handleOpenAdd}
           actionIcon={<AddIcon className={styles.btnIcon} />}
         />

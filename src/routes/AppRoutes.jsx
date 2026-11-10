@@ -84,9 +84,10 @@ const AppRoutes = () => {
         <Route element={<DashboardLayout />}>
           <Route path="/dashboard" element={<DashboardPage />} />
 
-          {/* User Management strictly requires Admin role and 'user' permission */}
+          {/* User Management strictly requires Admin role */}
           <Route element={<ProtectedRoute checkUserManagement={true} />}>
             <Route path="/users" element={<UsersPage />} />
+            <Route path="/users/:id" element={<UserDetailsPage />} />
           </Route>
 
           {/* Credit Card Management */}
@@ -122,9 +123,6 @@ const AppRoutes = () => {
             <Route path="/khatabook" element={<KhataBookPage />} />
             <Route path="/khatabook/:id" element={<KhataBookDetailsPage />} />
           </Route>
-
-          {/* User Details */}
-          <Route path="/users/:id" element={<UserDetailsPage />} />
 
           {/* Settings Page */}
           <Route path="/settings" element={<SettingsPage />} />

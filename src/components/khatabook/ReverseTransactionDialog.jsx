@@ -69,6 +69,24 @@ const ReverseTransactionDialog = ({
           Financial history will not be deleted.
         </p>
 
+        {transaction?.description && (
+          <div
+            style={{
+              fontSize: '0.82rem',
+              color: '#CBD5E1',
+              background: 'rgba(255, 255, 255, 0.05)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
+              padding: '8px 12px',
+              borderRadius: 8,
+              lineHeight: 1.4,
+              wordBreak: 'break-word',
+            }}
+          >
+            <span style={{ fontWeight: 600, color: '#94A3B8', marginRight: 6 }}>Description:</span>
+            {transaction.description}
+          </div>
+        )}
+
         <TextField
           label="Reason for Reversal"
           required
