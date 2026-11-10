@@ -1,19 +1,16 @@
 import React from 'react';
-import { Button } from '@mui/material';
+import { Tooltip } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import ReceiptLongOutlinedIcon from '@mui/icons-material/ReceiptLongOutlined';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
-import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import CreditCardIcon from '@mui/icons-material/CreditCard';
 import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
-import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import CurrencyRupeeIcon from '@mui/icons-material/CurrencyRupee';
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-
-import AccountInfoDisplay from './AccountInfoDisplay';
-import PaymentInfoDisplay from './PaymentInfoDisplay';
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+import { getAccountLogo } from '../../utils/accountLogos';
+import { getBankLogo } from '../../utils/bankLogos';
 import styles from './OrderCard.module.scss';
 
 const OrderCard = ({
@@ -29,6 +26,8 @@ const OrderCard = ({
 }) => {
   const navigate = useNavigate();
 
+  if (!order) return null;
+
   const {
     _id,
     dealerNameSnapshot = 'Unknown Dealer',
@@ -36,14 +35,15 @@ const OrderCard = ({
     variant = '',
     color = {},
     purchasePrice = 0,
-    deliveryPrice = null,
     profit = null,
     status = 'Order In Process',
     orderDate,
-  } = order || {};
+    deliveryDate,
+  } = order;
 
   const isDelivered = status === 'Delivered';
 
+  // Profit calculation
   const cbAmount = isDelivered && order?.cashbackApplied && order?.cashbackAmount ? Number(order.cashbackAmount) : 0;
   const effectiveNetProfit = profit !== null
     ? (order?.netProfit !== null && order?.netProfit !== undefined ? Number(order.netProfit) : Number(profit) + cbAmount)
@@ -54,259 +54,249 @@ const OrderCard = ({
       ? Math.round(((effectiveNetProfit / purchasePrice) * 100) * 100) / 100
       : null;
 
-  const formattedDate = orderDate
-    ? new Date(orderDate).toLocaleDateString('en-IN', {
+  const formatINR = (val) => `₹${Number(val || 0).toLocaleString('en-IN')}`;
+
+  const formatDate = (dateVal) => {
+    if (!dateVal) return '—';
+    try {
+      const d = new Date(dateVal);
+      if (isNaN(d.getTime())) return '—';
+      return d.toLocaleDateString('en-IN', {
         day: '2-digit',
         month: 'short',
         year: 'numeric',
-      })
-    : '';
+      });
+    } catch {
+      return String(dateVal);
+    }
+  };
 
-  const formatINR = (val) => `₹${Number(val || 0).toLocaleString('en-IN')}`;
+  // Account details & logo
+  const accountType = order.accountTypeSnapshot || order.accountId?.accountType || '';
+  const accountName = order.accountNameSnapshot || order.accountId?.fullName || 'Account';
+  const mobile = order.accountId?.mobileNumber || order.accountMobileSnapshot || '';
+  const email = order.accountId?.email || order.accountEmailSnapshot || '';
+  const accountSecondary = mobile || email || accountType;
+  const accountLogo = getAccountLogo(accountType || accountName);
+
+  // Payment details & logo
+  const method = order.paymentMethod || 'Credit Card';
+  const ccObj = order.creditCardId || order.creditCardSnapshot || {};
+  const pDetails = order.paymentDetails || {};
+  const bankName = ccObj.bankName || pDetails.bankName || (method === 'Credit Card' ? 'Credit Card' : method);
+  const cardName = ccObj.cardName || pDetails.cardName || method;
+  const lastFour = ccObj.lastFourDigits || pDetails.lastFourDigits || '••••';
+  const bankLogo = getBankLogo(bankName);
+
+  const colorName = color?.colorName || '';
+
+  const handleCardClick = () => {
+    navigate(`/orders/${_id}`);
+  };
 
   return (
-    <div className={styles.orderCard}>
-      <div className={styles.ambientGlare} />
-
-      {/* Top Header Row */}
-      <div className={styles.topRow}>
-        <div className={styles.orderHeader}>
-          <div className={styles.avatarBox}>
-            <ReceiptLongOutlinedIcon className={styles.orderIcon} />
+    <div
+      className={styles.compactFigmaCard}
+      onClick={handleCardClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleCardClick();
+        }
+      }}
+    >
+      {/* ─── Card Main: 3 Columns (Figma 2nd Design) ────────── */}
+      <div className={styles.cardMain}>
+        {/* ─── Column 1: Account Info ─────────────────────────── */}
+        <div className={styles.colAccount}>
+          <div className={styles.accountLogoSquare}>
+            {accountLogo ? (
+              <img src={accountLogo} alt={accountName} className={styles.accountLogoImg} />
+            ) : (
+              <span className={styles.accountFallbackLetter}>
+                {(accountName || 'A').slice(0, 2).toUpperCase()}
+              </span>
+            )}
           </div>
-
-          <div className={styles.idAndDate}>
-            <span className={styles.orderDate}>
-              <CalendarMonthIcon className={styles.calendarIcon} />
-              {formattedDate ? `Ordered ${formattedDate}` : 'Recent Order'}
+          <div className={styles.accountTextGroup}>
+            <span className={styles.accountName} title={accountName}>
+              {accountName}
             </span>
-          </div>
-        </div>
-
-        {/* Status Badge */}
-        {isDelivered ? (
-          <div className={styles.statusChipDelivered}>
-            <CheckCircleOutlinedIcon className={styles.statusIcon} />
-            <span>Delivered</span>
-          </div>
-        ) : (
-          <div className={styles.statusChipInProcess}>
-            <HourglassEmptyIcon className={styles.statusIcon} />
-            <span>In Process</span>
-          </div>
-        )}
-      </div>
-
-      {/* Details Grid */}
-      <div className={styles.detailsGrid}>
-        {/* Dealer */}
-        <div className={styles.detailCol}>
-          <span className={styles.detailLabel}>Dealer</span>
-          <span className={styles.detailValue} title={dealerNameSnapshot}>
-            {dealerNameSnapshot}
-          </span>
-        </div>
-
-        {/* Product & Variant */}
-        <div className={styles.detailCol}>
-          <span className={styles.detailLabel}>Product & Variant</span>
-          <div className={styles.productVariantLine}>
-            <span className={styles.detailValue} title={`${productNameSnapshot} (${variant})`}>
-              {productNameSnapshot} • {variant}
-            </span>
-            {color?.colorName && (
-              <svg width="12" height="12" viewBox="0 0 12 12" className={styles.colorSwatchDot}>
-                <circle
-                  cx="6"
-                  cy="6"
-                  r="5"
-                  fill={color.colorCode || '#36CFFF'}
-                  stroke="rgba(255, 255, 255, 0.4)"
-                  strokeWidth="1"
-                />
-              </svg>
+            {accountSecondary && (
+              <span className={styles.accountSub} title={accountSecondary}>
+                {accountSecondary}
+              </span>
             )}
           </div>
         </div>
 
-        {/* Account Info Display (Shared Component) */}
-        <div className={styles.detailCol}>
-          <span className={styles.detailLabel}>Account</span>
-          <AccountInfoDisplay
-            order={order}
-            clickable
-            onClick={() => navigate(`/orders/${_id}`)}
-          />
+        {/* ─── Column 2: Dealer, Product & Payment Details ─────── */}
+        <div className={styles.colDetails}>
+          {/* Dealer name */}
+          <div className={styles.dealerLine}>
+            <span className={styles.dealerName} title={dealerNameSnapshot}>
+              {dealerNameSnapshot}
+            </span>
+          </div>
+
+          {/* Product with location icon & variant */}
+          <div className={styles.productLine}>
+            <span className={styles.productText} title={`${productNameSnapshot} ${variant ? `(${variant})` : ''}`}>
+              {productNameSnapshot} {variant ? `(${variant})` : ''} {colorName ? `• ${colorName}` : ''}
+            </span>
+          </div>
+          {/* Subtle horizontal separator */}
+          <div className={styles.cardDivider} />
+
+          {/* Payment line */}
+          <div className={styles.paymentLine}>
+            <div className={styles.paymentLogoBox}>
+              {bankLogo ? (
+                <img src={bankLogo} alt={bankName} className={styles.paymentLogoImg} />
+              ) : (
+                <CreditCardIcon className={styles.paymentIconFallback} />
+              )}
+            </div>
+            <div className={styles.paymentTextGroup}>
+              <span className={styles.paymentBankLast4}>
+                {bankName} • {lastFour}
+              </span>
+              <span className={styles.paymentCardSubtitle} title={cardName}>
+                {cardName}
+              </span>
+            </div>
+          </div>
         </div>
 
-        {/* Payment Info Display (Shared Component) */}
-        <div className={styles.detailCol}>
-          <span className={styles.detailLabel}>Payment</span>
-          <PaymentInfoDisplay order={order} />
-        </div>
-      </div>
+        {/* ─── Column 3: Price, Status & Profit ────────────────── */}
+        <div className={styles.colStatusFinancial}>
+          <span className={styles.purchasePrice}>{formatINR(purchasePrice)}</span>
 
-      {/* Financials Strip */}
-      <div className={styles.financialStrip}>
-        <div className={styles.financialCol}>
-          <span className={styles.financialLabel}>Purchase</span>
-          <span className={styles.financialVal}>{formatINR(purchasePrice)}</span>
-        </div>
+          <div className={styles.statusRow}>
+            <span className={isDelivered ? styles.badgeDelivered : styles.badgeInProcess}>
+              {isDelivered ? 'Delivered' : 'Order In Process'}
+            </span>
+          </div>
 
-        <div className={styles.financialDivider} />
-
-        <div className={styles.financialCol}>
-          <span className={styles.financialLabel}>Delivery</span>
-          <span className={styles.financialVal}>
-            {deliveryPrice !== null && deliveryPrice !== undefined
-              ? formatINR(deliveryPrice)
-              : 'Pending'}
-          </span>
-        </div>
-
-        <div className={styles.financialDivider} />
-
-        <div className={styles.financialCol}>
-          <span
-            className={
-              effectiveNetProfit !== null
-                ? effectiveNetProfit >= 0
-                  ? styles.financialLabelGreen
-                  : styles.financialLabelRed
-                : styles.financialLabel
-            }
-          >
-            {effectiveNetProfit !== null ? (effectiveNetProfit >= 0 ? 'Profit' : 'Loss') : 'Profit/Loss'}
-          </span>
-          <span
-            className={
-              effectiveNetProfit !== null
-                ? effectiveNetProfit >= 0
-                  ? styles.financialValGreen
-                  : styles.financialValRed
-                : styles.financialValMuted
-            }
-          >
-            {effectiveNetProfit !== null ? (
-              <span className={styles.profitValWithPercent}>
-                <span>
-                  {effectiveNetProfit >= 0 ? `+${formatINR(effectiveNetProfit)}` : `-${formatINR(Math.abs(effectiveNetProfit))}`}
-                </span>
-                {profitPercentage !== null && (
-                  <span
-                    className={
-                      effectiveNetProfit >= 0 ? styles.profitPercentSubGreen : styles.profitPercentSubRed
-                    }
-                  >
-                    ({effectiveNetProfit >= 0 ? `+${profitPercentage}%` : `${profitPercentage}%`})
-                  </span>
-                )}
+          <div className={styles.profitRow}>
+            {isDelivered ? (
+              <span className={effectiveNetProfit >= 0 ? styles.profitGreen : styles.profitRed}>
+                {effectiveNetProfit >= 0 ? `+${formatINR(effectiveNetProfit)}` : `-${formatINR(Math.abs(effectiveNetProfit))}`}
+                {profitPercentage !== null && ` (${effectiveNetProfit >= 0 ? `+${profitPercentage}%` : `${profitPercentage}%`})`}
               </span>
             ) : (
-              'Pending'
-            )}
-          </span>
-          {isDelivered && (
-            order?.cashbackApplied && order?.cashbackAmount > 0 ? (
-              <div className={styles.cashbackCardBlock}>
-                <span
-                  className={styles.cashbackBadge}
-                  title={`Profit Cashback: +${formatINR(order.cashbackAmount)} (Added to Gross)`}
-                >
-                  +CB: {formatINR(order.cashbackAmount)}
-                </span>
-                <span
-                  className={styles.grossProfitSubBadge}
-                  title={`Gross Profit: ${formatINR(profit)} | Profit Cashback: +${formatINR(order.cashbackAmount)} | Net: ${formatINR(effectiveNetProfit)}`}
-                >
-                  Gross: {profit >= 0 ? `+${formatINR(profit)}` : `-${formatINR(Math.abs(profit))}`}
-                </span>
+              <div className={styles.pendingProfitBlock}>
+                <span className={styles.pendingDash}>--</span>
+                <span className={styles.pendingProfitLabel}>Profit: --</span>
               </div>
-            ) : (
-              <span className={styles.cashbackNotAppliedBadge}>CB: Not Applied</span>
-            )
-          )}
+            )}
+          </div>
         </div>
       </div>
 
-      {/* Card Actions Footer - 2 Balanced Rows */}
-      <div className={styles.cardFooter}>
-        <div className={styles.primaryActionRow}>
-          <Button
-            variant="outlined"
-            size="small"
-            onClick={() => navigate(`/orders/${_id}`)}
-            className={styles.viewBtn}
-            startIcon={<VisibilityOutlinedIcon />}
-          >
-            View Details
-          </Button>
+      {/* ─── Footer Divider ─────────────────────────────────── */}
+      <div className={styles.footerDivider} />
 
-          {/* Deliver action if in process */}
-          {!isDelivered && canEdit && (
-            <Button
-              variant="outlined"
-              size="small"
-              onClick={() => onDeliver && onDeliver(order)}
-              className={styles.deliverBtn}
-              startIcon={<LocalShippingOutlinedIcon className={styles.btnIcon} />}
-            >
-              Deliver
-            </Button>
-          )}
-
-          {/* If Delivered, show Adjust Price */}
-          {isDelivered && canEdit && (
-            <Button
-              variant="outlined"
-              size="small"
-              onClick={() => onCorrectPrice && onCorrectPrice(order)}
-              className={styles.correctPriceBtn}
-              startIcon={<CurrencyRupeeIcon className={styles.btnIcon} />}
-            >
-              Adjust Price
-            </Button>
-          )}
+      {/* ─── Card Actions Footer: Dates on Left, Only Icons on Right ─── */}
+      <div className={styles.cardFooter} onClick={(e) => e.stopPropagation()}>
+        {/* Left: Order Date & Delivery Date */}
+        <div className={styles.footerDates}>
+          <div className={styles.dateLine}>
+            <span className={styles.dateLabel}>Ord:</span>
+            <span className={styles.dateVal}>{formatDate(orderDate)}</span>
+          </div>
+          <div className={styles.dateLine}>
+            <span className={styles.dateLabel}>Del:</span>
+            <span className={deliveryDate ? styles.dateValDelivered : styles.dateValPending}>
+              {deliveryDate ? formatDate(deliveryDate) : isDelivered ? 'Delivered' : 'Pending'}
+            </span>
+          </div>
         </div>
 
-        <div className={styles.managementActionRow}>
-          {/* Edit */}
-          {canEdit && (
-            <Button
-              variant="outlined"
-              size="small"
-              onClick={() => onEdit && onEdit(order)}
-              className={styles.editBtn}
-              startIcon={<EditOutlinedIcon className={styles.btnIcon} />}
+        {/* Right: Only Action Icons in One Line */}
+        <div className={styles.actionIconRow}>
+          {/* View Details */}
+          <Tooltip title="View Details" arrow>
+            <button
+              type="button"
+              onClick={() => navigate(`/orders/${_id}`)}
+              className={`${styles.actionBtn} ${styles.viewBtn}`}
+              aria-label="View Details"
             >
-              Edit
-            </Button>
+              <VisibilityOutlinedIcon className={styles.actionIcon} />
+            </button>
+          </Tooltip>
+
+          {/* Deliver action if in process */}
+          {!isDelivered && canEdit && onDeliver && (
+            <Tooltip title="Mark Delivered" arrow>
+              <button
+                type="button"
+                onClick={() => onDeliver(order)}
+                className={`${styles.actionBtn} ${styles.deliverBtn}`}
+                aria-label="Deliver Order"
+              >
+                <LocalShippingOutlinedIcon className={styles.actionIcon} />
+              </button>
+            </Tooltip>
+          )}
+
+          {/* Adjust Price if delivered */}
+          {isDelivered && canEdit && onCorrectPrice && (
+            <Tooltip title="Adjust Price" arrow>
+              <button
+                type="button"
+                onClick={() => onCorrectPrice(order)}
+                className={`${styles.actionBtn} ${styles.correctPriceBtn}`}
+                aria-label="Adjust Price"
+              >
+                <CurrencyRupeeIcon className={styles.actionIcon} />
+              </button>
+            </Tooltip>
+          )}
+
+          {/* Edit */}
+          {canEdit && onEdit && (
+            <Tooltip title="Edit Order" arrow>
+              <button
+                type="button"
+                onClick={() => onEdit(order)}
+                className={`${styles.actionBtn} ${styles.editBtn}`}
+                aria-label="Edit Order"
+              >
+                <EditOutlinedIcon className={styles.actionIcon} />
+              </button>
+            </Tooltip>
           )}
 
           {/* Duplicate */}
-          {canCreate && (
-            <Button
-              variant="outlined"
-              size="small"
-              onClick={() => onDuplicate && onDuplicate(order)}
-              className={styles.duplicateBtn}
-              startIcon={<ContentCopyIcon className={styles.btnIcon} />}
-            >
-              Duplicate
-            </Button>
+          {canCreate && onDuplicate && (
+            <Tooltip title="Duplicate Order" arrow>
+              <button
+                type="button"
+                onClick={() => onDuplicate(order)}
+                className={`${styles.actionBtn} ${styles.duplicateBtn}`}
+                aria-label="Duplicate Order"
+              >
+                <ContentCopyIcon className={styles.actionIcon} />
+              </button>
+            </Tooltip>
           )}
 
-          {/* Delete action */}
-          {canDelete && (
-            <Button
-              variant="outlined"
-              size="small"
-              onClick={() => onDelete && onDelete(order)}
-              className={styles.deleteBtn}
-              startIcon={<DeleteOutlinedIcon className={styles.btnIcon} />}
-            >
-              Delete
-            </Button>
+          {/* Delete */}
+          {canDelete && onDelete && (
+            <Tooltip title="Delete Order" arrow>
+              <button
+                type="button"
+                onClick={() => onDelete(order)}
+                className={`${styles.actionBtn} ${styles.deleteBtn}`}
+                aria-label="Delete Order"
+              >
+                <DeleteOutlinedIcon className={styles.actionIcon} />
+              </button>
+            </Tooltip>
           )}
         </div>
       </div>

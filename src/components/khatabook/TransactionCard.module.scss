@@ -1,0 +1,304 @@
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.compactFigmaCard {
+  @include glass-panel;
+  border-radius: 8px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border-glow, $border-dark-glow);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+
+  @media (max-width: 600px) {
+    padding: 9px 10px;
+    gap: 8px;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: rgba(54, 207, 255, 0.45);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 15px rgba(54, 207, 255, 0.15);
+
+    .chevronIcon {
+      transform: translateX(3px);
+      color: var(--accent-cyan, #36cfff);
+    }
+  }
+
+  :global([data-theme='light']) & {
+    border-color: rgba(2, 132, 199, 0.18);
+    background: rgba(255, 255, 255, 0.9);
+
+    &:hover {
+      border-color: #0284c7;
+      box-shadow: 0 8px 20px rgba(2, 132, 199, 0.15);
+    }
+  }
+
+  &.cardReversed {
+    opacity: 0.85;
+    border-left: 3px solid #f59e0b;
+  }
+}
+
+/* ─── Column 1: Square Icon Box ──────────────────────────────── */
+.iconSquare {
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  min-height: 38px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  transition: transform 0.2s ease;
+
+  @media (max-width: 600px) {
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+    min-height: 34px;
+  }
+
+  &.green {
+    background: rgba(16, 185, 129, 0.16);
+    border: 1px solid rgba(16, 185, 129, 0.45);
+    color: #34d399;
+  }
+
+  &.amber {
+    background: rgba(245, 158, 11, 0.16);
+    border: 1px solid rgba(245, 158, 11, 0.45);
+    color: #fbbf24;
+  }
+
+  &.red {
+    background: rgba(239, 68, 68, 0.16);
+    border: 1px solid rgba(239, 68, 68, 0.45);
+    color: #f87171;
+  }
+
+  &.blue {
+    background: rgba(2, 132, 199, 0.16);
+    border: 1px solid rgba(56, 189, 248, 0.45);
+    color: #38bdf8;
+  }
+
+  &.neutral {
+    background: rgba(54, 207, 255, 0.12);
+    border: 1px solid rgba(54, 207, 255, 0.35);
+    color: var(--accent-cyan, #36cfff);
+  }
+}
+
+.typeIcon {
+  font-size: 20px !important;
+
+  @media (max-width: 600px) {
+    font-size: 18px !important;
+  }
+}
+
+/* ─── Column 2: Title & [Order], Date & Time ─────────────────── */
+.colMiddle {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.txTitle {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-primary, #ffffff);
+  line-height: 1.2;
+  white-space: nowrap;
+
+  @media (max-width: 600px) {
+    font-size: 0.82rem;
+  }
+}
+
+.orderBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 1px 6px;
+  border-radius: 6px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  background: rgba(167, 139, 250, 0.18);
+  border: 1px solid rgba(167, 139, 250, 0.4);
+  color: #c4b5fd;
+  white-space: nowrap;
+
+  @media (max-width: 600px) {
+    font-size: 0.62rem;
+    padding: 1px 5px;
+  }
+}
+
+.orderBadgeIcon {
+  font-size: 11px !important;
+}
+
+.metaRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.70rem;
+  color: var(--text-secondary, #94a3b8);
+  line-height: 1.2;
+
+  @media (max-width: 600px) {
+    font-size: 0.66rem;
+    gap: 6px;
+  }
+}
+
+.metaItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  white-space: nowrap;
+}
+
+.metaIcon {
+  font-size: 12px !important;
+  color: var(--text-secondary, #94a3b8);
+}
+
+/* ─── Column 3: Amount, Status Pill, Running Balance ─────────── */
+.colRight {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  flex-shrink: 0;
+  text-align: right;
+}
+
+.amountText {
+  font-size: 1.05rem;
+  font-weight: 800;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+
+  @media (max-width: 600px) {
+    font-size: 0.95rem;
+  }
+}
+
+.amount_green {
+  color: #34d399;
+}
+
+.amount_amber {
+  color: #fbbf24;
+}
+
+.amount_red {
+  color: #f87171;
+}
+
+.amount_blue {
+  color: #38bdf8;
+}
+
+.statusPill {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 6px;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  white-space: nowrap;
+
+  @media (max-width: 600px) {
+    font-size: 0.60rem;
+    padding: 1px 5px;
+  }
+}
+
+.pill_green {
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  color: #34d399;
+}
+
+.pill_amber {
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  color: #fbbf24;
+}
+
+.pill_red {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #f87171;
+}
+
+.pill_blue {
+  background: rgba(2, 132, 199, 0.15);
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  color: #38bdf8;
+}
+
+.runningBal {
+  font-size: 0.70rem;
+  font-weight: 700;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+
+  @media (max-width: 600px) {
+    font-size: 0.64rem;
+  }
+}
+
+.balGreen {
+  color: #34d399;
+}
+
+.balRed {
+  color: #f87171;
+}
+
+.balSettled {
+  color: var(--text-secondary, #94a3b8);
+}
+
+/* ─── Column 4: Far Right Chevron ────────────────────────────── */
+.colChevron {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding-left: 2px;
+}
+
+.chevronIcon {
+  font-size: 1.25rem !important;
+  color: var(--text-secondary, #94a3b8);
+  transition: transform 0.2s ease, color 0.2s ease;
+
+  @media (max-width: 600px) {
+    font-size: 1.1rem !important;
+  }
+}

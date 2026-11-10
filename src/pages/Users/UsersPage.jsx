@@ -18,7 +18,6 @@ import { DataGrid } from '@mui/x-data-grid';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
-import RefreshIcon from '@mui/icons-material/Refresh';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
@@ -34,6 +33,7 @@ import { getUserColumns } from './TableColumns';
 import { PAGE_SIZE_OPTIONS } from '../../constants';
 import useAuth from '../../hooks/useAuth';
 import userService from '../../services/userService';
+import { useMobileHeader } from '../../context/MobileHeaderContext';
 import styles from './UsersPage.module.scss';
 
 const UsersPage = () => {
@@ -55,6 +55,13 @@ const UsersPage = () => {
     setViewMode(mode);
     localStorage.setItem('khata_users_view_mode', mode);
   };
+
+  useMobileHeader({
+    title: 'User Management',
+    action: currentUser?.role === 'admin'
+      ? { label: '+ Add User', onClick: () => navigate('/register') }
+      : null,
+  });
 
   // Search & Filter state
   const [search, setSearch] = useState('');
@@ -432,15 +439,13 @@ const UsersPage = () => {
         </div>
 
         <div className={styles.filterRight}>
-          <Tooltip title="Refresh Users list">
-            <IconButton
-              onClick={fetchUsers}
-              className={styles.refreshBtn}
-              aria-label="refresh users"
-            >
-              <RefreshIcon className={styles.refreshIcon} />
-            </IconButton>
-          </Tooltip>
+          <div className={styles.mobileViewToggle}>
+            <ViewToggle
+              viewMode={viewMode}
+              onChange={handleToggleView}
+              ariaLabel="Users view switcher"
+            />
+          </div>
         </div>
       </div>
 

@@ -11,6 +11,10 @@
 
 .header {
   margin-bottom: 4px;
+
+  @media (max-width: 900px) {
+    display: none !important;
+  }
 }
 
 .title {
@@ -46,7 +50,7 @@
 .panel {
   @include glass-card;
   padding: 32px;
-  border-radius: $radius-lg;
+  border-radius: 12px;
 
   @include mobile {
     padding: 20px;

@@ -13,7 +13,6 @@ import { DataGrid } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import AddIcon from '@mui/icons-material/Add';
-import RefreshIcon from '@mui/icons-material/Refresh';
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
 import StorefrontIcon from '@mui/icons-material/Storefront';
@@ -37,6 +36,7 @@ import { getDealerColumns } from './TableColumns';
 import { PROFIT_PERIOD_OPTIONS, PAGE_SIZE_OPTIONS } from '../../constants';
 import dealerService from '../../services/dealerService';
 import useAuth from '../../hooks/useAuth';
+import { useMobileHeader } from '../../context/MobileHeaderContext';
 import styles from './DealersPage.module.scss';
 
 const DealersPage = () => {
@@ -61,6 +61,21 @@ const DealersPage = () => {
     setViewMode(mode);
     localStorage.setItem('khata_dealers_view_mode', mode);
   };
+
+  useMobileHeader(
+    canCreateDealer()
+      ? {
+          title: 'Dealers',
+          action: {
+            label: '+ Add Dealer',
+            onClick: () => {
+              setEditingDealer(null);
+              setModalOpen(true);
+            },
+          },
+        }
+      : { title: 'Dealers', action: null }
+  );
 
   // Search & Filter state
   const [search, setSearch] = useState('');
@@ -567,18 +582,13 @@ const DealersPage = () => {
         </div>
 
         <div className={styles.filterRight}>
-          <Tooltip title="Refresh dealers list">
-            <Button
-              variant="outlined"
-              onClick={() => {
-                fetchDealers();
-                fetchSummary();
-              }}
-              className={styles.refreshBtn}
-            >
-              <RefreshIcon fontSize="inherit" />
-            </Button>
-          </Tooltip>
+          <div className={styles.mobileViewToggle}>
+            <ViewToggle
+              viewMode={viewMode}
+              onChange={handleToggleView}
+              ariaLabel="Dealers view switcher"
+            />
+          </div>
         </div>
       </div>
 

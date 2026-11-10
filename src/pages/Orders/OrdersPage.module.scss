@@ -17,6 +17,10 @@
   justify-content: space-between;
   gap: 16px;
 
+  @media (max-width: 900px) {
+    display: none !important;
+  }
+
   @media (min-width: 600px) {
     flex-direction: row;
     align-items: center;
@@ -74,7 +78,7 @@
   font-size: 1.2rem !important;
 }
 
-/* ─── Summary Stats Strip ─────────────────────────────────────── */
+/* ─── Summary Stats Strip (Image 2 Figma: 3 in row 1, 1 in row 2) ── */
 .statsGrid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -84,8 +88,14 @@
     grid-template-columns: repeat(2, 1fr);
   }
 
-  @media (max-width: 600px) {
-    grid-template-columns: 1fr;
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+
+    /* The 4th stat card (Total Profit) spans all 3 columns below */
+    .statCard:nth-child(4) {
+      grid-column: 1 / -1;
+    }
   }
 }
 
@@ -99,6 +109,11 @@
   transition:
     transform 0.25s ease,
     box-shadow 0.25s ease;
+
+  @media (max-width: 768px) {
+    padding: 8px 10px;
+    gap: 8px;
+  }
 
   &:hover {
     transform: translateY(-2px);
@@ -115,6 +130,13 @@
   background: rgba(54, 207, 255, 0.12);
   color: var(--accent-cyan, $accent-cyan);
   border: 1px solid rgba(54, 207, 255, 0.25);
+
+  @media (max-width: 768px) {
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    border-radius: 6px;
+  }
 }
 
 .statIconBoxPending {
@@ -127,6 +149,13 @@
   background: rgba(245, 158, 11, 0.12);
   color: #fbbf24;
   border: 1px solid rgba(245, 158, 11, 0.25);
+
+  @media (max-width: 768px) {
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    border-radius: 6px;
+  }
 }
 
 .statIconBoxDelivered {
@@ -139,6 +168,13 @@
   background: rgba(16, 185, 129, 0.12);
   color: #34d399;
   border: 1px solid rgba(16, 185, 129, 0.25);
+
+  @media (max-width: 768px) {
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    border-radius: 6px;
+  }
 }
 
 .statIconBoxProfit {
@@ -151,10 +187,21 @@
   background: rgba(52, 211, 153, 0.14);
   color: #10b981;
   border: 1px solid rgba(16, 185, 129, 0.35);
+
+  @media (max-width: 768px) {
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    border-radius: 6px;
+  }
 }
 
 .statIcon {
   font-size: 1.5rem;
+
+  @media (max-width: 768px) {
+    font-size: 1.1rem;
+  }
 }
 
 .statInfo {
@@ -168,6 +215,11 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--text-secondary);
+
+  @media (max-width: 768px) {
+    font-size: 0.65rem;
+    white-space: nowrap;
+  }
 }
 
 .statValue {
@@ -175,6 +227,10 @@
   font-weight: 800;
   color: var(--text-primary);
   line-height: 1.2;
+
+  @media (max-width: 768px) {
+    font-size: 1.05rem;
+  }
 }
 
 .statValueGreen {
@@ -182,6 +238,10 @@
   font-weight: 800;
   color: #10b981;
   line-height: 1.2;
+
+  @media (max-width: 768px) {
+    font-size: 1.15rem;
+  }
 }
 
 .statSubValue {
@@ -189,6 +249,10 @@
   font-weight: 700;
   color: #36CFFF;
   margin-top: 2px;
+
+  @media (max-width: 768px) {
+    font-size: 0.7rem;
+  }
 }
 
 /* ─── Controls & Filters Strip ───────────────────────────────── */
@@ -201,6 +265,12 @@
   justify-content: space-between;
   gap: 14px;
   flex-wrap: wrap;
+
+  @media (max-width: 768px) {
+    padding: 6px 8px;
+    gap: 6px;
+    flex-wrap: nowrap;
+  }
 }
 
 .filterGroupLeft {
@@ -210,15 +280,29 @@
   flex: 1;
   flex-wrap: wrap;
   min-width: 280px;
+
+  @media (max-width: 768px) {
+    gap: 6px;
+    min-width: 0;
+    flex-wrap: nowrap;
+  }
 }
 
 .searchField {
   flex: 1;
   min-width: 240px;
 
+  @media (max-width: 768px) {
+    min-width: 0;
+  }
+
   :global(.MuiOutlinedInput-root) {
     border-radius: 8px;
     background: rgba(7, 21, 38, 0.4);
+
+    @media (max-width: 768px) {
+      height: 36px;
+    }
 
     :global([data-theme="light"]) & {
       background: #ffffff;
@@ -240,6 +324,11 @@
   :global(.MuiInputBase-input) {
     color: var(--text-primary);
     font-size: 0.92rem;
+
+    @media (max-width: 768px) {
+      font-size: 0.78rem;
+      padding: 6px 8px !important;
+    }
   }
 }
 
@@ -289,7 +378,22 @@
   display: flex;
   align-items: center;
   gap: 10px;
+
+  @media (max-width: 768px) {
+    gap: 6px;
+    flex-shrink: 0;
+  }
 }
+
+.mobileViewToggle {
+  display: none;
+
+  @media (max-width: 900px) {
+    display: inline-flex;
+    align-items: center;
+  }
+}
+
 
 .viewToggleGroup {
   display: flex;
@@ -348,22 +452,17 @@
   font-size: 18px;
 }
 
-.refreshBtn {
-  border-color: var(--border-color, $border-dark) !important;
-  color: var(--accent-cyan, $accent-cyan) !important;
-  border-radius: 8px !important;
-  text-transform: none !important;
-  font-weight: 600 !important;
-}
 
 /* ─── Card View Grid ──────────────────────────────────────────── */
 .ordersCardGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-  gap: 20px;
+  gap: 16px;
 
-  @media (max-width: 480px) {
-    grid-template-columns: 1fr;
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   }
 }
 

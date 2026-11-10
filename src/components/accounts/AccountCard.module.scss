@@ -1,103 +1,87 @@
 @use '../../styles/variables' as *;
 @use '../../styles/mixins' as *;
 
-.accountCard {
-  @include glass-card;
-  position: relative;
+.compactFigmaCard {
+  @include glass-panel;
+  border-radius: 8px;
+  padding: 10px 14px;
   display: flex;
-  flex-direction: column;
+  align-items: center;
   justify-content: space-between;
-  padding: 22px;
-  border-radius: $radius-lg;
+  gap: 12px;
+  cursor: pointer;
+  position: relative;
   overflow: hidden;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-              border-color 0.3s ease;
+  border: 1px solid var(--border-glow, $border-dark-glow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 
-  @include mobile {
-    border-radius: 8px;
-    padding: 14px 12px;
+  @media (max-width: 600px) {
+    padding: 8px 10px;
+    gap: 8px;
   }
 
   &:hover {
-    transform: translateY(-4px);
+    transform: translateY(-2px);
     border-color: rgba(54, 207, 255, 0.45);
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45), 0 0 25px rgba(54, 207, 255, 0.2);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), 0 0 15px rgba(54, 207, 255, 0.15);
 
-    .ambientGlare {
-      opacity: 1;
+    .chevronIcon {
+      transform: translateX(3px);
+      color: var(--accent-cyan);
     }
   }
 
-  :global([data-theme="light"]) & {
+  :global([data-theme='light']) & {
+    border-color: rgba(2, 132, 199, 0.18);
+    background: rgba(255, 255, 255, 0.9);
+
     &:hover {
-      border-color: $accent-blue;
-      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.12), 0 0 20px rgba(2, 132, 199, 0.12);
+      border-color: #0284c7;
+      box-shadow: 0 8px 20px rgba(2, 132, 199, 0.15);
     }
   }
 }
 
-.ambientGlare {
-  position: absolute;
-  top: -40px;
-  right: -40px;
-  width: 120px;
-  height: 120px;
-  background: radial-gradient(circle, rgba(54, 207, 255, 0.18) 0%, transparent 70%);
-  pointer-events: none;
-  opacity: 0.5;
-  transition: opacity 0.4s ease;
-
-  :global([data-theme="light"]) & {
-    background: radial-gradient(circle, rgba(2, 132, 199, 0.15) 0%, transparent 70%);
-  }
-}
-
-.topRow {
+/* ─── Column 1: Account ───────────────────────────────────────── */
+.colAccount {
   display: flex;
   align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 16px;
-}
-
-.headerLeft {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.avatarBox {
-  width: 44px;
-  height: 44px;
-  border-radius: 8px;
-  background: rgba(54, 207, 255, 0.12);
-  border: 1px solid rgba(54, 207, 255, 0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  gap: 8px;
+  width: 28%;
+  min-width: 90px;
+  max-width: 140px;
   flex-shrink: 0;
+  flex-direction: column;
 
-  :global([data-theme="light"]) & {
-    background: rgba(2, 132, 199, 0.1);
-    border-color: rgba(2, 132, 199, 0.25);
+  @media (max-width: 600px) {
+    width: 30%;
+    min-width: 85px;
+    gap: 6px;
   }
 }
 
 .logoSquare {
-  width: 44px;
-  height: 44px;
-  min-width: 44px;
-  min-height: 44px;
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  min-height: 38px;
   border-radius: 8px;
-  background: #FFFFFF;
-  border: 1px solid rgba(54, 207, 255, 0.25);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
-  padding: 3px;
+  background: #ffffff;
+  padding: 2px;
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 1px solid rgba(54, 207, 255, 0.25);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
   flex-shrink: 0;
+
+  @media (max-width: 600px) {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    min-height: 32px;
+  }
 }
 
 .accountLogoImg {
@@ -107,186 +91,186 @@
   display: block;
 }
 
-.orderCountText {
+.avatarLetter {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--accent-cyan);
+}
+
+.accountTextGroup {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.fullName {
+  font-size: 0.84rem;
+  font-weight: 700;
   color: var(--text-primary);
-  font-size: 0.88rem;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  @media (max-width: 600px) {
+    font-size: 0.78rem;
+  }
+}
+
+.accountSub {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  line-height: 1.2;
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  @media (max-width: 600px) {
+    font-size: 0.66rem;
+  }
+}
+
+/* ─── Column 2: Details ───────────────────────────────────────── */
+.colDetails {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+  padding: 0 4px;
+}
+
+.typeLine {
+  display: flex;
+  align-items: center;
+}
+
+.typeBadge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 8px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  background: rgba(54, 207, 255, 0.12);
+  border: 1px solid rgba(54, 207, 255, 0.35);
+  color: var(--accent-cyan);
+  white-space: nowrap;
+
+  :global([data-theme='light']) & {
+    background: rgba(2, 132, 199, 0.1);
+    border-color: rgba(2, 132, 199, 0.3);
+    color: #0284c7;
+  }
+
+  @media (max-width: 600px) {
+    font-size: 0.65rem;
+    padding: 1px 6px;
+  }
+}
+
+.cardDivider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 2px 0;
+
+  :global([data-theme='light']) & {
+    background: rgba(15, 23, 42, 0.08);
+  }
+}
+
+.orderCountLine {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.orderBagIcon {
+  font-size: 13px !important;
+  color: var(--text-secondary);
+}
+
+.orderCountText {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
 
   strong {
     color: var(--accent-cyan);
     font-weight: 700;
-  }
-}
 
-.avatarLetter {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--accent-cyan, $accent-cyan);
-
-  :global([data-theme="light"]) & {
-    color: $accent-blue;
-  }
-}
-
-.nameAndType {
-  display: flex;
-  flex-direction: column;
-}
-
-.fullName {
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: var(--text-primary, $text-primary-dark);
-  margin: 0 0 2px 0;
-  line-height: 1.3;
-
-  :global([data-theme="light"]) & {
-    color: $text-primary-light;
-  }
-}
-
-.typeBadge {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 3px 10px;
-  border-radius: $radius-pill;
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-  background: rgba(54, 207, 255, 0.12);
-  border: 1px solid rgba(54, 207, 255, 0.35);
-  color: var(--accent-cyan, $accent-cyan);
-  align-self: flex-start;
-
-  :global([data-theme="light"]) & {
-    background: rgba(2, 132, 199, 0.08);
-    border-color: rgba(2, 132, 199, 0.3);
-    color: $accent-blue;
-  }
-}
-
-.detailsGrid {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 12px 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  margin-bottom: 16px;
-
-  :global([data-theme="light"]) & {
-    border-top-color: rgba(15, 23, 42, 0.06);
-    border-bottom-color: rgba(15, 23, 42, 0.06);
-  }
-}
-
-.detailRow {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 0.85rem;
-  color: var(--text-secondary, $text-secondary-dark);
-
-  :global([data-theme="light"]) & {
-    color: $text-secondary-light;
-  }
-}
-
-.detailIcon {
-  font-size: 1.05rem;
-  color: var(--accent-cyan, $accent-cyan);
-
-  :global([data-theme="light"]) & {
-    color: $accent-blue;
-  }
-}
-
-.detailLink {
-  color: var(--text-primary, $text-primary-dark);
-  text-decoration: none;
-  transition: color 0.2s ease;
-
-  &:hover {
-    color: var(--accent-cyan, $accent-cyan);
-    text-decoration: underline;
-  }
-
-  :global([data-theme="light"]) & {
-    color: $text-primary-light;
-
-    &:hover {
-      color: $accent-blue;
+    :global([data-theme='light']) & {
+      color: #0284c7;
     }
   }
-}
 
-.cardFooter {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-}
-
-.dateText {
-  font-size: 0.75rem;
-  color: var(--text-secondary, $text-secondary-dark);
-
-  :global([data-theme="light"]) & {
-    color: $text-secondary-light;
+  @media (max-width: 600px) {
+    font-size: 0.68rem;
   }
 }
 
-.cardActions {
+/* ─── Column 3: Actions ───────────────────────────────────────── */
+.colActions {
   display: flex;
   align-items: center;
   gap: 6px;
+  flex-shrink: 0;
+}
+
+.actionRow {
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .actionBtn {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: rgba(16, 36, 61, 0.6);
+  border: 1px solid var(--border-color, $border-dark);
+  color: var(--text-secondary);
+  cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: $radius-sm;
-  background: rgba(16, 36, 61, 0.6);
-  border: 1px solid var(--border-color, $border-dark);
-  color: var(--text-secondary, $text-secondary-dark);
-  cursor: pointer;
-  transition: $transition-default;
+  transition: all 0.2s ease;
 
   &:hover {
-    color: var(--accent-cyan, $accent-cyan);
-    border-color: var(--accent-cyan, $accent-cyan);
+    color: var(--accent-cyan);
+    border-color: var(--accent-cyan);
     background: rgba(54, 207, 255, 0.12);
   }
 
   &.duplicateBtn:hover {
-    color: #A78BFA;
-    border-color: rgba(167, 139, 250, 0.5);
+    color: #a78bfa;
+    border-color: #a78bfa;
     background: rgba(167, 139, 250, 0.12);
   }
 
   &.deleteBtn:hover {
-    color: #ff5252;
-    border-color: rgba(255, 82, 82, 0.5);
-    background: rgba(255, 82, 82, 0.12);
+    color: #ef4444;
+    border-color: #ef4444;
+    background: rgba(239, 68, 68, 0.12);
   }
 
-  :global([data-theme="light"]) & {
-    background: rgba(241, 245, 249, 0.9);
-    border-color: $border-light;
-    color: $text-secondary-light;
-
-    &:hover {
-      color: $accent-blue;
-      border-color: $accent-blue;
-      background: rgba(2, 132, 199, 0.1);
-    }
+  @media (max-width: 600px) {
+    width: 24px;
+    height: 24px;
   }
 }
 
 .actionIcon {
-  font-size: 1.05rem;
+  font-size: 0.95rem !important;
+
+  @media (max-width: 600px) {
+    font-size: 0.85rem !important;
+  }
 }
 
+.chevronIcon {
+  font-size: 18px !important;
+  color: var(--text-secondary);
+  transition: transform 0.2s ease, color 0.2s ease;
+}

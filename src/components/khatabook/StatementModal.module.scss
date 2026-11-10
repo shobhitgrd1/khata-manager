@@ -13,6 +13,10 @@
   justify-content: space-between !important;
   padding: 18px 24px !important;
   border-bottom: 1px solid var(--border-color, $border-dark);
+
+  @media (max-width: 600px) {
+    padding: 10px 12px 8px 12px;
+  }
 }
 
 .headerLeft {
@@ -348,9 +352,12 @@
   body * {
     visibility: hidden;
   }
-  #printable-statement, #printable-statement * {
+
+  #printable-statement,
+  #printable-statement * {
     visibility: visible;
   }
+
   #printable-statement {
     position: absolute;
     left: 0;

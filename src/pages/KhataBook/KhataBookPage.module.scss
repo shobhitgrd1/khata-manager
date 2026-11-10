@@ -15,6 +15,10 @@
   justify-content: space-between;
   gap: 16px;
   flex-wrap: wrap;
+
+  @media (max-width: 900px) {
+    display: none !important;
+  }
 }
 
 .headerLeft {
@@ -62,17 +66,6 @@
   gap: 10px;
 }
 
-.refreshBtn {
-  border-radius: 10px !important;
-  border-color: var(--border-color, $border-dark) !important;
-  color: var(--text-primary) !important;
-  text-transform: none !important;
-  font-weight: 600 !important;
-
-  &:hover {
-    border-color: var(--accent-cyan) !important;
-  }
-}
 
 .addBtn {
   border-radius: 10px !important;
@@ -89,16 +82,25 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 16px;
+
+  @media (max-width: 768px) {
+    display: contents;
+  }
 }
 
 .summaryCard {
   @include glass-panel;
-  border-radius: 16px;
+  border-radius: 8px;
   padding: 18px 20px;
   display: flex;
   align-items: center;
   gap: 16px;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  @media (max-width: 768px) {
+    padding: 8px 10px;
+    gap: 8px;
+  }
 
   &:hover {
     transform: translateY(-2px);
@@ -120,7 +122,7 @@
 .summaryIconBoxGreen {
   width: 48px;
   height: 48px;
-  border-radius: 12px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -129,15 +131,26 @@
   border: 1px solid rgba(16, 185, 129, 0.3);
   flex-shrink: 0;
 
+  @media (max-width: 768px) {
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    border-radius: 6px;
+  }
+
   svg {
     font-size: 1.5rem;
+
+    @media (max-width: 768px) {
+      font-size: 1.1rem;
+    }
   }
 }
 
 .summaryIconBoxRed {
   width: 48px;
   height: 48px;
-  border-radius: 12px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -146,8 +159,19 @@
   border: 1px solid rgba(239, 68, 68, 0.3);
   flex-shrink: 0;
 
+  @media (max-width: 768px) {
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    border-radius: 6px;
+  }
+
   svg {
     font-size: 1.5rem;
+
+    @media (max-width: 768px) {
+      font-size: 1.1rem;
+    }
   }
 }
 
@@ -262,6 +286,11 @@
   align-items: center;
   gap: 10px;
   flex-wrap: wrap;
+
+  @media (max-width: 768px) {
+    gap: 6px;
+    justify-content: space-between;
+  }
 }
 
 .dropdownFilter {
@@ -279,7 +308,13 @@
 .cardGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-  gap: 18px;
+  gap: 16px;
+
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
 }
 
 /* ─── Table View ──────────────────────────────────────────────── */

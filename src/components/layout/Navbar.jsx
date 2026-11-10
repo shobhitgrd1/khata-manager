@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   AppBar,
   Toolbar,
@@ -16,13 +16,29 @@ import DarkModeIcon from '@mui/icons-material/DarkMode';
 import SettingsIcon from '@mui/icons-material/Settings';
 import useAuth from '../../hooks/useAuth';
 import { useAppTheme } from '../../context/ThemeContext';
-import { useNavigate } from 'react-router-dom';
+import MobileHeaderContext from '../../context/MobileHeaderContext';
+import { useNavigate, useLocation } from 'react-router-dom';
 import styles from './Navbar.module.scss';
+
+const getRouteTitle = (path) => {
+  if (path.startsWith('/orders')) return 'Order Management';
+  if (path.startsWith('/accounts')) return 'Accounts';
+  if (path.startsWith('/credit-cards')) return 'Credit Cards';
+  if (path.startsWith('/dealers')) return 'Dealers';
+  if (path.startsWith('/products')) return 'Products';
+  if (path.startsWith('/khatabook')) return 'Khata Book';
+  if (path.startsWith('/users')) return 'User Management';
+  if (path.startsWith('/settings')) return 'Settings';
+  if (path.startsWith('/dashboard')) return 'Dashboard';
+  return 'Khata Manager';
+};
 
 const Navbar = ({ onMobileNavToggle }) => {
   const { user, logout } = useAuth();
   const { isDark, toggleTheme } = useAppTheme();
   const navigate = useNavigate();
+  const location = useLocation();
+  const { title, actionLabel, handleActionClick } = useContext(MobileHeaderContext);
 
   const handleLogout = async () => {
     await logout();
@@ -30,11 +46,12 @@ const Navbar = ({ onMobileNavToggle }) => {
   };
 
   const isAdmin = user?.role === 'admin';
+  const displayTitle = title || getRouteTitle(location.pathname);
 
   return (
     <AppBar position="sticky" elevation={0} className={styles.appBar}>
       <Toolbar className={styles.toolbar}>
-        {/* Left: Mobile hamburger & Logo */}
+        {/* Left: Mobile hamburger & Logo / Mobile Title */}
         <div className={styles.leftSection}>
           <IconButton
             color="inherit"
@@ -45,7 +62,12 @@ const Navbar = ({ onMobileNavToggle }) => {
             <MenuIcon />
           </IconButton>
 
-          {/* Mini Logo */}
+          {/* Mobile Title (Image 1 & 2 design) */}
+          <h1 className={styles.mobileSectionTitle}>
+            {displayTitle}
+          </h1>
+
+          {/* Desktop Mini Logo */}
           <div
             onClick={() => navigate('/dashboard')}
             className={styles.logoContainer}
@@ -83,8 +105,22 @@ const Navbar = ({ onMobileNavToggle }) => {
           </div>
         </div>
 
-        {/* Right: Actions, Theme Toggle, Profile chip & Logout */}
-        <div className={styles.rightSection}>
+        {/* Right: Mobile Action Button (Image 1 & 2) */}
+        {actionLabel && (
+          <div className={styles.mobileActionContainer}>
+            <Button
+              variant="contained"
+              size="small"
+              onClick={handleActionClick}
+              className={styles.mobileHeaderActionBtn}
+            >
+              {actionLabel}
+            </Button>
+          </div>
+        )}
+
+        {/* Desktop Right Section: Theme Toggle, Profile chip & Logout */}
+        <div className={styles.desktopRightSection}>
           {/* Quick Light/Dark Mode Toggle Button */}
           <Tooltip title={isDark ? 'Turn on Light Mode' : 'Turn on Dark Mode'}>
             <IconButton

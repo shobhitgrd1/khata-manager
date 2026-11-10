@@ -33,10 +33,27 @@
 .leftSection {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+  margin-left: 10px;
 
   @media (min-width: 600px) {
     gap: 12px;
+  }
+}
+
+.mobileSectionTitle {
+  display: block;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  @media (min-width: 900px) {
+    display: none;
   }
 }
 
@@ -59,13 +76,14 @@
   background: var(--glass-card, $glass-card-dark);
   border: 1.5px solid var(--accent-cyan, $accent-cyan);
   box-shadow: 0 0 10px var(--border-glow, $accent-cyan-glow);
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: transform 0.2s ease;
 
-  @media (min-width: 600px) {
+  @media (min-width: 900px) {
+    display: flex;
     width: 38px;
     height: 38px;
     border-radius: 10px;
@@ -85,7 +103,7 @@
   cursor: pointer;
   display: none;
 
-  @media (min-width: 600px) {
+  @media (min-width: 900px) {
     display: block;
   }
 }
@@ -105,13 +123,35 @@
   margin: 0;
 }
 
-.rightSection {
+/* ─── Mobile Action Button (Images 1 & 2) ────────────────────────── */
+.mobileActionContainer {
   display: flex;
   align-items: center;
-  gap: 8px;
 
-  @media (min-width: 600px) {
-    gap: 12px;
+  @media (min-width: 900px) {
+    display: none;
+  }
+}
+
+.mobileHeaderActionBtn {
+  border-radius: 8px !important;
+  padding: 6px 14px !important;
+  font-size: 0.84rem !important;
+  font-weight: 700 !important;
+  text-transform: none !important;
+  letter-spacing: 0.2px !important;
+  @include cyan-gradient-btn;
+  white-space: nowrap !important;
+}
+
+/* ─── Desktop Right Section ────────────────────────────────────────── */
+.desktopRightSection {
+  display: none;
+  align-items: center;
+  gap: 12px;
+
+  @media (min-width: 900px) {
+    display: flex;
   }
 }
 

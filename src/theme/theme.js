@@ -291,7 +291,7 @@ export const getTheme = (mode = 'dark') => {
         styleOverrides: {
           root: {
             '@media (max-width: 600px)': {
-              padding: '12px 14px !important',
+              padding: '8px 12px !important',
               fontSize: '1.05rem !important',
             },
           },
@@ -301,7 +301,7 @@ export const getTheme = (mode = 'dark') => {
         styleOverrides: {
           root: {
             '@media (max-width: 600px)': {
-              padding: '12px 14px !important',
+              padding: '8px 12px !important',
             },
           },
         },

@@ -1,26 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 import { Tooltip } from '@mui/material';
-import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
-import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
-import { useNavigate } from 'react-router-dom';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
+import SecurityOutlinedIcon from '@mui/icons-material/SecurityOutlined';
 import styles from './UserCard.module.scss';
 
-const formatDate = (val) => {
-  if (!val) return '—';
-  return new Date(val).toLocaleDateString('en-IN', {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
-  });
-};
-
-/**
- * UserCard component for User Management Card View.
- * Zero inline CSS.
- */
 const UserCard = ({ user, onEdit, onDelete, canEdit = true, canDelete = true }) => {
   const navigate = useNavigate();
   const {
@@ -29,81 +17,70 @@ const UserCard = ({ user, onEdit, onDelete, canEdit = true, canDelete = true }) 
     username = '',
     email = '',
     role = 'user',
-    status = 'active',
     permissions = [],
-    createdAt,
   } = user || {};
 
   const initial = name ? name.trim().charAt(0).toUpperCase() : 'U';
-  const visiblePerms = permissions.slice(0, 3);
-  const remainingPerms = permissions.length - 3;
+  const isAdmin = role === 'admin';
+
+  const handleCardClick = () => {
+    if (_id) navigate(`/users/${_id}`);
+  };
 
   return (
-    <div className={styles.userCard}>
-      <div className={styles.ambientGlare} />
-
-      <div className={styles.topRow}>
-        <div className={styles.headerLeft}>
-          <div className={styles.avatarBox}>
-            <span className={styles.avatarLetter}>{initial}</span>
-          </div>
-          <div className={styles.nameAndUsername}>
-            <h3 className={styles.userName}>{name}</h3>
-            <span className={styles.userHandle}>@{username || 'user'}</span>
-          </div>
+    <div
+      className={styles.compactFigmaCard}
+      onClick={handleCardClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleCardClick();
+        }
+      }}
+    >
+      {/* ─── Column 1: User Info ────────────────────────────── */}
+      <div className={styles.colUser}>
+        <div className={styles.userAvatarSquare}>
+          <span className={styles.avatarLetter}>{initial}</span>
         </div>
-
-        <div className={styles.statusBadges}>
-          <span className={`${styles.roleBadge} ${role === 'admin' ? styles.admin : ''}`}>
-            {role}
+        <div className={styles.userTextGroup}>
+          <span className={styles.userName} title={name}>
+            {name}
           </span>
-          <span className={`${styles.statusBadge} ${status === 'active' ? styles.active : styles.inactive}`}>
-            <span className={styles.statusDot} />
-            {status}
+          <span className={styles.userSub} title={`@${username}`}>
+            @{username || 'user'}
           </span>
         </div>
       </div>
 
-      <div className={styles.detailsGrid}>
-        {email && (
-          <div className={styles.detailRow}>
-            <EmailOutlinedIcon className={styles.detailIcon} />
-            <span>{email}</span>
-          </div>
-        )}
+      {/* ─── Column 2: Email & Permissions ──────────────────── */}
+      <div className={styles.colDetails}>
+        <div className={styles.emailLine}>
+          <EmailOutlinedIcon className={styles.detailIcon} />
+          <span className={styles.emailText} title={email}>
+            {email || 'No email provided'}
+          </span>
+        </div>
+
+        <div className={styles.cardDivider} />
+
+        <div className={styles.permsLine}>
+          <SecurityOutlinedIcon className={styles.detailIcon} />
+          <span className={styles.permsText}>
+            {permissions.length} {permissions.length === 1 ? 'Permission' : 'Permissions'}
+          </span>
+        </div>
       </div>
 
-      {permissions.length > 0 && (
-        <div className={styles.permissionsSection}>
-          <span className={styles.permissionsTitle}>Permissions ({permissions.length})</span>
-          <div className={styles.permissionsChips}>
-            {visiblePerms.map((p) => (
-              <span key={p} className={styles.permChip}>
-                {p}
-              </span>
-            ))}
-            {remainingPerms > 0 && (
-              <span className={styles.morePerms}>+{remainingPerms} more</span>
-            )}
-          </div>
-        </div>
-      )}
+      {/* ─── Column 3: Role & Actions ───────────────────────── */}
+      <div className={styles.colActions}>
+        <span className={`${styles.roleBadge} ${isAdmin ? styles.roleAdmin : styles.roleUser}`}>
+          {isAdmin ? 'ADMIN' : 'USER'}
+        </span>
 
-      <div className={styles.cardFooter}>
-        <span className={styles.dateText}>Joined {formatDate(createdAt)}</span>
-
-        <div className={styles.cardActions}>
-          <Tooltip title="View User Details" arrow>
-            <button
-              type="button"
-              onClick={() => navigate(`/users/${_id}`)}
-              className={styles.actionBtn}
-              aria-label={`View ${name}`}
-            >
-              <VisibilityOutlinedIcon className={styles.actionIcon} />
-            </button>
-          </Tooltip>
-
+        <div className={styles.actionRow} onClick={(e) => e.stopPropagation()}>
           {canEdit && onEdit && (
             <Tooltip title="Edit User" arrow>
               <button
@@ -129,6 +106,8 @@ const UserCard = ({ user, onEdit, onDelete, canEdit = true, canDelete = true }) 
               </button>
             </Tooltip>
           )}
+
+          <ChevronRightIcon className={styles.chevronIcon} />
         </div>
       </div>
     </div>
@@ -142,9 +121,7 @@ UserCard.propTypes = {
     username: PropTypes.string,
     email: PropTypes.string,
     role: PropTypes.string,
-    status: PropTypes.string,
-    permissions: PropTypes.arrayOf(PropTypes.string),
-    createdAt: PropTypes.string,
+    permissions: PropTypes.array,
   }).isRequired,
   onEdit: PropTypes.func,
   onDelete: PropTypes.func,
@@ -153,4 +130,3 @@ UserCard.propTypes = {
 };
 
 export default UserCard;
-

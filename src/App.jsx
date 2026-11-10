@@ -3,6 +3,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { CssBaseline } from '@mui/material';
 import { CustomThemeProvider } from './context/ThemeContext';
 import { AuthProvider } from './context/AuthContext';
+import { MobileHeaderProvider } from './context/MobileHeaderContext';
 import AppRoutes from './routes/AppRoutes';
 
 function App() {
@@ -11,7 +12,9 @@ function App() {
       <CssBaseline />
       <BrowserRouter>
         <AuthProvider>
-          <AppRoutes />
+          <MobileHeaderProvider>
+            <AppRoutes />
+          </MobileHeaderProvider>
         </AuthProvider>
       </BrowserRouter>
     </CustomThemeProvider>

@@ -36,6 +36,14 @@
   transition: $transition-default;
   outline: none;
 
+  @media (max-width: 768px) {
+    height: 36px;
+    padding: 0 10px;
+    font-size: 0.78rem;
+    gap: 5px;
+    white-space: nowrap;
+  }
+
   &:hover {
     border-color: var(--accent-cyan, $accent-cyan);
     box-shadow: 0 0 12px rgba(54, 207, 255, 0.25);

@@ -6,7 +6,7 @@
   backdrop-filter: blur(24px) !important;
   -webkit-backdrop-filter: blur(24px) !important;
   border: 1.5px solid var(--border-glow, $border-dark-glow) !important;
-  border-radius: 24px !important;
+  border-radius: 12px !important;
   padding: 8px !important;
   box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 35px var(--border-glow, $accent-cyan-glow) !important;
 
@@ -418,4 +418,3 @@
 .spinner {
   color: inherit !important;
 }
-

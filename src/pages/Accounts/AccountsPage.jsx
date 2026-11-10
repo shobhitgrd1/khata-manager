@@ -12,7 +12,6 @@ import { DataGrid } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import AddIcon from '@mui/icons-material/Add';
-import RefreshIcon from '@mui/icons-material/Refresh';
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
@@ -33,6 +32,7 @@ import { ACCOUNT_TYPES, PAGE_SIZE_OPTIONS } from '../../constants';
 import accountService from '../../services/accountService';
 import { getAccountLogo } from '../../utils/accountLogos';
 import useAuth from '../../hooks/useAuth';
+import { useMobileHeader } from '../../context/MobileHeaderContext';
 import styles from './AccountsPage.module.scss';
 
 const formatDate = (val) => {
@@ -64,6 +64,21 @@ const AccountsPage = () => {
     setViewMode(mode);
     localStorage.setItem('khata_accounts_view_mode', mode);
   };
+
+  useMobileHeader(
+    canCreateAccount()
+      ? {
+          title: 'Accounts',
+          action: {
+            label: '+ Add Account',
+            onClick: () => {
+              setEditingAccount(null);
+              setModalOpen(true);
+            },
+          },
+        }
+      : { title: 'Accounts', action: null }
+  );
 
   // Summary
   const [summary, setSummary] = useState({ totalAccounts: 0, distinctAccountTypes: 0 });
@@ -441,18 +456,13 @@ const AccountsPage = () => {
         </div>
 
         <div className={styles.filterRight}>
-          <Tooltip title="Refresh accounts">
-            <Button
-              variant="outlined"
-              onClick={() => {
-                fetchAccounts();
-                fetchSummary();
-              }}
-              className={styles.refreshBtn}
-            >
-              <RefreshIcon fontSize="inherit" />
-            </Button>
-          </Tooltip>
+          <div className={styles.mobileViewToggle}>
+            <ViewToggle
+              viewMode={viewMode}
+              onChange={handleToggleView}
+              ariaLabel="Accounts view switcher"
+            />
+          </div>
         </div>
       </div>
 

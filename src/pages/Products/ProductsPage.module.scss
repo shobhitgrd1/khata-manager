@@ -17,6 +17,10 @@
   justify-content: space-between;
   gap: 16px;
 
+  @media (max-width: 900px) {
+    display: none !important;
+  }
+
   @media (min-width: 600px) {
     flex-direction: row;
     align-items: center;
@@ -82,18 +86,24 @@
   gap: 16px;
 
   @media (max-width: 768px) {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
   }
 }
 
 .statCard {
   @include glass-panel;
   padding: 20px;
-  border-radius: 18px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   gap: 16px;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+  @media (max-width: 768px) {
+    padding: 8px 10px;
+    gap: 8px;
+  }
 
   &:hover {
     transform: translateY(-2px);
@@ -103,12 +113,20 @@
 .statIconBox {
   width: 48px;
   height: 48px;
-  border-radius: 14px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.5rem;
   flex-shrink: 0;
+
+  @media (max-width: 768px) {
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    border-radius: 6px;
+    font-size: 1rem;
+  }
 
   :global([data-theme='dark']) & {
     background: rgba(54, 207, 255, 0.12);
@@ -206,28 +224,33 @@
   display: flex;
   align-items: center;
   gap: 10px;
-}
 
-.refreshBtn {
-  min-width: auto !important;
-  padding: 9px !important;
-  border-color: var(--border-color, $border-dark) !important;
-  color: var(--accent-cyan, $accent-cyan) !important;
-  border-radius: 10px !important;
-
-  :global([data-theme='light']) & {
-    color: #0284C7 !important;
+  @media (max-width: 768px) {
+    gap: 6px;
+    flex-shrink: 0;
   }
 }
+
+.mobileViewToggle {
+  display: none;
+
+  @media (max-width: 900px) {
+    display: inline-flex;
+    align-items: center;
+  }
+}
+
 
 /* ─── Products Card Grid ──────────────────────────────────────── */
 .productsGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-  gap: 24px;
+  gap: 16px;
 
   @include mobile {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   }
 }
 

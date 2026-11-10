@@ -31,6 +31,7 @@ import accountService from "../../services/accountService";
 import dealerService from "../../services/dealerService";
 import productService from "../../services/productService";
 import orderService from "../../services/orderService";
+import { useMobileHeader } from "../../context/MobileHeaderContext";
 import styles from "./DashboardPage.module.scss";
 
 const formatINR = (val) => {
@@ -122,6 +123,8 @@ const DashboardPage = () => {
   const showDealers = canAccessDealers();
   const showProducts = canAccessProducts();
   const showOrders = canAccessOrders();
+
+  useMobileHeader({ title: 'Dashboard', action: null });
 
   // Fetch Reference Summaries
   useEffect(() => {

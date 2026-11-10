@@ -13,19 +13,26 @@ import { DataGrid } from '@mui/x-data-grid';
 import { useParams, useNavigate } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import AddIcon from '@mui/icons-material/Add';
-import RefreshIcon from '@mui/icons-material/Refresh';
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import TrendingDownIcon from '@mui/icons-material/TrendingDown';
 import PriceCheckIcon from '@mui/icons-material/PriceCheck';
 import PaymentsIcon from '@mui/icons-material/Payments';
+import PaymentsOutlinedIcon from '@mui/icons-material/PaymentsOutlined';
+import AccountBalanceWalletOutlinedIcon from '@mui/icons-material/AccountBalanceWalletOutlined';
 import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
+import LeaderboardIcon from '@mui/icons-material/Leaderboard';
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 import PhoneIcon from '@mui/icons-material/Phone';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
 import CommonEmptyState from '../../components/common/CommonEmptyState';
+import ViewToggle from '../../components/common/ViewToggle';
+import TransactionCard from '../../components/khatabook/TransactionCard';
 import MoneyTransactionModal from '../../components/khatabook/MoneyTransactionModal';
 import PaymentModal from '../../components/khatabook/PaymentModal';
 import EditTransactionModal from '../../components/khatabook/EditTransactionModal';
@@ -35,6 +42,7 @@ import { getTransactionColumns } from './TableColumns';
 import { KHATA_TRANSACTION_TYPES } from '../../constants/khatabook.constants';
 import khatabookService from '../../services/khatabookService';
 import useAuth from '../../hooks/useAuth';
+import { useMobileHeader } from '../../context/MobileHeaderContext';
 import styles from './KhataBookDetailsPage.module.scss';
 
 const formatINR = (val) => {
@@ -53,6 +61,34 @@ const KhataBookDetailsPage = () => {
   const [actionLoading, setActionLoading] = useState(false);
   const [error, setError] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
+
+  // View mode (card vs list)
+  const [viewMode, setViewMode] = useState(() => {
+    return localStorage.getItem('khata_tx_view_mode') || 'card';
+  });
+
+  const handleToggleView = (mode) => {
+    setViewMode(mode);
+    localStorage.setItem('khata_tx_view_mode', mode);
+  };
+
+  useMobileHeader(
+    account
+      ? {
+          title: account.name || 'Account Ledger',
+          action: {
+            label: '+ Money Given',
+            onClick: () => {
+              setMoneyModalType('MONEY_GIVEN');
+              setMoneyModalOpen(true);
+            },
+          },
+        }
+      : {
+          title: 'Khata Ledger',
+          action: null,
+        }
+  );
 
   // Filters
   const [search, setSearch] = useState('');
@@ -250,214 +286,152 @@ const KhataBookDetailsPage = () => {
   return (
     <div className={styles.container}>
       {/* Top Header */}
-      <div className={styles.header}>
-        <div className={styles.headerLeft}>
-          <Button
-            variant="outlined"
-            startIcon={<ArrowBackIcon />}
-            onClick={() => navigate('/khatabook')}
-            className={styles.backBtn}
-          >
-            All Accounts
-          </Button>
+      <div className={styles.topHeader}>
+        <Button
+          variant="outlined"
+          startIcon={<ArrowBackIcon />}
+          onClick={() => navigate('/khatabook')}
+          className={styles.backBtn}
+        >
+          All Accounts
+        </Button>
 
-          <div className={styles.titleInfo}>
-            <div className={styles.titleRow}>
-              <h1 className={styles.accountName}>{account?.name || 'Ledger Account'}</h1>
-              <span
-                className={`${styles.typeBadge} ${
-                  account?.accountType === 'Dealer' ? styles.typeDealer : styles.typeOther
-                }`}
-              >
-                {account?.accountType === 'Dealer' ? (
-                  <>
-                    <StorefrontIcon fontSize="inherit" /> Dealer Account
-                  </>
-                ) : (
-                  <>
-                    <PersonOutlinedIcon fontSize="inherit" /> Other Person
-                  </>
-                )}
-              </span>
-            </div>
-
-            {account?.mobileNumber && (
-              <span className={styles.mobileText}>
-                <PhoneIcon className={styles.phoneIcon} /> {account.mobileNumber}
-              </span>
-            )}
+        <div className={styles.accountHeaderCenter}>
+          <h1 className={styles.accountTitle}>{account?.name || 'Ledger Account'}</h1>
+          <div className={styles.badgeRow}>
+            <span
+              className={`${styles.typeBadge} ${
+                account?.accountType === 'Dealer' ? styles.typeDealer : styles.typeOther
+              }`}
+            >
+              <StorefrontIcon className={styles.storeIcon} />
+              <span>{account?.accountType === 'Dealer' ? 'DEALER ACCOUNT' : (account?.accountType || 'OTHER').toUpperCase()}</span>
+            </span>
           </div>
+
+          {account?.mobileNumber && (
+            <a href={`tel:${account.mobileNumber}`} className={styles.phoneLink}>
+              <PhoneIcon className={styles.phoneIcon} />
+              <span>{account.mobileNumber}</span>
+            </a>
+          )}
         </div>
 
-        <div className={styles.headerRight}>
-          <Button
-            variant="outlined"
-            startIcon={<AssessmentOutlinedIcon />}
-            onClick={() => setStatementOpen(true)}
-            className={styles.statementBtn}
-          >
-            View Statement
-          </Button>
+        <Button
+          variant="outlined"
+          startIcon={<AssessmentOutlinedIcon />}
+          onClick={() => setStatementOpen(true)}
+          className={styles.statementBtn}
+        >
+          View Statement
+        </Button>
+      </div>
 
-          <Button
-            variant="outlined"
-            startIcon={<RefreshIcon />}
-            onClick={refreshAll}
-            className={styles.refreshBtn}
-            disabled={loading}
-          >
-            Refresh
-          </Button>
+      {/* 2x2 Glowing Summary Grid */}
+      <div className={styles.summaryContainer}>
+        {/* Card 1: Total to Receive */}
+        <div className={styles.summaryCard}>
+          <div className={`${styles.summaryIconBox} ${styles.iconGreen}`}>
+            <TrendingUpIcon className={styles.summaryIcon} />
+          </div>
+          <div className={styles.summaryTextGroup}>
+            <span className={styles.summaryLabel}>Total to Receive</span>
+            <span className={`${styles.summaryValue} ${styles.valGreen}`}>
+              {formatINR(isPositive ? currentBalance : 0)}
+            </span>
+          </div>
+          <ChevronRightIcon className={styles.summaryChevron} />
+        </div>
+
+        {/* Card 2: Total to Pay */}
+        <div className={styles.summaryCard}>
+          <div className={`${styles.summaryIconBox} ${styles.iconRed}`}>
+            <TrendingDownIcon className={styles.summaryIcon} />
+          </div>
+          <div className={styles.summaryTextGroup}>
+            <span className={styles.summaryLabel}>Total to Pay</span>
+            <span className={`${styles.summaryValue} ${styles.valRed}`}>
+              {formatINR(isNegative ? Math.abs(currentBalance) : 0)}
+            </span>
+          </div>
+          <ChevronRightIcon className={styles.summaryChevron} />
+        </div>
+
+        {/* Card 3: Total Money Kept / Given */}
+        <div className={styles.summaryCard}>
+          <div className={`${styles.summaryIconBox} ${styles.iconCyan}`}>
+            <AccountBalanceWalletOutlinedIcon className={styles.summaryIcon} />
+          </div>
+          <div className={styles.summaryTextGroup}>
+            <span className={styles.summaryLabel}>Total Money Kept</span>
+            <span className={`${styles.summaryValue} ${styles.valCyan}`}>
+              {formatINR(account?.totalGiven || 0)}
+            </span>
+          </div>
+          <ChevronRightIcon className={styles.summaryChevron} />
+        </div>
+
+        {/* Card 4: Total Money Taken */}
+        <div className={styles.summaryCard}>
+          <div className={`${styles.summaryIconBox} ${styles.iconPurple}`}>
+            <PaymentsOutlinedIcon className={styles.summaryIcon} />
+          </div>
+          <div className={styles.summaryTextGroup}>
+            <span className={styles.summaryLabel}>Total Money Taken</span>
+            <span className={`${styles.summaryValue} ${styles.valPurple}`}>
+              {formatINR(account?.totalTaken || 0)}
+            </span>
+          </div>
+          <ChevronRightIcon className={styles.summaryChevron} />
         </div>
       </div>
 
-      {/* Linked Dealer Banner if available */}
-      {account?.accountType === 'Dealer' && account?.dealerId && (
-        <div className={styles.dealerBanner}>
-          <div className={styles.dealerBannerLeft}>
-            <StorefrontIcon className={styles.dealerIcon} />
-            <div>
-              <strong>Linked to Dealer: {account.dealerId.dealerName || account.name}</strong>
-              <p>Delivery prices from confirmed delivered orders can be automatically credited here.</p>
-            </div>
-          </div>
-          <Button
-            variant="outlined"
-            size="small"
-            onClick={() => navigate('/dealers')}
-            className={styles.goToDealersBtn}
-          >
-            Go to Dealers
-          </Button>
+      {/* Main Action Buttons: + Add Money Given & — Add Money Taken */}
+      <div className={styles.mainActionsRow}>
+        <button
+          type="button"
+          onClick={handleOpenMoneyGiven}
+          className={styles.addMoneyGivenBtn}
+        >
+          <AddIcon className={styles.actionSignIcon} />
+          <span>Add Money Given</span>
+        </button>
+
+        <button
+          type="button"
+          onClick={handleOpenMoneyTaken}
+          className={styles.addMoneyTakenBtn}
+        >
+          <span className={styles.minusSign}>—</span>
+          <span>Add Money Taken</span>
+        </button>
+      </div>
+
+      {/* Settlement Dues Actions if balance is not 0 */}
+      {(isPositive || isNegative) && (
+        <div className={styles.settlementsRow}>
+          {isPositive && (
+            <button
+              type="button"
+              onClick={handleOpenReceivePayment}
+              className={styles.settleReceiveBtn}
+            >
+              <PriceCheckIcon fontSize="small" />
+              <span>Receive Payment ({formatINR(currentBalance)})</span>
+            </button>
+          )}
+          {isNegative && (
+            <button
+              type="button"
+              onClick={handleOpenMakePayment}
+              className={styles.settlePayBtn}
+            >
+              <PaymentsIcon fontSize="small" />
+              <span>Make Payment ({formatINR(currentBalance)})</span>
+            </button>
+          )}
         </div>
       )}
-
-      {/* Hero Financial Strip */}
-      <div className={styles.heroStrip}>
-        {/* Outstanding Balance Highlight Card */}
-        <div
-          className={`${styles.balanceHighlightCard} ${
-            isPositive
-              ? styles.cardPositive
-              : isNegative
-              ? styles.cardNegative
-              : styles.cardSettled
-          }`}
-        >
-          <div className={styles.balanceHeader}>
-            <span className={styles.balanceStatusLabel}>
-              {isPositive ? 'Amount to Receive (Positive)' : isNegative ? 'Amount to Pay (Negative)' : 'All Dues Settled'}
-            </span>
-            <span className={styles.statusPill}>
-              {isPositive ? 'You will receive' : isNegative ? 'You will pay' : 'Settled'}
-            </span>
-          </div>
-
-          <div className={styles.balanceAmountDisplay}>
-            {isPositive && `+${formatINR(currentBalance)}`}
-            {isNegative && `-${formatINR(currentBalance)}`}
-            {isSettled && '₹0'}
-          </div>
-
-          <p className={styles.balanceExplanation}>
-            {isPositive
-              ? `The person owes you ${formatINR(currentBalance)}. Click Receive Payment when payment is received.`
-              : isNegative
-              ? `You owe this person ${formatINR(currentBalance)}. Click Make Payment when paying.`
-              : 'Zero balance. No outstanding receivables or payables.'}
-          </p>
-        </div>
-
-        {/* Breakdown Metric Boxes */}
-        <div className={styles.metricsGrid}>
-          <div className={styles.metricBox}>
-            <span className={styles.metricLabel}>Total to Receive</span>
-            <span className={styles.metricValGreen}>
-              {isPositive ? `+${formatINR(currentBalance)}` : '₹0'}
-            </span>
-            <span className={styles.metricSub}>Outstanding Receivable</span>
-          </div>
-
-          <div className={styles.metricBox}>
-            <span className={styles.metricLabel}>Total to Pay</span>
-            <span className={styles.metricValRed}>
-              {isNegative ? `-${formatINR(currentBalance)}` : '₹0'}
-            </span>
-            <span className={styles.metricSub}>Outstanding Payable</span>
-          </div>
-
-          <div className={styles.metricBox}>
-            <span className={styles.metricLabel}>Total Money Given</span>
-            <span className={styles.metricValGreen}>{formatINR(account?.totalGiven)}</span>
-            <span className={styles.metricSub}>Lent / Credited</span>
-          </div>
-
-          <div className={styles.metricBox}>
-            <span className={styles.metricLabel}>Total Money Taken</span>
-            <span className={styles.metricValRed}>{formatINR(account?.totalTaken)}</span>
-            <span className={styles.metricSub}>Borrowed / Debited</span>
-          </div>
-
-          <div className={styles.metricBox}>
-            <span className={styles.metricLabel}>Payments Received</span>
-            <span className={styles.metricValGreen}>{formatINR(account?.totalPaymentsReceived)}</span>
-            <span className={styles.metricSub}>Settlement In</span>
-          </div>
-
-          <div className={styles.metricBox}>
-            <span className={styles.metricLabel}>Payments Made</span>
-            <span className={styles.metricValBlue}>{formatINR(account?.totalPaymentsMade)}</span>
-            <span className={styles.metricSub}>Settlement Out</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Action Buttons Row */}
-      <div className={styles.actionsBar}>
-        <div className={styles.actionsGroup}>
-          <Button
-            variant="contained"
-            startIcon={<TrendingUpIcon />}
-            onClick={handleOpenMoneyGiven}
-            className={styles.moneyGivenBtn}
-          >
-            + Add Money Given
-          </Button>
-
-          <Button
-            variant="contained"
-            startIcon={<TrendingDownIcon />}
-            onClick={handleOpenMoneyTaken}
-            className={styles.moneyTakenBtn}
-          >
-            + Add Money Taken
-          </Button>
-        </div>
-
-        <div className={styles.paymentsGroup}>
-          {/* Receive Payment is active when balance > 0 */}
-          <Button
-            variant="contained"
-            startIcon={<PriceCheckIcon />}
-            onClick={handleOpenReceivePayment}
-            className={styles.receivePaymentBtn}
-            disabled={!isPositive}
-          >
-            Receive Payment
-          </Button>
-
-          {/* Make Payment is active when balance < 0 */}
-          <Button
-            variant="contained"
-            startIcon={<PaymentsIcon />}
-            onClick={handleOpenMakePayment}
-            className={styles.makePaymentBtn}
-            disabled={!isNegative}
-          >
-            Make Payment
-          </Button>
-        </div>
-      </div>
 
       {/* Alerts */}
       {error && (
@@ -473,64 +447,54 @@ const KhataBookDetailsPage = () => {
 
       {/* Transactions Section */}
       <div className={styles.transactionsSection}>
-        <div className={styles.sectionHeader}>
-          <h3>Transaction History ({transactions.length})</h3>
+        <div className={styles.txSectionHeader}>
+          <div className={styles.txTitleWithIcon}>
+            <ReceiptLongIcon className={styles.txDocIcon} />
+            <h3 className={styles.txTitleText}>Transaction History ({transactions.length})</h3>
+          </div>
 
-          {/* Filters */}
-          <div className={styles.filtersRow}>
-            <TextField
-              placeholder="Search description, mode..."
-              size="small"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className={styles.searchField}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon fontSize="small" />
-                  </InputAdornment>
-                ),
-              }}
-            />
-
-            <TextField
-              select
-              size="small"
-              value={typeFilter}
-              onChange={(e) => setTypeFilter(e.target.value)}
-              className={styles.selectField}
-            >
-              <MenuItem value="">All Transaction Types</MenuItem>
-              {KHATA_TRANSACTION_TYPES.map((t) => (
-                <MenuItem key={t.value} value={t.value}>
-                  {t.label}
-                </MenuItem>
-              ))}
-            </TextField>
-
-            <TextField
-              label="From"
-              type="date"
-              size="small"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-              InputLabelProps={{ shrink: true }}
-              className={styles.dateField}
-            />
-
-            <TextField
-              label="To"
-              type="date"
-              size="small"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-              InputLabelProps={{ shrink: true }}
-              className={styles.dateField}
+          <div className={styles.desktopViewToggle}>
+            <ViewToggle
+              viewMode={viewMode}
+              onChange={handleToggleView}
+              ariaLabel="Transaction history view switcher"
             />
           </div>
         </div>
 
-        {/* Transactions Table */}
+        {/* Filter Bar: Search & Date */}
+        <div className={styles.filterBar}>
+          <div className={styles.searchBox}>
+            <SearchIcon className={styles.searchIcon} />
+            <input
+              type="text"
+              placeholder="Search description, mode..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className={styles.searchInput}
+            />
+          </div>
+
+          <div className={styles.dateBox}>
+            <CalendarMonthIcon className={styles.calendarIcon} />
+            <input
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+              className={styles.dateInput}
+            />
+          </div>
+
+          <div className={styles.mobileViewToggle}>
+            <ViewToggle
+              viewMode={viewMode}
+              onChange={handleToggleView}
+              ariaLabel="Transaction history view switcher"
+            />
+          </div>
+        </div>
+
+        {/* Transactions Card View vs Table View */}
         {loading ? (
           <div className={styles.loadingBox}>
             <CircularProgress className={styles.spinner} />
@@ -544,6 +508,18 @@ const KhataBookDetailsPage = () => {
             actionLabel="+ Add Money Given"
             onAction={handleOpenMoneyGiven}
           />
+        ) : viewMode === 'card' ? (
+          <div className={styles.txCardGrid}>
+            {transactions.map((tx) => (
+              <TransactionCard
+                key={tx._id}
+                transaction={tx}
+                canEdit={canEditKhataBook()}
+                onEdit={handleOpenEditTx}
+                onReverse={handleOpenReverseTx}
+              />
+            ))}
+          </div>
         ) : (
           <div className={styles.tableCard}>
             <DataGrid
@@ -561,6 +537,19 @@ const KhataBookDetailsPage = () => {
           </div>
         )}
       </div>
+
+      {/* Bottom Full-Width Button: Go to Dealer */}
+      {account?.accountType === 'Dealer' && (
+        <button
+          type="button"
+          onClick={() => navigate('/dealers')}
+          className={styles.goToDealerBottomBtn}
+        >
+          <LeaderboardIcon className={styles.dealerBtnIcon} />
+          <span className={styles.dealerBtnText}>Go to Dealer</span>
+          <ChevronRightIcon className={styles.dealerBtnChevron} />
+        </button>
+      )}
 
       {/* Modals */}
       <MoneyTransactionModal

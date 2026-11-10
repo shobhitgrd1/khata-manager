@@ -18,7 +18,6 @@ import { DataGrid } from "@mui/x-data-grid";
 import { useNavigate } from "react-router-dom";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import AddCardIcon from "@mui/icons-material/AddCard";
-import RefreshIcon from "@mui/icons-material/Refresh";
 import SearchIcon from "@mui/icons-material/Search";
 import ClearIcon from "@mui/icons-material/Clear";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
@@ -43,6 +42,7 @@ import { SUPPORTED_BANKS, PAGE_SIZE_OPTIONS } from "../../constants";
 import creditCardService from "../../services/creditCardService";
 import { getBankLogo } from "../../utils/bankLogos";
 import useAuth from "../../hooks/useAuth";
+import { useMobileHeader } from "../../context/MobileHeaderContext";
 import styles from "./CreditCardsPage.module.scss";
 
 const formatINR = (val) => {
@@ -87,6 +87,21 @@ const CreditCardsPage = () => {
     setViewMode(mode);
     localStorage.setItem("khata_credit_cards_view_mode", mode);
   };
+
+  useMobileHeader(
+    canCreateCreditCard()
+      ? {
+          title: "Credit Cards",
+          action: {
+            label: "+ Add Card",
+            onClick: () => {
+              setSelectedCard(null);
+              setModalOpen(true);
+            },
+          },
+        }
+      : { title: "Credit Cards", action: null }
+  );
 
   // Search & Filters
   const [search, setSearch] = useState("");
@@ -505,15 +520,13 @@ const CreditCardsPage = () => {
         </div>
 
         <div className={styles.filterRight}>
-          <Tooltip title="Refresh credit cards list">
-            <Button
-              variant="outlined"
-              onClick={fetchData}
-              className={styles.refreshBtn}
-            >
-              <RefreshIcon fontSize="inherit" />
-            </Button>
-          </Tooltip>
+          <div className={styles.mobileViewToggle}>
+            <ViewToggle
+              viewMode={viewMode}
+              onChange={handleToggleView}
+              ariaLabel="Credit cards view toggle"
+            />
+          </div>
         </div>
       </div>
 

@@ -12,7 +12,6 @@ import { DataGrid } from '@mui/x-data-grid';
 import { useNavigate } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import AddIcon from '@mui/icons-material/Add';
-import RefreshIcon from '@mui/icons-material/Refresh';
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
 import MenuBookIcon from '@mui/icons-material/MenuBook';
@@ -28,6 +27,7 @@ import { getKhataBookColumns } from './TableColumns';
 import { KHATA_ACCOUNT_TYPES, KHATA_BALANCE_FILTERS } from '../../constants/khatabook.constants';
 import khatabookService from '../../services/khatabookService';
 import useAuth from '../../hooks/useAuth';
+import { useMobileHeader } from '../../context/MobileHeaderContext';
 import styles from './KhataBookPage.module.scss';
 
 const formatINR = (val) => {
@@ -62,6 +62,21 @@ const KhataBookPage = () => {
     setViewMode(mode);
     localStorage.setItem('khata_view_mode', mode);
   };
+
+  useMobileHeader(
+    canCreateKhataBook()
+      ? {
+          title: 'Khata Book',
+          action: {
+            label: '+ Add Account',
+            onClick: () => {
+              setEditingAccount(null);
+              setModalOpen(true);
+            },
+          },
+        }
+      : { title: 'Khata Book', action: null }
+  );
 
   // Search & Filter state
   const [search, setSearch] = useState('');
@@ -200,16 +215,6 @@ const KhataBookPage = () => {
         </div>
 
         <div className={styles.headerRight}>
-          <Button
-            variant="outlined"
-            startIcon={<RefreshIcon />}
-            onClick={fetchAccounts}
-            className={styles.refreshBtn}
-            disabled={loading}
-          >
-            Refresh
-          </Button>
-
           {canCreateKhataBook() && (
             <Button
               variant="contained"
@@ -350,7 +355,7 @@ const KhataBookPage = () => {
             ))}
           </TextField>
 
-          <ViewToggle viewMode={viewMode} onViewChange={handleToggleView} />
+          <ViewToggle viewMode={viewMode} onChange={handleToggleView} />
         </div>
       </div>
 

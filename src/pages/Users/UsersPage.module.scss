@@ -16,6 +16,10 @@
   justify-content: space-between;
   gap: 16px;
 
+  @media (max-width: 900px) {
+    display: none !important;
+  }
+
   @media (min-width: 600px) {
     flex-direction: row;
     align-items: center;
@@ -83,6 +87,20 @@
   display: flex;
   align-items: center;
   gap: 10px;
+
+  @media (max-width: 768px) {
+    gap: 6px;
+    flex-shrink: 0;
+  }
+}
+
+.mobileViewToggle {
+  display: none;
+
+  @media (max-width: 900px) {
+    display: inline-flex;
+    align-items: center;
+  }
 }
 
 .searchField {
@@ -100,21 +118,6 @@
   font-size: 1.2rem !important;
 }
 
-.refreshBtn {
-  min-width: auto !important;
-  padding: 9px !important;
-  border-color: var(--border-color, $border-dark) !important;
-  color: var(--accent-cyan, $accent-cyan) !important;
-  border-radius: 10px !important;
-
-  :global([data-theme='light']) & {
-    color: #0284c7 !important;
-  }
-}
-
-.refreshIcon {
-  font-size: 1.25rem !important;
-}
 
 .errorAlert {
   background-color: rgba(239, 68, 68, 0.15) !important;
@@ -140,10 +143,12 @@
 .usersCardGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  gap: 20px;
+  gap: 16px;
 
   @include mobile {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   }
 }
 
@@ -152,7 +157,7 @@
   height: 600px;
   width: 100%;
   padding: 8px;
-  border-radius: 24px;
+  border-radius: 8px;
   overflow: hidden;
 
   :global {

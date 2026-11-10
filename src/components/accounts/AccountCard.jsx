@@ -1,28 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 import { Tooltip } from '@mui/material';
-import PhoneIcon from '@mui/icons-material/Phone';
-import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined';
+import PhoneIcon from '@mui/icons-material/Phone';
 import { getAccountLogo } from '../../utils/accountLogos';
 import styles from './AccountCard.module.scss';
 
-const formatDate = (val) => {
-  if (!val) return '—';
-  return new Date(val).toLocaleDateString('en-IN', {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
-  });
-};
-
-/**
- * AccountCard component for Card View in Account Management.
- * Zero inline CSS.
- */
 const AccountCard = ({
   account,
   onEdit,
@@ -32,77 +20,81 @@ const AccountCard = ({
   canDelete = true,
   canCreate = true,
 }) => {
+  const navigate = useNavigate();
+
   const {
+    _id,
     fullName = 'Unnamed Account',
     accountType = 'Other',
     customAccountType = '',
     mobileNumber = '',
     email = '',
-    createdAt,
+    orderCount = 0,
   } = account || {};
 
   const displayType = accountType === 'Other' && customAccountType ? customAccountType : accountType;
   const initial = fullName ? fullName.trim().charAt(0).toUpperCase() : 'A';
   const logoSrc = getAccountLogo(displayType) || getAccountLogo(accountType);
 
-  return (
-    <div className={styles.accountCard}>
-      <div className={styles.ambientGlare} />
+  const handleCardClick = () => {
+    if (_id) navigate(`/accounts/${_id}`);
+  };
 
-      <div className={styles.topRow}>
-        <div className={styles.headerLeft}>
+  return (
+    <div
+      className={styles.compactFigmaCard}
+      onClick={handleCardClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleCardClick();
+        }
+      }}
+    >
+      {/* ─── Column 1: Logo & Account Name ─────────────────── */}
+      <div className={styles.colAccount}>
+        <div className={styles.logoSquare}>
           {logoSrc ? (
-            <div className={styles.logoSquare}>
-              <img src={logoSrc} alt={displayType} className={styles.accountLogoImg} />
-            </div>
+            <img src={logoSrc} alt={displayType} className={styles.accountLogoImg} />
           ) : (
-            <div className={styles.avatarBox}>
-              <span className={styles.avatarLetter}>{initial}</span>
-            </div>
+            <span className={styles.avatarLetter}>{initial}</span>
           )}
-          <div className={styles.nameAndType}>
-            <h3 className={styles.fullName}>{fullName}</h3>
-            <span className={styles.typeBadge}>
-              <ShoppingBagOutlinedIcon fontSize="inherit" />
-              {displayType}
-            </span>
-          </div>
+        </div>
+        <div className={styles.accountTextGroup}>
+          <span className={styles.fullName} title={fullName}>
+            {fullName}
+          </span>
+          <span className={styles.accountSub} title={mobileNumber || email || ''}>
+            {mobileNumber || email || 'No contact'}
+          </span>
         </div>
       </div>
 
-      <div className={styles.detailsGrid}>
-        <div className={styles.detailRow}>
-          <ShoppingBagOutlinedIcon className={styles.detailIcon} />
-          <span className={styles.orderCountText}>
-            Orders: <strong>{account?.orderCount ?? 0}</strong>
+      {/* ─── Column 2: Type, Details, Divider & Orders ─────── */}
+      <div className={styles.colDetails}>
+        <div className={styles.typeLine}>
+          <span className={styles.typeBadge}>
+            {displayType}
           </span>
         </div>
 
-        {mobileNumber ? (
-          <div className={styles.detailRow}>
-            <PhoneIcon className={styles.detailIcon} />
-            <a href={`tel:${mobileNumber}`} className={styles.detailLink}>
-              {mobileNumber}
-            </a>
-          </div>
-        ) : null}
+        <div className={styles.cardDivider} />
 
-        {email ? (
-          <div className={styles.detailRow}>
-            <EmailOutlinedIcon className={styles.detailIcon} />
-            <a href={`mailto:${email}`} className={styles.detailLink}>
-              {email}
-            </a>
-          </div>
-        ) : null}
+        <div className={styles.orderCountLine}>
+          <ShoppingBagOutlinedIcon className={styles.orderBagIcon} />
+          <span className={styles.orderCountText}>
+            Orders: <strong>{orderCount}</strong>
+          </span>
+        </div>
       </div>
 
-      <div className={styles.cardFooter}>
-        <span className={styles.dateText}>Added: {formatDate(createdAt)}</span>
-
-        <div className={styles.cardActions}>
+      {/* ─── Column 3: Actions & Chevron ───────────────────── */}
+      <div className={styles.colActions}>
+        <div className={styles.actionRow} onClick={(e) => e.stopPropagation()}>
           {canEdit && onEdit && (
-            <Tooltip title="Edit Account" arrow>
+            <Tooltip title="Edit" arrow>
               <button
                 type="button"
                 onClick={() => onEdit(account)}
@@ -115,7 +107,7 @@ const AccountCard = ({
           )}
 
           {canCreate && onDuplicate && (
-            <Tooltip title="Duplicate Account" arrow>
+            <Tooltip title="Duplicate" arrow>
               <button
                 type="button"
                 onClick={() => onDuplicate(account)}
@@ -128,7 +120,7 @@ const AccountCard = ({
           )}
 
           {canDelete && onDelete && (
-            <Tooltip title="Delete Account" arrow>
+            <Tooltip title="Delete" arrow>
               <button
                 type="button"
                 onClick={() => onDelete(account)}
@@ -140,6 +132,8 @@ const AccountCard = ({
             </Tooltip>
           )}
         </div>
+
+        <ChevronRightIcon className={styles.chevronIcon} />
       </div>
     </div>
   );
@@ -153,13 +147,14 @@ AccountCard.propTypes = {
     customAccountType: PropTypes.string,
     mobileNumber: PropTypes.string,
     email: PropTypes.string,
-    createdAt: PropTypes.string,
+    orderCount: PropTypes.number,
   }).isRequired,
   onEdit: PropTypes.func,
+  onDuplicate: PropTypes.func,
   onDelete: PropTypes.func,
   canEdit: PropTypes.bool,
   canDelete: PropTypes.bool,
+  canCreate: PropTypes.bool,
 };
 
 export default AccountCard;
-

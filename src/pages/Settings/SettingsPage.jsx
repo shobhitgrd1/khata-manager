@@ -17,11 +17,14 @@ import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import SecurityIcon from '@mui/icons-material/Security';
 import { useAppTheme } from '../../context/ThemeContext';
 import useAuth from '../../hooks/useAuth';
+import { useMobileHeader } from '../../context/MobileHeaderContext';
 import styles from './SettingsPage.module.scss';
 
 const SettingsPage = () => {
   const { setThemeMode, isDark } = useAppTheme();
   const { user } = useAuth();
+
+  useMobileHeader({ title: 'Settings', action: null });
 
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [compactMode, setCompactMode] = useState(false);

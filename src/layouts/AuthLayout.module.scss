@@ -55,7 +55,7 @@
   z-index: 1;
   width: 100%;
   max-width: 450px;
-  border-radius: 24px;
+  border-radius: 12px;
   background-color: var(--glass-card, $glass-card-dark);
   backdrop-filter: blur(24px) saturate(180%);
   -webkit-backdrop-filter: blur(24px) saturate(180%);
@@ -69,7 +69,7 @@
   transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
 
   @media (min-width: 600px) {
-    border-radius: 28px;
+    border-radius: 12px;
     padding: 38px 34px;
   }
 
@@ -121,4 +121,3 @@
 .themeIcon {
   font-size: 1.35rem !important;
 }
-

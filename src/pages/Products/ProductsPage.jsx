@@ -12,7 +12,6 @@ import { DataGrid } from '@mui/x-data-grid';
 import { useNavigate, Link } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import AddIcon from '@mui/icons-material/Add';
-import RefreshIcon from '@mui/icons-material/Refresh';
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
 import Inventory2OutlinedIcon from '@mui/icons-material/Inventory2Outlined';
@@ -34,6 +33,7 @@ import { getProductColumns } from './TableColumns';
 import { PAGE_SIZE_OPTIONS } from '../../constants';
 import productService from '../../services/productService';
 import useAuth from '../../hooks/useAuth';
+import { useMobileHeader } from '../../context/MobileHeaderContext';
 import styles from './ProductsPage.module.scss';
 
 const formatDate = (val) => {
@@ -74,6 +74,21 @@ const ProductsPage = () => {
     setViewMode(mode);
     localStorage.setItem('khata_products_view_mode', mode);
   };
+
+  useMobileHeader(
+    canCreateProduct()
+      ? {
+          title: 'Products',
+          action: {
+            label: '+ Add Product',
+            onClick: () => {
+              setEditingProduct(null);
+              setModalOpen(true);
+            },
+          },
+        }
+      : { title: 'Products', action: null }
+  );
 
   // Search & Filter state
   const [search, setSearch] = useState('');
@@ -449,18 +464,13 @@ const ProductsPage = () => {
         </div>
 
         <div className={styles.filterRight}>
-          <Tooltip title="Refresh products">
-            <Button
-              variant="outlined"
-              onClick={() => {
-                fetchProducts();
-                fetchSummary();
-              }}
-              className={styles.refreshBtn}
-            >
-              <RefreshIcon fontSize="inherit" />
-            </Button>
-          </Tooltip>
+          <div className={styles.mobileViewToggle}>
+            <ViewToggle
+              viewMode={viewMode}
+              onChange={handleToggleView}
+              ariaLabel="Products view switcher"
+            />
+          </div>
         </div>
       </div>
 

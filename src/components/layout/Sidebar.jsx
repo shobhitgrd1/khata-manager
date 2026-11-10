@@ -7,6 +7,8 @@ import {
   ListItemIcon,
   ListItemText,
   Collapse,
+  Chip,
+  Button,
 } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import DashboardIcon from "@mui/icons-material/Dashboard";
@@ -22,15 +24,23 @@ import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import MenuBookIcon from "@mui/icons-material/MenuBook";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import SettingsIcon from "@mui/icons-material/Settings";
+import LogoutIcon from "@mui/icons-material/Logout";
+import LightModeIcon from "@mui/icons-material/LightMode";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
+import ShieldOutlinedIcon from "@mui/icons-material/ShieldOutlined";
+import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 
 import useAuth from "../../hooks/useAuth";
+import { useAppTheme } from "../../context/ThemeContext";
 import styles from "./Sidebar.module.scss";
 
 const Sidebar = ({ mobileOpen, onMobileClose }) => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { isDark, toggleTheme } = useAppTheme();
   const {
     user,
+    logout,
     canAccessUserManagement,
     canAccessCreditCards,
     canAccessAccounts,
@@ -39,6 +49,14 @@ const Sidebar = ({ mobileOpen, onMobileClose }) => {
     canAccessOrders,
     canAccessKhataBook,
   } = useAuth();
+
+  const isAdmin = user?.role === "admin";
+
+  const handleLogout = async () => {
+    if (onMobileClose) onMobileClose();
+    await logout();
+    navigate("/login");
+  };
 
   // Permissions checks
   const showUserManagement = canAccessUserManagement();
@@ -108,6 +126,46 @@ const Sidebar = ({ mobileOpen, onMobileClose }) => {
 
   const drawerContent = (
     <div className={styles.drawerContainer}>
+      {/* ─── Mobile Profile Header (User Info & Logout moved to hamburger) ─── */}
+      <div className={styles.mobileProfileHeader}>
+        <div className={styles.mobileProfileTop}>
+          <div className={styles.mobileAvatar}>
+            {user?.name ? user.name.charAt(0).toUpperCase() : "U"}
+          </div>
+          <div className={styles.mobileProfileText}>
+            <span className={styles.mobileProfileName}>{user?.name || "User"}</span>
+            <span className={styles.mobileProfileUsername}>@{user?.username || "user"}</span>
+          </div>
+          <Chip
+            size="small"
+            label={isAdmin ? "ADMIN" : "USER"}
+            className={`${styles.mobileRoleChip} ${isAdmin ? styles.roleAdmin : styles.roleUser}`}
+          />
+        </div>
+
+        <div className={styles.mobileProfileActions}>
+          <Button
+            size="small"
+            variant="outlined"
+            onClick={toggleTheme}
+            startIcon={isDark ? <LightModeIcon /> : <DarkModeIcon />}
+            className={styles.mobileThemeToggleBtn}
+          >
+            {isDark ? "Light" : "Dark"}
+          </Button>
+
+          <Button
+            size="small"
+            variant="outlined"
+            onClick={handleLogout}
+            startIcon={<LogoutIcon />}
+            className={styles.mobileLogoutBtn}
+          >
+            Logout
+          </Button>
+        </div>
+      </div>
+
       {/* ─── Top Main Navigation Section ──────────────────────── */}
       <div className={styles.mainNavSection}>
         <List className={styles.navList}>

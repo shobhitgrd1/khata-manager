@@ -143,12 +143,16 @@
 .heroCard {
   @include glass-panel;
   padding: 26px 28px;
-  border-radius: 20px;
+  border-radius: 8px;
   display: flex;
   flex-direction: column;
   gap: 20px;
   position: relative;
   overflow: hidden;
+
+  @media (max-width: 600px) {
+    padding: 14px;
+  }
 
   :global([data-theme='dark']) & {
     border: 1.5px solid var(--border-glow, $border-dark-glow);
@@ -334,10 +338,13 @@
 .sectionCard {
   @include glass-panel;
   padding: 22px 24px;
-  border-radius: 18px;
   display: flex;
   flex-direction: column;
   gap: 16px;
+
+  @media (max-width: 600px) {
+    padding: 14px;
+  }
 
   :global([data-theme='dark']) & {
     border: 1px solid rgba(41, 75, 112, 0.7);
@@ -483,4 +490,3 @@
 .alertBox {
   border-radius: 12px;
 }
-

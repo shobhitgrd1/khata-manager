@@ -14,7 +14,6 @@ import { DataGrid } from '@mui/x-data-grid';
 import { useNavigate, Link } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import AddIcon from '@mui/icons-material/Add';
-import RefreshIcon from '@mui/icons-material/Refresh';
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
 import ReceiptLongOutlinedIcon from '@mui/icons-material/ReceiptLongOutlined';
@@ -49,6 +48,7 @@ import productService from '../../services/productService';
 import accountService from '../../services/accountService';
 import { getAccountLogo } from '../../utils/accountLogos';
 import useAuth from '../../hooks/useAuth';
+import { useMobileHeader } from '../../context/MobileHeaderContext';
 import styles from './OrdersPage.module.scss';
 
 const formatINR = (val) => {
@@ -116,6 +116,21 @@ const OrdersPage = () => {
   const [viewMode, setViewMode] = useState(() => {
     return localStorage.getItem('khata_orders_view_mode') || 'card';
   });
+
+  useMobileHeader(
+    canCreateOrder()
+      ? {
+          title: 'Order Management',
+          action: {
+            label: '+ Add Order',
+            onClick: () => {
+              setEditingOrder(null);
+              setModalOpen(true);
+            },
+          },
+        }
+      : { title: 'Order Management', action: null }
+  );
 
   const handleToggleView = (mode) => {
     setViewMode(mode);
@@ -415,12 +430,6 @@ const OrdersPage = () => {
     return chips;
   }, [appliedFilters, dealersList, productsList, accountsList]);
 
-  // Refresh
-  const handleRefresh = () => {
-    fetchOrders();
-    fetchSummary();
-  };
-
   // Deliver order handler
   const handleOpenDeliver = (order) => {
     setDeliveringOrder(order);
@@ -586,7 +595,7 @@ const OrdersPage = () => {
         </div>
       </div>
 
-      {/* Controls Bar: Search, Filters, Refresh */}
+      {/* Controls Bar: Search, Filters */}
       <div className={styles.controlsBar}>
         <div className={styles.filterGroupLeft}>
           <TextField
@@ -770,14 +779,13 @@ const OrdersPage = () => {
         </div>
 
         <div className={styles.filterGroupRight}>
-          <Button
-            variant="outlined"
-            onClick={handleRefresh}
-            className={styles.refreshBtn}
-            startIcon={<RefreshIcon />}
-          >
-            Refresh
-          </Button>
+          <div className={styles.mobileViewToggle}>
+            <ViewToggle
+              viewMode={viewMode}
+              onChange={handleToggleView}
+              ariaLabel="Orders view switcher"
+            />
+          </div>
         </div>
       </div>
 
