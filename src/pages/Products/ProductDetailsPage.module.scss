@@ -7,6 +7,10 @@
   gap: 28px;
   max-width: 1100px;
   margin: 0 auto;
+
+  @media (max-width: 900px) {
+    gap: 10px;
+  }
 }
 
 /* ─── Header ─────────────────────────────────────────────────── */
@@ -74,6 +78,16 @@
     background: rgba(54, 207, 255, 0.18) !important;
     border-color: var(--accent-cyan, $accent-cyan) !important;
   }
+
+  :global([data-theme='light']) & {
+    color: #0284C7 !important;
+    border-color: rgba(2, 132, 199, 0.35) !important;
+    background: rgba(2, 132, 199, 0.08) !important;
+
+    &:hover {
+      background: rgba(2, 132, 199, 0.16) !important;
+    }
+  }
 }
 
 .deleteBtn {
@@ -88,6 +102,16 @@
   &:hover {
     background: rgba(248, 113, 113, 0.18) !important;
     border-color: #F87171 !important;
+  }
+
+  :global([data-theme='light']) & {
+    color: #DC2626 !important;
+    border-color: rgba(220, 38, 38, 0.35) !important;
+    background: rgba(220, 38, 38, 0.08) !important;
+
+    &:hover {
+      background: rgba(220, 38, 38, 0.16) !important;
+    }
   }
 }
 

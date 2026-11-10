@@ -6,6 +6,10 @@
   flex-direction: column;
   gap: 20px;
   width: 100%;
+
+  @media (max-width: 900px) {
+    gap: 10px;
+  }
 }
 
 /* ─── Header ──────────────────────────────────────────────────── */
@@ -261,7 +265,29 @@
     background: rgba(255, 255, 255, 0.03);
 
     :global([data-theme='light']) & {
-      background: rgba(0, 0, 0, 0.02);
+      background: #FFFFFF;
+      border: 1px solid #CBD5E1;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+
+      fieldset {
+        border-color: #CBD5E1;
+      }
+
+      &:hover fieldset {
+        border-color: #0284C7;
+      }
+
+      &.Mui-focused fieldset {
+        border-color: #0284C7;
+      }
+
+      input {
+        color: #0F172A;
+
+        &::placeholder {
+          color: #94A3B8;
+        }
+      }
     }
   }
 }
@@ -295,12 +321,40 @@
 
 .dropdownFilter {
   min-width: 170px;
+  flex-shrink: 0;
 
   :global(.MuiOutlinedInput-root) {
     border-radius: 10px;
     background: rgba(255, 255, 255, 0.03);
     height: 38px;
     font-size: 0.82rem;
+
+    :global([data-theme='light']) & {
+      background: #FFFFFF;
+      border: 1px solid #CBD5E1;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+
+      fieldset {
+        border-color: #CBD5E1;
+      }
+
+      &:hover fieldset {
+        border-color: #0284C7;
+      }
+
+      &.Mui-focused fieldset {
+        border-color: #0284C7;
+      }
+
+      :global(.MuiSelect-select) {
+        color: #0F172A;
+        font-weight: 500;
+      }
+
+      :global(.MuiSvgIcon-root) {
+        color: #64748B;
+      }
+    }
   }
 }
 
@@ -489,6 +543,19 @@
     color: var(--accent-cyan);
     background: rgba(54, 207, 255, 0.08);
   }
+
+  :global([data-theme='light']) & {
+    background: #FFFFFF;
+    border: 1px solid #CBD5E1;
+    color: #64748B;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+
+    &:hover {
+      border-color: #0284C7;
+      color: #0284C7;
+      background: rgba(2, 132, 199, 0.08);
+    }
+  }
 }
 
 .deleteAction {
@@ -497,6 +564,14 @@
     color: #F87171 !important;
     background: rgba(239, 68, 68, 0.1) !important;
   }
+
+  :global([data-theme='light']) & {
+    &:hover {
+      border-color: #DC2626 !important;
+      color: #DC2626 !important;
+      background: rgba(220, 38, 38, 0.08) !important;
+    }
+  }
 }
 
 .reverseAction {
@@ -504,6 +579,14 @@
     border-color: #F59E0B !important;
     color: #FBBF24 !important;
     background: rgba(245, 158, 11, 0.1) !important;
+  }
+
+  :global([data-theme='light']) & {
+    &:hover {
+      border-color: #D97706 !important;
+      color: #D97706 !important;
+      background: rgba(217, 119, 6, 0.08) !important;
+    }
   }
 }
 

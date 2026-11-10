@@ -9,6 +9,10 @@
   max-width: 1000px;
   margin: 0 auto;
   padding-bottom: 24px;
+
+  @media (max-width: 900px) {
+    gap: 10px;
+  }
 }
 
 /* ─── Top Header ─────────────────────────────────────────────── */
@@ -159,6 +163,12 @@
   gap: 10px;
   box-shadow: 0 0 20px rgba(54, 207, 255, 0.08);
 
+  :global([data-theme='light']) & {
+    background: #FFFFFF;
+    border: 1.5px solid rgba(2, 132, 199, 0.22);
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
+  }
+
   @media (max-width: 600px) {
     padding: 8px;
     gap: 8px;
@@ -175,6 +185,17 @@
   justify-content: space-between;
   gap: 8px;
   transition: all 0.2s ease;
+
+  :global([data-theme='light']) & {
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+
+    &:hover {
+      background: #FFFFFF;
+      border-color: rgba(2, 132, 199, 0.3);
+    }
+  }
 
   @media (max-width: 600px) {
     padding: 8px 10px;
@@ -204,24 +225,48 @@
     background: rgba(16, 185, 129, 0.18);
     color: #34d399;
     border: 1px solid rgba(16, 185, 129, 0.35);
+
+    :global([data-theme='light']) & {
+      background: rgba(16, 185, 129, 0.12);
+      color: #059669;
+      border-color: rgba(16, 185, 129, 0.3);
+    }
   }
 
   &.iconRed {
     background: rgba(239, 68, 68, 0.18);
     color: #f87171;
     border: 1px solid rgba(239, 68, 68, 0.35);
+
+    :global([data-theme='light']) & {
+      background: rgba(239, 68, 68, 0.12);
+      color: #DC2626;
+      border-color: rgba(239, 68, 68, 0.3);
+    }
   }
 
   &.iconCyan {
     background: rgba(2, 132, 199, 0.18);
     color: #38bdf8;
     border: 1px solid rgba(56, 189, 248, 0.35);
+
+    :global([data-theme='light']) & {
+      background: rgba(2, 132, 199, 0.12);
+      color: #0284C7;
+      border-color: rgba(2, 132, 199, 0.3);
+    }
   }
 
   &.iconPurple {
     background: rgba(167, 139, 250, 0.18);
     color: #c4b5fd;
     border: 1px solid rgba(167, 139, 250, 0.35);
+
+    :global([data-theme='light']) & {
+      background: rgba(124, 58, 237, 0.12);
+      color: #7C3AED;
+      border-color: rgba(124, 58, 237, 0.3);
+    }
   }
 }
 
@@ -249,6 +294,10 @@
   overflow: hidden;
   text-overflow: ellipsis;
 
+  :global([data-theme='light']) & {
+    color: #64748B;
+  }
+
   @media (max-width: 600px) {
     font-size: 0.68rem;
   }
@@ -269,18 +318,34 @@
 
   &.valGreen {
     color: #34d399;
+
+    :global([data-theme='light']) & {
+      color: #059669;
+    }
   }
 
   &.valRed {
     color: #f87171;
+
+    :global([data-theme='light']) & {
+      color: #DC2626;
+    }
   }
 
   &.valCyan {
     color: #38bdf8;
+
+    :global([data-theme='light']) & {
+      color: #0284C7;
+    }
   }
 
   &.valPurple {
     color: #c4b5fd;
+
+    :global([data-theme='light']) & {
+      color: #7C3AED;
+    }
   }
 }
 
@@ -288,6 +353,10 @@
   font-size: 1.15rem !important;
   color: #64748b;
   flex-shrink: 0;
+
+  :global([data-theme='light']) & {
+    color: #94A3B8;
+  }
 
   @media (max-width: 600px) {
     font-size: 1rem !important;
@@ -397,6 +466,16 @@
   &:hover {
     background: rgba(16, 185, 129, 0.22);
   }
+
+  :global([data-theme='light']) & {
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.35);
+    color: #059669;
+
+    &:hover {
+      background: rgba(16, 185, 129, 0.18);
+    }
+  }
 }
 
 .settlePayBtn {
@@ -415,6 +494,16 @@
 
   &:hover {
     background: rgba(2, 132, 199, 0.22);
+  }
+
+  :global([data-theme='light']) & {
+    background: rgba(2, 132, 199, 0.1);
+    border: 1px solid rgba(2, 132, 199, 0.35);
+    color: #0284C7;
+
+    &:hover {
+      background: rgba(2, 132, 199, 0.18);
+    }
   }
 }
 
@@ -447,6 +536,10 @@
 .txDocIcon {
   font-size: 20px !important;
   color: var(--accent-cyan, #36cfff);
+
+  :global([data-theme='light']) & {
+    color: #0284C7;
+  }
 }
 
 .txTitleText {
@@ -454,6 +547,10 @@
   font-weight: 800;
   color: var(--text-primary, #ffffff);
   margin: 0;
+
+  :global([data-theme='light']) & {
+    color: #0F172A;
+  }
 }
 
 .desktopViewToggle {
@@ -497,6 +594,12 @@
   padding: 0 12px;
   height: 38px;
 
+  :global([data-theme='light']) & {
+    background: #FFFFFF;
+    border: 1px solid #CBD5E1;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+  }
+
   @media (max-width: 600px) {
     padding: 0 10px;
     height: 36px;
@@ -520,6 +623,14 @@
   &::placeholder {
     color: var(--text-secondary, #94a3b8);
   }
+
+  :global([data-theme='light']) & {
+    color: #0F172A;
+
+    &::placeholder {
+      color: #94A3B8;
+    }
+  }
 }
 
 .dateBox {
@@ -533,6 +644,12 @@
   padding: 0 10px;
   height: 38px;
   flex-shrink: 0;
+
+  :global([data-theme='light']) & {
+    background: #FFFFFF;
+    border: 1px solid #CBD5E1;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+  }
 
   @media (max-width: 600px) {
     width: 125px;
@@ -555,6 +672,11 @@
   font-size: 0.78rem;
   font-weight: 500;
   color-scheme: dark;
+
+  :global([data-theme='light']) & {
+    color: #0F172A;
+    color-scheme: light;
+  }
 }
 
 /* ─── Transactions Cards List ────────────────────────────────── */

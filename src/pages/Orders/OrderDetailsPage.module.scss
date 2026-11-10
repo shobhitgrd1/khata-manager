@@ -7,6 +7,10 @@
   gap: 28px;
   max-width: 1200px;
   margin: 0 auto;
+
+  @media (max-width: 900px) {
+    gap: 10px;
+  }
 }
 
 /* ─── Header ─────────────────────────────────────────────────── */
@@ -88,6 +92,16 @@
   &:hover {
     background: rgba(56, 189, 248, 0.18) !important;
   }
+
+  :global([data-theme='light']) & {
+    color: #0284C7 !important;
+    border-color: rgba(2, 132, 199, 0.35) !important;
+    background: rgba(2, 132, 199, 0.08) !important;
+
+    &:hover {
+      background: rgba(2, 132, 199, 0.16) !important;
+    }
+  }
 }
 
 .editBtn {
@@ -101,6 +115,16 @@
 
   &:hover {
     background: rgba(54, 207, 255, 0.18) !important;
+  }
+
+  :global([data-theme='light']) & {
+    color: #0284C7 !important;
+    border-color: rgba(2, 132, 199, 0.35) !important;
+    background: rgba(2, 132, 199, 0.08) !important;
+
+    &:hover {
+      background: rgba(2, 132, 199, 0.16) !important;
+    }
   }
 }
 
@@ -122,6 +146,10 @@
     color: #7C3AED !important;
     border-color: rgba(124, 58, 237, 0.35) !important;
     background: rgba(124, 58, 237, 0.08) !important;
+
+    &:hover {
+      background: rgba(124, 58, 237, 0.16) !important;
+    }
   }
 }
 
@@ -136,6 +164,16 @@
 
   &:hover {
     background: rgba(248, 113, 113, 0.18) !important;
+  }
+
+  :global([data-theme='light']) & {
+    color: #DC2626 !important;
+    border-color: rgba(220, 38, 38, 0.35) !important;
+    background: rgba(220, 38, 38, 0.08) !important;
+
+    &:hover {
+      background: rgba(220, 38, 38, 0.16) !important;
+    }
   }
 }
 
@@ -190,6 +228,12 @@
   background: linear-gradient(135deg, rgba(54, 207, 255, 0.25), rgba(16, 36, 61, 0.8));
   border: 1px solid rgba(54, 207, 255, 0.4);
   color: var(--accent-cyan, $accent-cyan);
+
+  :global([data-theme='light']) & {
+    background: linear-gradient(135deg, rgba(2, 132, 199, 0.15), rgba(240, 249, 255, 0.9));
+    border: 1.5px solid rgba(2, 132, 199, 0.3);
+    color: #0284C7;
+  }
 }
 
 .heroIcon {

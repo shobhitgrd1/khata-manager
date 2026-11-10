@@ -105,11 +105,15 @@
 
 /* Steps / Workflow Card Sections */
 .stepSection {
-  border-radius: 14px;
+  border-radius: 8px;
   padding: 16px 18px;
   display: flex;
   flex-direction: column;
   gap: 14px;
+
+  @media (max-width: 600px) {
+    padding: 10px;
+  }
 
   :global([data-theme='dark']) & {
     background: rgba(10, 24, 43, 0.65);

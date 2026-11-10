@@ -11,9 +11,13 @@
   --text-primary: #{$text-primary-dark};
   --text-secondary: #{$text-secondary-dark};
   --glass-bg: #{$glass-panel-dark};
+  --glass-panel: #{$glass-panel-dark};
   --glass-card: #{$glass-card-dark};
   --grid-dot: rgba(54, 207, 255, 0.15);
   --ambient-flare: rgba(54, 207, 255, 0.13);
+  --card-action-bg: rgba(16, 36, 61, 0.6);
+  --card-action-border: #{$border-dark};
+  --card-action-color: #{$text-secondary-dark};
 }
 
 [data-theme="light"] {
@@ -26,9 +30,13 @@
   --text-primary: #{$text-primary-light};
   --text-secondary: #{$text-secondary-light};
   --glass-bg: #{$glass-panel-light};
+  --glass-panel: #{$glass-panel-light};
   --glass-card: #{$glass-card-light};
   --grid-dot: rgba(2, 132, 199, 0.12);
   --ambient-flare: rgba(14, 165, 233, 0.08);
+  --card-action-bg: #FFFFFF;
+  --card-action-border: #CBD5E1;
+  --card-action-color: #64748B;
 }
 
 * {

@@ -5,6 +5,10 @@
   display: flex;
   flex-direction: column;
   gap: 22px;
+
+  @media (max-width: 900px) {
+    gap: 10px;
+  }
 }
 
 .errorAlert {
@@ -107,4 +111,3 @@
     text-decoration: underline !important;
   }
 }
-

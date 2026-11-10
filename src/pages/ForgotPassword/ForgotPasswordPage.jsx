@@ -11,7 +11,6 @@ import {
 } from '@mui/material';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import EmailOutlinedIcon from '@mui/icons-material/EmailOutlined';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
@@ -25,10 +24,9 @@ import styles from './ForgotPasswordPage.module.scss';
 const ForgotPasswordPage = () => {
   const navigate = useNavigate();
 
-  // Step 1: verify, Step 2: reset password
+  // Step 1: verify email, Step 2: reset password
   const [step, setStep] = useState(1);
   const [email, setEmail] = useState('');
-  const [dateOfBirth, setDateOfBirth] = useState('');
 
   const [resetToken, setResetToken] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -40,27 +38,27 @@ const ForgotPasswordPage = () => {
   const [error, setError] = useState('');
   const [successMsg, setSuccessMsg] = useState('');
 
-  // Step 1: Verify Identity
+  // Step 1: Verify Email
   const handleVerifySubmit = async (e) => {
     e.preventDefault();
     setError('');
 
-    if (!email.trim() || !dateOfBirth) {
-      setError('Please provide both your registered email and date of birth');
+    if (!email.trim()) {
+      setError('Please enter your registered email address');
       return;
     }
 
     setLoading(true);
 
     try {
-      const data = await authService.verifyForgotPassword(email.trim(), dateOfBirth);
+      const data = await authService.verifyForgotPassword(email.trim());
       setResetToken(data.resetToken);
       setStep(2);
-      setSuccessMsg('Identity verified! Please set your new password.');
+      setSuccessMsg('Email verified! Please set your new password.');
     } catch (err) {
       const errorMsg =
         err.response?.data?.message ||
-        'Verification failed. Information provided does not match our records.';
+        'Verification failed. No account found with this email address.';
       setError(errorMsg);
     } finally {
       setLoading(false);
@@ -115,7 +113,7 @@ const ForgotPasswordPage = () => {
         <span
           className={`${styles.stepText} ${step === 1 ? styles.stepActive : ''}`}
         >
-          Step 1: Verify Identity
+          Step 1: Enter Email
         </span>
         <span className={styles.stepBullet}>
           •
@@ -157,10 +155,10 @@ const ForgotPasswordPage = () => {
           className={styles.form}
         >
           <p className={styles.formDesc}>
-            Enter your registered email and date of birth to verify your account.
+            Enter your registered email address to reset your password.
           </p>
 
-          {/* Email */}
+          {/* Email Address */}
           <TextField
             fullWidth
             id="email"
@@ -175,26 +173,6 @@ const ForgotPasswordPage = () => {
               startAdornment: (
                 <InputAdornment position="start">
                   <EmailOutlinedIcon className={styles.inputIcon} />
-                </InputAdornment>
-              ),
-            }}
-          />
-
-          {/* Date of Birth */}
-          <TextField
-            fullWidth
-            id="dateOfBirth"
-            name="dateOfBirth"
-            type="date"
-            label="Date of Birth"
-            InputLabelProps={{ shrink: true }}
-            value={dateOfBirth}
-            onChange={(e) => setDateOfBirth(e.target.value)}
-            disabled={loading}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <CalendarMonthIcon className={styles.inputIcon} />
                 </InputAdornment>
               ),
             }}
@@ -215,7 +193,7 @@ const ForgotPasswordPage = () => {
               )
             }
           >
-            {loading ? 'Verifying...' : 'Verify User'}
+            {loading ? 'Verifying...' : 'Continue'}
           </Button>
         </form>
       )}

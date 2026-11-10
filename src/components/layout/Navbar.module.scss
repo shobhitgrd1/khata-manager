@@ -93,10 +93,20 @@
   &:hover {
     transform: scale(1.05);
   }
+
+  :global([data-theme="light"]) & {
+    background: #FFFFFF;
+    border-color: #0284C7;
+    box-shadow: 0 2px 10px rgba(2, 132, 199, 0.2);
+  }
 }
 
 .logoSvg {
   stroke: var(--accent-cyan);
+
+  :global([data-theme="light"]) & {
+    stroke: #0284C7;
+  }
 }
 
 .brandText {
@@ -175,6 +185,20 @@
     background-color: rgba(54, 207, 255, 0.12) !important;
     box-shadow: 0 0 12px var(--border-glow, $accent-cyan-glow) !important;
   }
+
+  :global([data-theme="light"]) & {
+    background-color: #FFFFFF !important;
+    border: 1px solid #CBD5E1 !important;
+    color: #0284C7 !important;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05) !important;
+
+    &:hover {
+      border-color: #0284C7 !important;
+      background-color: rgba(2, 132, 199, 0.08) !important;
+      color: #0369A1 !important;
+      box-shadow: 0 2px 8px rgba(2, 132, 199, 0.18) !important;
+    }
+  }
 }
 
 .settingsBtn {
@@ -182,6 +206,16 @@
 
   &:hover {
     color: var(--text-primary) !important;
+  }
+
+  :global([data-theme="light"]) & {
+    color: #64748B !important;
+
+    &:hover {
+      color: #0F172A !important;
+      border-color: #94A3B8 !important;
+      background-color: #F8FAFC !important;
+    }
   }
 }
 
@@ -206,6 +240,12 @@
     gap: 10px;
     border-radius: 20px;
     padding: 4px 14px;
+  }
+
+  :global([data-theme="light"]) & {
+    background-color: #FFFFFF;
+    border: 1px solid #CBD5E1;
+    box-shadow: 0 1px 4px rgba(15, 23, 42, 0.06);
   }
 }
 
@@ -283,6 +323,20 @@
     border-color: #F87171 !important;
     background-color: rgba(239, 68, 68, 0.1) !important;
     box-shadow: 0 0 12px rgba(239, 68, 68, 0.3) !important;
+  }
+
+  :global([data-theme="light"]) & {
+    border-color: rgba(239, 68, 68, 0.35) !important;
+    color: #DC2626 !important;
+    background-color: #FFFFFF !important;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05) !important;
+
+    &:hover {
+      border-color: #DC2626 !important;
+      background-color: rgba(239, 68, 68, 0.08) !important;
+      color: #B91C1C !important;
+      box-shadow: 0 2px 8px rgba(220, 38, 38, 0.16) !important;
+    }
   }
 }
 

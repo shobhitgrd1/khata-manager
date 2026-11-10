@@ -8,8 +8,8 @@
   max-width: 1300px;
   margin: 0 auto;
 
-  @include mobile {
-    gap: 16px;
+  @media (max-width: 900px) {
+    gap: 10px;
   }
 }
 

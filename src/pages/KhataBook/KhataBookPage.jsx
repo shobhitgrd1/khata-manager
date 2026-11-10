@@ -331,6 +331,7 @@ const KhataBookPage = () => {
             value={accountTypeFilter}
             onChange={(e) => setAccountTypeFilter(e.target.value)}
             className={styles.dropdownFilter}
+            SelectProps={{ displayEmpty: true }}
           >
             <MenuItem value="">All Account Types</MenuItem>
             {KHATA_ACCOUNT_TYPES.map((t) => (
@@ -347,6 +348,7 @@ const KhataBookPage = () => {
             value={balanceFilter}
             onChange={(e) => setBalanceFilter(e.target.value)}
             className={styles.dropdownFilter}
+            SelectProps={{ displayEmpty: true }}
           >
             {KHATA_BALANCE_FILTERS.map((b) => (
               <MenuItem key={b.value} value={b.value}>

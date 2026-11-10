@@ -21,11 +21,11 @@ export const authService = {
     return response.data;
   },
 
-  // Forgot password step 1: verify email and date of birth
-  async verifyForgotPassword(email, dateOfBirth) {
+  // Forgot password step 1: verify registered email
+  async verifyForgotPassword(email) {
     const response = await api.post('/auth/forgot-password/verify', {
       email,
-      dateOfBirth,
+      identifier: email,
     });
     return response.data;
   },

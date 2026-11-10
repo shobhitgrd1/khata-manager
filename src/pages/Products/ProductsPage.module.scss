@@ -7,6 +7,10 @@
   gap: 24px;
   max-width: 1300px;
   margin: 0 auto;
+
+  @media (max-width: 900px) {
+    gap: 10px;
+  }
 }
 
 /* ─── Header ─────────────────────────────────────────────────── */
@@ -494,6 +498,31 @@
     color: #ff5252;
     border-color: #ff5252;
     background: rgba(255, 82, 82, 0.15);
+  }
+
+  :global([data-theme='light']) & {
+    background: #FFFFFF;
+    border: 1px solid #CBD5E1;
+    color: #64748B;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+
+    &:hover {
+      color: #0284C7;
+      border-color: #0284C7;
+      background: rgba(2, 132, 199, 0.08);
+    }
+
+    &.duplicateAction:hover {
+      color: #7C3AED;
+      border-color: #7C3AED;
+      background: rgba(124, 58, 237, 0.08);
+    }
+
+    &.deleteAction:hover {
+      color: #DC2626;
+      border-color: #DC2626;
+      background: rgba(220, 38, 38, 0.08);
+    }
   }
 }
 

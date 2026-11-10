@@ -32,6 +32,8 @@
   }
 
   :global([data-theme="light"]) & {
+    background: #FFFFFF;
+    border-color: #0284C7;
     box-shadow: 0 4px 15px rgba(2, 132, 199, 0.2), inset 0 0 10px rgba(2, 132, 199, 0.08);
 
     &:hover {
