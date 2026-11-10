@@ -29,6 +29,7 @@ import productService from '../../services/productService';
 import accountService from '../../services/accountService';
 import creditCardService from '../../services/creditCardService';
 import orderService from '../../services/orderService';
+import khatabookService from '../../services/khatabookService';
 import { getAccountLogo } from '../../utils/accountLogos';
 import { getBankLogo } from '../../utils/bankLogos';
 import { CASHBACK_PERCENTAGE_PRESETS } from '../../constants/order.constants';
@@ -82,6 +83,34 @@ const OrderModal = ({
   const [cashbackAmount, setCashbackAmount] = useState('');
   const [isCashbackManuallyEdited, setIsCashbackManuallyEdited] = useState(false);
   const [validationError, setValidationError] = useState('');
+  const [hasLinkedKhataBook, setHasLinkedKhataBook] = useState(false);
+  const [addToKhataBook, setAddToKhataBook] = useState(true);
+
+  // Check if selected dealer has a linked Khata Book account
+  useEffect(() => {
+    let isMounted = true;
+    if (dealerId) {
+      khatabookService
+        .getKhataBookByDealerId(dealerId)
+        .then((res) => {
+          if (isMounted) {
+            const exists = Boolean(res?.exists);
+            setHasLinkedKhataBook(exists);
+            if (exists) {
+              setAddToKhataBook(true);
+            }
+          }
+        })
+        .catch(() => {
+          if (isMounted) setHasLinkedKhataBook(false);
+        });
+    } else {
+      setHasLinkedKhataBook(false);
+    }
+    return () => {
+      isMounted = false;
+    };
+  }, [dealerId]);
 
   // Fetch reference data when modal opens
   useEffect(() => {
@@ -422,6 +451,7 @@ const OrderModal = ({
         profitPercent !== '' && !isNaN(Number(profitPercent)) ? Number(profitPercent) : null;
       payload.cashbackApplied = Boolean(applyCashback);
       payload.cashbackAmount = applyCashback ? validCashbackAmount : 0;
+      payload.addToKhataBook = Boolean(hasLinkedKhataBook && addToKhataBook);
     }
 
     try {
@@ -1312,6 +1342,33 @@ const OrderModal = ({
                     </div>
                   )}
                 </div>
+
+                {/* Automatic Dealer Transaction in Khata Book */}
+                {hasLinkedKhataBook && (
+                  <div className={styles.khataDeliverySection}>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          checked={addToKhataBook}
+                          onChange={(e) => setAddToKhataBook(e.target.checked)}
+                          disabled={isFormBusy}
+                          className={styles.cashbackCheckbox}
+                          color="primary"
+                        />
+                      }
+                      label={
+                        <div className={styles.khataLabelGroup}>
+                          <span className={styles.khataLabelTitle}>
+                            Add Delivery Price to Dealer's Khata Book
+                          </span>
+                          <span className={styles.khataLabelSub}>
+                            Credits {numDelivery > 0 ? formatINR(numDelivery) : 'delivery price'} to dealer's ledger as receivable
+                          </span>
+                        </div>
+                      }
+                    />
+                  </div>
+                )}
               </>
             )}
           </div>

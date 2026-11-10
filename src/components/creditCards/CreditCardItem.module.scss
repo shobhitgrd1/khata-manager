@@ -45,12 +45,13 @@
 /* ─── Column 1: Bank ─────────────────────────────────────────── */
 .colBank {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 8px;
-  width: 32%;
+  width: 25%;
   min-width: 100px;
   max-width: 160px;
   flex-shrink: 0;
+  flex-direction: column;
 
   @media (max-width: 600px) {
     width: 30%;
@@ -108,9 +109,6 @@
   font-weight: 700;
   color: var(--text-primary);
   line-height: 1.2;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 
   @media (max-width: 600px) {
     font-size: 0.78rem;
@@ -122,9 +120,6 @@
   color: var(--text-secondary);
   line-height: 1.2;
   margin-top: 2px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 
   @media (max-width: 600px) {
     font-size: 0.66rem;

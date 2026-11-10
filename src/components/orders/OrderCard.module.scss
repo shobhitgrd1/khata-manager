@@ -4,10 +4,10 @@
 .compactFigmaCard {
   @include glass-panel;
   border-radius: 8px;
-  padding: 10px 14px;
+  padding: 8px 12px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
   cursor: pointer;
   position: relative;
   overflow: hidden;
@@ -15,8 +15,8 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 
   @media (max-width: 600px) {
-    padding: 8px 10px;
-    gap: 7px;
+    padding: 7px 9px;
+    gap: 5px;
   }
 
   &:hover {
@@ -52,17 +52,17 @@
 .colAccount {
   display: flex;
   align-items: flex-start;
-  gap: 8px;
-  width: 28%;
-  min-width: 90px;
-  max-width: 140px;
+  gap: 7px;
+  width: 25%;
+  min-width: 82px;
+  max-width: 125px;
   flex-shrink: 0;
   flex-direction: column;
 
   @media (max-width: 600px) {
-    width: 27%;
-    min-width: 80px;
-    gap: 6px;
+    width: 25%;
+    min-width: 76px;
+    gap: 5px;
   }
 }
 
@@ -212,16 +212,10 @@
 .cardDivider {
   height: 1px;
   background: rgba(255, 255, 255, 0.08);
-  margin: 3px 0 3px 17px;
+  margin: 3px 0 3px 0px;
 
   :global([data-theme='light']) & {
     background: rgba(15, 23, 42, 0.08);
-  }
-
-  @media (max-width: 600px) {
-    margin-left: 15px;
-    margin-top: 2px;
-    margin-bottom: 2px;
   }
 }
 
@@ -236,8 +230,8 @@
 }
 
 .paymentLogoBox {
-  width: 18px;
-  height: 18px;
+  width: 24px;
+  height: 24px;
   min-width: 18px;
   border-radius: 4px;
   background: #ffffff;
@@ -302,131 +296,273 @@
   }
 }
 
-/* ─── Column 3: Price, Status & Profit ────────────────────────── */
+/* ─── Column 3: Prices, Status & Financials (Profit & Cashback) ─── */
 .colStatusFinancial {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   gap: 3px;
-  min-width: 90px;
+  width: 124px;
+  min-width: 115px;
+  max-width: 132px;
   text-align: right;
   flex-shrink: 0;
 
   @media (max-width: 600px) {
-    min-width: 82px;
+    width: 110px;
+    min-width: 100px;
     gap: 2px;
   }
 }
 
-.purchasePrice {
-  font-size: 0.96rem;
+.pricesContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  padding: 4px 8px;
+  border-radius: 8px;
+  background: rgba(2, 132, 199, 0.08);
+  border: 1px solid rgba(2, 132, 199, 0.15);
+  box-sizing: border-box;
+
+  :global([data-theme='light']) & {
+    background: #edf5fe;
+    border-color: rgba(2, 132, 199, 0.16);
+  }
+
+  @media (max-width: 600px) {
+    padding: 3px 6px;
+    gap: 1.5px;
+  }
+}
+
+.priceRowItem {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  width: 100%;
+  gap: 6px;
+  line-height: 1.2;
+}
+
+.priceLabel {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+
+  :global([data-theme='light']) & {
+    color: #64748b;
+  }
+}
+
+.orderPriceVal {
+  font-size: 0.84rem;
   font-weight: 700;
   color: var(--text-primary);
   line-height: 1.2;
 
+  :global([data-theme='light']) & {
+    color: #0f172a;
+  }
+
   @media (max-width: 600px) {
-    font-size: 0.88rem;
+    font-size: 0.78rem;
+  }
+}
+
+.deliveryPriceVal {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
+
+  :global([data-theme='light']) & {
+    color: #0f172a;
+  }
+
+  @media (max-width: 600px) {
+    font-size: 0.78rem;
+  }
+}
+
+.pendingPriceVal {
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #f59e0b;
+  line-height: 1.2;
+
+  :global([data-theme='light']) & {
+    color: #d97706;
+  }
+
+  @media (max-width: 600px) {
+    font-size: 0.7rem;
   }
 }
 
 .statusRow {
   display: flex;
   align-items: center;
-  gap: 3px;
+  width: 100%;
+  margin: 2px 0 1px 0;
+  justify-content: flex-end;
+
 }
 
 .badgeDelivered {
-  display: inline-block;
-  padding: 2px 7px;
-  border-radius: 8px;
-  font-size: 0.7rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.65rem;
   font-weight: 600;
   background: rgba(16, 185, 129, 0.15);
   border: 1px solid rgba(16, 185, 129, 0.4);
   color: #34d399;
   white-space: nowrap;
+  line-height: 1.2;
+
+  :global([data-theme='light']) & {
+    background: rgba(16, 185, 129, 0.12);
+    border-color: rgba(16, 185, 129, 0.35);
+    color: #059669;
+  }
 
   @media (max-width: 600px) {
-    font-size: 0.65rem;
-    padding: 1px 5px;
+    font-size: 0.6rem;
+    padding: 1.5px 6px;
   }
 }
 
 .badgeInProcess {
-  display: inline-block;
-  padding: 2px 7px;
-  border-radius: 8px;
-  font-size: 0.7rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 0.65rem;
   font-weight: 600;
   background: rgba(245, 158, 11, 0.15);
   border: 1px solid rgba(245, 158, 11, 0.4);
   color: #fbbf24;
   white-space: nowrap;
+  line-height: 1.2;
+
+  :global([data-theme='light']) & {
+    background: rgba(245, 158, 11, 0.12);
+    border-color: rgba(245, 158, 11, 0.35);
+    color: #d97706;
+  }
 
   @media (max-width: 600px) {
-    font-size: 0.65rem;
-    padding: 1px 5px;
+    font-size: 0.6rem;
+    padding: 1.5px 6px;
   }
 }
 
-.chevronIcon {
-  font-size: 16px !important;
-  color: var(--text-secondary);
-  transition: transform 0.2s ease, color 0.2s ease;
+.financialsContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: 100%;
+  gap: 1px;
+  margin-top: 1px;
 }
 
-.profitRow {
+.financialLine {
   display: flex;
-  align-items: center;
+  align-items: baseline;
+  gap: 4px;
   justify-content: flex-end;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.finLabel {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+
+  :global([data-theme='light']) & {
+    color: #64748b;
+  }
 }
 
 .profitGreen {
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 700;
   color: #10b981;
   white-space: nowrap;
 
+  :global([data-theme='light']) & {
+    color: #059669;
+  }
+
   @media (max-width: 600px) {
-    font-size: 0.68rem;
+    font-size: 0.65rem;
   }
 }
 
 .profitRed {
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 700;
   color: #ef4444;
   white-space: nowrap;
 
+  :global([data-theme='light']) & {
+    color: #dc2626;
+  }
+
   @media (max-width: 600px) {
-    font-size: 0.68rem;
+    font-size: 0.65rem;
   }
 }
 
-.pendingProfitBlock {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  line-height: 1;
+.cashbackValGreen {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #10b981;
+  white-space: nowrap;
+
+  :global([data-theme='light']) & {
+    color: #059669;
+  }
+
+  @media (max-width: 600px) {
+    font-size: 0.65rem;
+  }
+}
+
+.cashbackValMuted {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  white-space: nowrap;
+
+  :global([data-theme='light']) & {
+    color: #64748b;
+  }
+
+  @media (max-width: 600px) {
+    font-size: 0.64rem;
+  }
 }
 
 .pendingDash {
-  font-size: 0.74rem;
+  font-size: 0.68rem;
   font-weight: 600;
   color: var(--text-secondary);
 
-  @media (max-width: 600px) {
-    font-size: 0.68rem;
+  :global([data-theme='light']) & {
+    color: #64748b;
   }
-}
-
-.pendingProfitLabel {
-  font-size: 0.66rem;
-  color: var(--text-secondary);
-  margin-top: 1px;
 
   @media (max-width: 600px) {
-    font-size: 0.62rem;
+    font-size: 0.64rem;
   }
 }
 
@@ -478,30 +614,46 @@
 }
 
 .dateLabel {
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-secondary);
   text-transform: uppercase;
   letter-spacing: 0.3px;
-  font-size: 0.62rem;
+  font-size: 0.65rem;
+
+  :global([data-theme='light']) & {
+    color: #64748b;
+  }
 
   @media (max-width: 600px) {
-    font-size: 0.58rem;
+    font-size: 0.6rem;
   }
 }
 
 .dateVal {
   font-weight: 600;
   color: var(--text-primary);
+
+  :global([data-theme='light']) & {
+    color: #0f172a;
+  }
 }
 
 .dateValDelivered {
   font-weight: 600;
   color: #10b981;
+
+  :global([data-theme='light']) & {
+    color: #059669;
+  }
 }
 
 .dateValPending {
   font-weight: 600;
   color: #fbbf24;
+
+  :global([data-theme='light']) & {
+    color: #d97706;
+  }
 }
 
 .actionIconRow {

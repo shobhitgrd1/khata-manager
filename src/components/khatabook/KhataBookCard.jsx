@@ -38,10 +38,10 @@ const KhataBookCard = ({
 
   const formattedDate = lastTransactionDate
     ? new Date(lastTransactionDate).toLocaleDateString('en-IN', {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric',
-      })
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+    })
     : null;
 
   const handleCardClick = () => {
@@ -99,8 +99,8 @@ const KhataBookCard = ({
             isPositive
               ? styles.balanceGreen
               : isNegative
-              ? styles.balanceRed
-              : styles.balanceNeutral
+                ? styles.balanceRed
+                : styles.balanceNeutral
           }
         >
           {formatINR(currentBalance)}
@@ -111,8 +111,8 @@ const KhataBookCard = ({
             isPositive
               ? styles.balanceLabelGreen
               : isNegative
-              ? styles.balanceLabelRed
-              : styles.balanceLabelNeutral
+                ? styles.balanceLabelRed
+                : styles.balanceLabelNeutral
           }
         >
           {isPositive ? "You'll Get" : isNegative ? "You'll Give" : 'Settled'}
@@ -145,7 +145,6 @@ const KhataBookCard = ({
             </Tooltip>
           )}
 
-          <ChevronRightIcon className={styles.chevronIcon} />
         </div>
       </div>
     </div>

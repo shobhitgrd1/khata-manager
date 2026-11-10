@@ -107,7 +107,6 @@ const UserCard = ({ user, onEdit, onDelete, canEdit = true, canDelete = true }) 
             </Tooltip>
           )}
 
-          <ChevronRightIcon className={styles.chevronIcon} />
         </div>
       </div>
     </div>

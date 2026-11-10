@@ -168,7 +168,7 @@
 .cardDivider {
   height: 1px;
   background: rgba(255, 255, 255, 0.08);
-  margin: 2px 0 2px 17px;
+  margin: 2px 0 2px 0px;
 
   :global([data-theme='light']) & {
     background: rgba(15, 23, 42, 0.08);

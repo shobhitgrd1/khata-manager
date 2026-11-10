@@ -146,7 +146,6 @@ const ProductCard = ({
           )}
         </div>
 
-        <ChevronRightIcon className={styles.chevronIcon} />
       </div>
     </div>
   );

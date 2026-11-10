@@ -35,6 +35,7 @@ const OrderCard = ({
     variant = '',
     color = {},
     purchasePrice = 0,
+    deliveryPrice = null,
     profit = null,
     status = 'Order In Process',
     orderDate,
@@ -43,16 +44,21 @@ const OrderCard = ({
 
   const isDelivered = status === 'Delivered';
 
-  // Profit calculation
+  // Profit & Cashback calculations
   const cbAmount = isDelivered && order?.cashbackApplied && order?.cashbackAmount ? Number(order.cashbackAmount) : 0;
-  const effectiveNetProfit = profit !== null
-    ? (order?.netProfit !== null && order?.netProfit !== undefined ? Number(order.netProfit) : Number(profit) + cbAmount)
-    : null;
+  const rawProfit = profit !== null
+    ? Number(profit)
+    : (order?.grossProfit !== null && order?.grossProfit !== undefined ? Number(order.grossProfit) : null);
+  const effectiveNetProfit = order?.netProfit !== null && order?.netProfit !== undefined
+    ? Number(order.netProfit)
+    : (rawProfit !== null ? rawProfit + cbAmount : null);
 
-  const profitPercentage =
-    purchasePrice > 0 && effectiveNetProfit !== null
-      ? Math.round(((effectiveNetProfit / purchasePrice) * 100) * 100) / 100
-      : null;
+  const profitDisplay = rawProfit !== null ? rawProfit : effectiveNetProfit;
+  const finalProfitPct = order?.profitPercentage !== null && order?.profitPercentage !== undefined
+    ? Number(order.profitPercentage)
+    : (purchasePrice > 0 && profitDisplay !== null
+      ? Math.round(((profitDisplay / purchasePrice) * 100) * 100) / 100
+      : null);
 
   const formatINR = (val) => `₹${Number(val || 0).toLocaleString('en-IN')}`;
 
@@ -170,28 +176,70 @@ const OrderCard = ({
           </div>
         </div>
 
-        {/* ─── Column 3: Price, Status & Profit ────────────────── */}
-        <div className={styles.colStatusFinancial}>
-          <span className={styles.purchasePrice}>{formatINR(purchasePrice)}</span>
-
+        {/* ─── Column 3: Prices, Status & Financials (Profit & Cashback) ─── */}
+        <div className={styles.colStatusFinancial}>{/* Status Badge */}
           <div className={styles.statusRow}>
             <span className={isDelivered ? styles.badgeDelivered : styles.badgeInProcess}>
               {isDelivered ? 'Delivered' : 'Order In Process'}
             </span>
           </div>
 
-          <div className={styles.profitRow}>
-            {isDelivered ? (
-              <span className={effectiveNetProfit >= 0 ? styles.profitGreen : styles.profitRed}>
-                {effectiveNetProfit >= 0 ? `+${formatINR(effectiveNetProfit)}` : `-${formatINR(Math.abs(effectiveNetProfit))}`}
-                {profitPercentage !== null && ` (${effectiveNetProfit >= 0 ? `+${profitPercentage}%` : `${profitPercentage}%`})`}
+          {/* Order Price & Delivery Price container */}
+          <div className={styles.pricesContainer}>
+            <div className={styles.priceRowItem}>
+              <span className={styles.priceLabel}>ORD:</span>
+              <span className={styles.orderPriceVal}>{formatINR(purchasePrice)}</span>
+            </div>
+            <div className={styles.priceRowItem}>
+              <span className={styles.priceLabel}>DEL:</span>
+              <span
+                className={
+                  isDelivered && deliveryPrice !== null && deliveryPrice !== undefined
+                    ? styles.deliveryPriceVal
+                    : styles.pendingPriceVal
+                }
+              >
+                {isDelivered && deliveryPrice !== null && deliveryPrice !== undefined
+                  ? formatINR(deliveryPrice)
+                  : 'Pending'}
               </span>
-            ) : (
-              <div className={styles.pendingProfitBlock}>
+            </div>
+          </div>
+
+
+          {/* Financials: Profit on Line 1, Cashback on Line 2 */}
+          <div className={styles.financialsContainer}>
+            {/* Line 1: Profit */}
+            <div className={styles.financialLine}>
+              <span className={styles.finLabel}>Profit:</span>
+              {isDelivered && profitDisplay !== null ? (
+                <span className={profitDisplay >= 0 ? styles.profitGreen : styles.profitRed}>
+                  {profitDisplay >= 0 ? `+${formatINR(profitDisplay)}` : `-${formatINR(Math.abs(profitDisplay))}`}
+                  {finalProfitPct !== null && ` (${profitDisplay >= 0 ? `+${finalProfitPct}%` : `${finalProfitPct}%`})`}
+                </span>
+              ) : (
                 <span className={styles.pendingDash}>--</span>
-                <span className={styles.pendingProfitLabel}>Profit: --</span>
-              </div>
-            )}
+              )}
+            </div>
+
+            {/* Line 2: Cashback */}
+            <div className={styles.financialLine}>
+              <span className={styles.finLabel}>Cashback:</span>
+              {isDelivered ? (
+                cbAmount > 0 ? (
+                  <span
+                    className={styles.cashbackValGreen}
+                    title={`Profit: ${formatINR(profitDisplay)} | Cashback: +${formatINR(cbAmount)} | Net Profit: +${formatINR(effectiveNetProfit)}`}
+                  >
+                    +{formatINR(cbAmount)}
+                  </span>
+                ) : (
+                  <span className={styles.cashbackValMuted}>-₹0</span>
+                )
+              ) : (
+                <span className={styles.pendingDash}>--</span>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -204,11 +252,11 @@ const OrderCard = ({
         {/* Left: Order Date & Delivery Date */}
         <div className={styles.footerDates}>
           <div className={styles.dateLine}>
-            <span className={styles.dateLabel}>Ord:</span>
+            <span className={styles.dateLabel}>ORD:</span>
             <span className={styles.dateVal}>{formatDate(orderDate)}</span>
           </div>
           <div className={styles.dateLine}>
-            <span className={styles.dateLabel}>Del:</span>
+            <span className={styles.dateLabel}>DEL:</span>
             <span className={deliveryDate ? styles.dateValDelivered : styles.dateValPending}>
               {deliveryDate ? formatDate(deliveryDate) : isDelivered ? 'Delivered' : 'Pending'}
             </span>

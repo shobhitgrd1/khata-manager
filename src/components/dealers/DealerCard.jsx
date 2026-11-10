@@ -47,15 +47,15 @@ const DealerCard = ({
     dealer?.totalNetProfit !== undefined && dealer?.totalNetProfit !== null
       ? Number(dealer.totalNetProfit)
       : dealer?.profitStats?.totalNetProfit !== undefined && dealer?.profitStats?.totalNetProfit !== null
-      ? Number(dealer.profitStats.totalNetProfit)
-      : Math.round((cashProfit + cashbackProfit) * 100) / 100;
+        ? Number(dealer.profitStats.totalNetProfit)
+        : Math.round((cashProfit + cashbackProfit) * 100) / 100;
 
   const numbersList =
     Array.isArray(mobileNumbers) && mobileNumbers.length > 0
       ? mobileNumbers
       : mobileNumber
-      ? [mobileNumber]
-      : [];
+        ? [mobileNumber]
+        : [];
 
   const initial = dealerName ? dealerName.trim().charAt(0).toUpperCase() : 'D';
   const primaryAddr = addresses && addresses.length > 0 ? addresses[0] : null;
@@ -156,7 +156,6 @@ const DealerCard = ({
             </Tooltip>
           )}
 
-          <ChevronRightIcon className={styles.chevronIcon} />
         </div>
       </div>
     </div>

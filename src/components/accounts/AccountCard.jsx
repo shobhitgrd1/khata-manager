@@ -133,7 +133,6 @@ const AccountCard = ({
           )}
         </div>
 
-        <ChevronRightIcon className={styles.chevronIcon} />
       </div>
     </div>
   );

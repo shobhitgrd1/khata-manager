@@ -653,7 +653,6 @@
   border-radius: 12px;
   cursor: pointer;
   border: 1.5px solid rgba(41, 75, 112, 0.45);
-  background: rgba(16, 36, 61, 0.3);
   transition: all 0.2s ease;
   user-select: none;
 
@@ -934,4 +933,44 @@
   font-size: 0.8rem;
   color: #F59E0B;
   font-style: italic;
+}
+
+/* ─── Khata Delivery Section ─────────────────────────────────── */
+.khataDeliverySection {
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(167, 139, 250, 0.08);
+  border: 1px dashed rgba(167, 139, 250, 0.35);
+
+  :global([data-theme='light']) & {
+    background: rgba(124, 58, 237, 0.06);
+    border-color: rgba(124, 58, 237, 0.3);
+  }
+}
+
+.khataLabelGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.khataLabelTitle {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: #DDD6FE;
+
+  :global([data-theme='light']) & {
+    color: #6D28D9;
+  }
+}
+
+.khataLabelSub {
+  font-size: 0.72rem;
+  color: #A78BFA;
+  line-height: 1.3;
+
+  :global([data-theme='light']) & {
+    color: #7C3AED;
+  }
 }

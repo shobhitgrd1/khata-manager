@@ -26,7 +26,7 @@ export const SUPPORTED_BANKS = [
   'Axis Bank',
   'Kotak Mahindra Bank',
   'RBL Bank',
-  'AU Small Finance Bank',
+  'AU Bank',
   'HSBC Bank',
   'State Bank of India (SBI)',
   'Yes Bank',
@@ -229,15 +229,15 @@ const CreditCardModal = ({
             {isDuplicateMode
               ? 'Duplicate Credit Card'
               : isEditing
-              ? 'Edit Credit Card'
-              : 'Add New Credit Card'}
+                ? 'Edit Credit Card'
+                : 'Add New Credit Card'}
           </h2>
           <p className={styles.modalSubtitle}>
             {isDuplicateMode
               ? 'Duplicating bank and card configuration (safe defaults applied; enter last 4 digits).'
               : isEditing
-              ? 'Update your card limits and details. Limits are automatically recalculated.'
-              : 'Add a card to your portfolio to track limits and utilization.'}
+                ? 'Update your card limits and details. Limits are automatically recalculated.'
+                : 'Add a card to your portfolio to track limits and utilization.'}
           </p>
         </div>
       </DialogTitle>
@@ -396,13 +396,12 @@ const CreditCardModal = ({
               <div className={styles.calcRow}>
                 <span className={styles.calcLabel}>Credit Utilization:</span>
                 <span
-                  className={`${styles.utilizationBadge} ${
-                    calculatedUtilization >= 80
+                  className={`${styles.utilizationBadge} ${calculatedUtilization >= 80
                       ? styles.utilHigh
                       : calculatedUtilization >= 50
-                      ? styles.utilMedium
-                      : styles.utilLow
-                  }`}
+                        ? styles.utilMedium
+                        : styles.utilLow
+                    }`}
                 >
                   {calculatedUtilization}%
                 </span>
@@ -437,10 +436,10 @@ const CreditCardModal = ({
             {loading
               ? 'Saving...'
               : isDuplicateMode
-              ? 'Create Duplicate Card'
-              : isEditing
-              ? 'Save Changes'
-              : 'Save Credit Card'}
+                ? 'Create Duplicate Card'
+                : isEditing
+                  ? 'Save Changes'
+                  : 'Save Credit Card'}
           </Button>
         </DialogActions>
       </form>

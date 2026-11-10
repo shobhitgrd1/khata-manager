@@ -83,7 +83,10 @@ const CreditCardItem = ({
             {bankName}
           </span>
           <span className={styles.cardDigits} title={`${cardName} •••• ${lastFourDigits}`}>
-            {cardName} •••• {lastFourDigits}
+            {cardName}
+          </span>
+          <span className={styles.cardDigits} title={`${lastFourDigits}`}>
+            •••• {lastFourDigits}
           </span>
         </div>
       </div>
@@ -100,12 +103,14 @@ const CreditCardItem = ({
 
         <div className={styles.limitsLine}>
           <span className={styles.limitDetailText}>
-            Avail: <strong className={styles.availText}>{formatINR(availableLimit)}</strong> / {formatINR(totalLimit)}
+            Total:  {formatINR(totalLimit)}
+          </span>
+          <span className={styles.limitDetailText}>
+            Avail: <strong className={styles.availText}>{formatINR(availableLimit)}</strong>
           </span>
           <span
-            className={`${styles.utilBadge} ${
-              utilization >= 80 ? styles.utilHigh : utilization >= 50 ? styles.utilMedium : styles.utilLow
-            }`}
+            className={`${styles.utilBadge} ${utilization >= 80 ? styles.utilHigh : utilization >= 50 ? styles.utilMedium : styles.utilLow
+              }`}
           >
             {utilization}%
           </span>
@@ -155,7 +160,6 @@ const CreditCardItem = ({
           )}
         </div>
 
-        <ChevronRightIcon className={styles.chevronIcon} />
       </div>
     </div>
   );
