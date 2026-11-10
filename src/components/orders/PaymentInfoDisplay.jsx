@@ -30,13 +30,11 @@ const PaymentInfoDisplay = ({ order }) => {
               <CreditCardIcon className={styles.methodIcon} />
             )}
           </div>
-          <span className={styles.bankNameTag}>{bankName}</span>
+          <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+            <span className={styles.bankNameTag}>{bankName}</span>
+            <span className={styles.cardDigits}>•••• {lastFour}</span>
+          </div>
         </div>
-
-        <div className={styles.cardDigitsRow}>
-          <span className={styles.cardDigits}>•••• {lastFour}</span>
-        </div>
-
         <div className={styles.cardBottomRow}>
           <span className={styles.cardOwnerName} title={cardOwner}>{cardOwner}</span>
           <span className={styles.cardProductTag} title={cardName}>{cardName}</span>

@@ -14,6 +14,11 @@
               box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
               border-color 0.3s ease;
 
+  @include mobile {
+    border-radius: 12px;
+    padding: 14px 12px;
+  }
+
   &:hover {
     transform: translateY(-4px);
     border-color: rgba(54, 207, 255, 0.45);

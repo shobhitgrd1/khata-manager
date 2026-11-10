@@ -307,9 +307,6 @@ const UsersPage = () => {
           </Button>
           <div className={styles.titleArea}>
             <h1 className={styles.pageTitle}>User Management</h1>
-            <p className={styles.pageSubtitle}>
-              View registered users, modify authorization roles and permissions
-            </p>
           </div>
         </div>
 

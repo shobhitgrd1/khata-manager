@@ -4,9 +4,14 @@
 /* ─── Shared DataGrid Styling & Mixins ──────────────────────────────── */
 @mixin shared-datagrid-table {
   @include glass-panel;
-  border-radius: 18px;
+  border-radius: 8px;
   padding: 12px;
   overflow: hidden;
+
+  @include mobile {
+    border-radius: 8px;
+    padding: 6px;
+  }
 
   :global([data-theme="dark"]) & {
     border: 1.5px solid var(--border-glow, $border-dark-glow);
@@ -23,6 +28,10 @@
     color: var(--text-primary);
     font-size: 0.88rem;
 
+    @include mobile {
+      font-size: 0.78rem;
+    }
+
     :global(.MuiDataGrid-columnHeaders) {
       border-bottom: 1.5px solid rgba(41, 75, 112, 0.6);
       font-weight: 700;
@@ -30,10 +39,19 @@
       font-size: 0.76rem;
       letter-spacing: 0.5px;
       color: var(--text-secondary);
+
+      @include mobile {
+        font-size: 0.7rem;
+        min-height: 40px !important;
+      }
     }
 
     :global(.MuiDataGrid-row) {
       min-height: 72px !important;
+
+      @include mobile {
+        min-height: 52px !important;
+      }
     }
 
     :global(.MuiDataGrid-cell) {
@@ -42,6 +60,14 @@
       align-items: center;
       padding-top: 10px !important;
       padding-bottom: 10px !important;
+
+      @include mobile {
+        padding-top: 5px !important;
+        padding-bottom: 5px !important;
+        padding-left: 6px !important;
+        padding-right: 6px !important;
+        font-size: 0.78rem !important;
+      }
     }
 
     :global(.MuiDataGrid-row:hover) {
@@ -70,7 +96,7 @@
   align-items: center;
   gap: 5px;
   padding: 4px 10px;
-  border-radius: 20px;
+  border-radius: 8px;
   font-size: 0.76rem;
   font-weight: 700;
   letter-spacing: 0.3px;
@@ -83,7 +109,7 @@
   color: #F59E0B;
   background: rgba(245, 158, 11, 0.12);
   border: 1px solid rgba(245, 158, 11, 0.3);
-  border-radius: 6px;
+  border-radius: 8px;
   padding: 2px 8px;
 }
 

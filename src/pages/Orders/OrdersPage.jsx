@@ -365,8 +365,8 @@ const OrdersPage = () => {
           appliedFilters.profitType === 'profit'
             ? 'Profitable (+)'
             : appliedFilters.profitType === 'loss'
-            ? 'Loss (-)'
-            : 'Break Even (0)',
+              ? 'Loss (-)'
+              : 'Break Even (0)',
         onRemove: () => handleRemoveFilter('profitType'),
       });
     }
@@ -512,9 +512,6 @@ const OrdersPage = () => {
           </Button>
           <div className={styles.titleInfo}>
             <h1 className={styles.pageTitle}>Order Management</h1>
-            <p className={styles.pageSubtitle}>
-              Track dealer orders, deliveries, and profit margins in real-time
-            </p>
           </div>
         </div>
 

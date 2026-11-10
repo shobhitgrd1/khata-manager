@@ -339,9 +339,6 @@ const AccountsPage = () => {
           </Button>
           <div className={styles.titleArea}>
             <h1 className={styles.pageTitle}>My Accounts</h1>
-            <p className={styles.pageSubtitle}>
-              Organize, track, and manage all your platform and shopping accounts.
-            </p>
           </div>
         </div>
 

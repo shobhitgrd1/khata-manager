@@ -36,6 +36,35 @@
   box-sizing: border-box;
 }
 
+/* Responsive Root Font Size: scale down mobile view by 20% to 30% */
+html {
+  font-size: 16px;
+}
+
+@media (max-width: 900px) {
+  html {
+    font-size: 85%; /* ~15% smaller: 1rem = 13.6px */
+  }
+}
+
+@media (max-width: 600px) {
+  html {
+    font-size: 77.5%; /* ~22.5% smaller: 1rem = 12.4px */
+  }
+}
+
+@media (max-width: 420px) {
+  html {
+    font-size: 72.5%; /* ~27.5% smaller: 1rem = 11.6px */
+  }
+}
+
+@media (max-width: 360px) {
+  html {
+    font-size: 70%; /* 30% smaller: 1rem = 11.2px */
+  }
+}
+
 html, body {
   width: 100%;
   min-height: 100vh;
@@ -100,7 +129,7 @@ html, body {
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--border-color);
-  border-radius: 24px;
+  border-radius: 8px;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), 0 0 30px var(--border-glow), inset 0 1px 1px rgba(255, 255, 255, 0.2);
   transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
@@ -108,4 +137,11 @@ html, body {
 [data-theme="light"] .glass-panel {
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08), 0 0 20px rgba(2, 132, 199, 0.06);
   border-color: rgba(2, 132, 199, 0.18);
+}
+
+@media (max-width: 600px) {
+  .glass-panel {
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35), 0 0 15px var(--border-glow);
+  }
 }

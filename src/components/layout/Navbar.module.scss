@@ -19,23 +19,30 @@
 .toolbar {
   display: flex;
   justify-content: space-between;
-  padding-left: 16px !important;
-  padding-right: 16px !important;
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+  min-height: 50px !important;
 
   @media (min-width: 600px) {
     padding-left: 24px !important;
     padding-right: 24px !important;
+    min-height: 64px !important;
   }
 }
 
 .leftSection {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
+
+  @media (min-width: 600px) {
+    gap: 12px;
+  }
 }
 
 .menuBtn {
-  border-radius: 10px !important;
+  border-radius: 8px !important;
+  padding: 6px !important;
   display: flex !important;
   color: var(--accent-cyan, $accent-cyan) !important;
   border: 1px solid var(--border-color, $border-dark) !important;
@@ -46,17 +53,24 @@
 }
 
 .logoContainer {
-  width: 38px;
-  height: 38px;
-  border-radius: 10px;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
   background: var(--glass-card, $glass-card-dark);
   border: 1.5px solid var(--accent-cyan, $accent-cyan);
-  box-shadow: 0 0 12px var(--border-glow, $accent-cyan-glow);
+  box-shadow: 0 0 10px var(--border-glow, $accent-cyan-glow);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: transform 0.2s ease;
+
+  @media (min-width: 600px) {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    box-shadow: 0 0 12px var(--border-glow, $accent-cyan-glow);
+  }
 
   &:hover {
     transform: scale(1.05);
@@ -102,13 +116,19 @@
 }
 
 .themeToggleBtn {
-  width: 38px !important;
-  height: 38px !important;
-  border-radius: 10px !important;
+  width: 30px !important;
+  height: 30px !important;
+  border-radius: 8px !important;
   border: 1px solid var(--border-color, $border-dark) !important;
   background-color: var(--glass-panel, $glass-panel-dark) !important;
   color: var(--accent-cyan, $accent-cyan) !important;
   transition: $transition-default !important;
+
+  @media (min-width: 600px) {
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 10px !important;
+  }
 
   &:hover {
     border-color: var(--accent-cyan, $accent-cyan) !important;
@@ -126,17 +146,27 @@
 }
 
 .btnIcon {
-  font-size: 1.25rem !important;
+  font-size: 1.05rem !important;
+
+  @media (min-width: 600px) {
+    font-size: 1.25rem !important;
+  }
 }
 
 .profileBadge {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   background-color: var(--glass-panel, $glass-panel-dark);
   border: 1px solid var(--border-color, $border-dark);
-  border-radius: 20px;
-  padding: 4px 14px;
+  border-radius: 14px;
+  padding: 2px 8px;
+
+  @media (min-width: 600px) {
+    gap: 10px;
+    border-radius: 20px;
+    padding: 4px 14px;
+  }
 }
 
 .profileInfo {
@@ -196,14 +226,16 @@
 .logoutBtn {
   border-color: rgba(239, 68, 68, 0.4) !important;
   color: #F87171 !important;
-  border-radius: 10px !important;
-  font-size: 0.82rem !important;
-  padding: 5px 12px !important;
+  border-radius: 8px !important;
+  font-size: 0.75rem !important;
+  padding: 4px 8px !important;
   min-width: auto !important;
   text-transform: none !important;
 
   @media (min-width: 600px) {
+    border-radius: 10px !important;
     padding: 6px 14px !important;
+    font-size: 0.82rem !important;
     min-width: 80px !important;
   }
 

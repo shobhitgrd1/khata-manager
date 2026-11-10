@@ -337,9 +337,6 @@ const ProductsPage = () => {
           </Button>
           <div className={styles.titleArea}>
             <h1 className={styles.pageTitle}>My Products</h1>
-            <p className={styles.pageSubtitle}>
-              Manage product listings, variants, and assigned color palettes.
-            </p>
           </div>
         </div>
 

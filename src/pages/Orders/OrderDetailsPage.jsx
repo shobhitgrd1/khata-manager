@@ -179,16 +179,16 @@ const OrderDetailsPage = () => {
 
   const formattedOrderDate = orderDate
     ? new Date(orderDate).toLocaleString('en-IN', {
-        dateStyle: 'medium',
-        timeStyle: 'short',
-      })
+      dateStyle: 'medium',
+      timeStyle: 'short',
+    })
     : 'N/A';
 
   const formattedDeliveryDate = deliveryDate
     ? new Date(deliveryDate).toLocaleString('en-IN', {
-        dateStyle: 'medium',
-        timeStyle: 'short',
-      })
+      dateStyle: 'medium',
+      timeStyle: 'short',
+    })
     : 'N/A';
 
   return (
@@ -208,9 +208,6 @@ const OrderDetailsPage = () => {
 
           <div className={styles.titleArea}>
             <h1 className={styles.pageTitle}>Order Details</h1>
-            <p className={styles.pageSubtitle}>
-              Comprehensive view of order #{orderId}
-            </p>
           </div>
         </div>
 

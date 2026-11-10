@@ -28,13 +28,14 @@
   overflow-y: auto;
 
   @include tablet {
-    padding: 24px;
+    padding: 16px 14px;
     width: 100%;
   }
 
   @include mobile {
-    padding: 16px;
+    padding: 10px 8px;
     width: 100%;
+    min-height: calc(100vh - 52px);
   }
 }
 

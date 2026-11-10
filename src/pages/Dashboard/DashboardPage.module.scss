@@ -7,6 +7,10 @@
   gap: 32px;
   max-width: 1300px;
   margin: 0 auto;
+
+  @include mobile {
+    gap: 16px;
+  }
 }
 
 /* ─── Section Headers ────────────────────────────────────────── */
@@ -15,6 +19,10 @@
   flex-direction: column;
   gap: 16px;
   width: 100%;
+
+  @include mobile {
+    gap: 10px;
+  }
 }
 
 .sectionHeaderRow {
@@ -30,12 +38,21 @@
   color: var(--text-primary);
   margin: 0;
   letter-spacing: -0.3px;
+
+  @include mobile {
+    font-size: 1.2rem;
+  }
 }
 
 .sectionSubheading {
   font-size: 0.88rem;
   color: var(--text-secondary);
   margin: 4px 0 0;
+
+  @include mobile {
+    font-size: 0.78rem;
+    margin: 2px 0 0;
+  }
 }
 
 /* ─── SECTION 1: Orders Top Card ─────────────────────────────── */
@@ -47,6 +64,10 @@
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
   width: 100%;
   overflow: hidden;
+
+  @include mobile {
+    border-radius: 14px !important;
+  }
 
   &:hover {
     transform: translateY(-3px);
@@ -78,8 +99,17 @@
   width: 100%;
   box-sizing: border-box;
 
+  @include mobile {
+    padding: 14px 12px !important;
+    gap: 12px;
+  }
+
   &:last-child {
     padding-bottom: 24px !important;
+
+    @include mobile {
+      padding-bottom: 14px !important;
+    }
   }
 }
 
@@ -88,6 +118,10 @@
   align-items: center;
   gap: 18px;
   flex-wrap: wrap;
+
+  @include mobile {
+    gap: 10px;
+  }
 }
 
 .orderIconBox {
@@ -102,6 +136,12 @@
   justify-content: center;
   color: var(--accent-cyan, $accent-cyan);
   flex-shrink: 0;
+
+  @include mobile {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+  }
 }
 
 .ordersCardTitleArea {
@@ -245,6 +285,12 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+
+  @include mobile {
+    border-radius: 14px;
+    padding: 14px 12px;
+    gap: 12px;
+  }
 }
 
 .perfHeaderRow {
@@ -355,6 +401,12 @@
   flex-direction: column;
   gap: 12px;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+  @include mobile {
+    border-radius: 12px;
+    padding: 12px 10px;
+    gap: 8px;
+  }
 
   &:hover {
     transform: translateY(-2px);
@@ -626,8 +678,16 @@
   box-sizing: border-box;
   padding: 24px !important;
 
+  @include mobile {
+    padding: 14px 12px !important;
+  }
+
   &:last-child {
     padding-bottom: 24px !important;
+
+    @include mobile {
+      padding-bottom: 14px !important;
+    }
   }
 }
 
@@ -636,6 +696,10 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 18px;
+
+  @include mobile {
+    margin-bottom: 12px;
+  }
 }
 
 .ccIconBox,
@@ -653,6 +717,12 @@
   align-items: center;
   justify-content: center;
   color: var(--accent-cyan, $accent-cyan);
+
+  @include mobile {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+  }
 }
 
 .mgmtIcon {

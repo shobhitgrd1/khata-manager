@@ -74,7 +74,7 @@ export const getTheme = (mode = 'dark') => {
       },
     },
     shape: {
-      borderRadius: 14,
+      borderRadius: 8,
     },
     components: {
       MuiCssBaseline: {
@@ -94,11 +94,17 @@ export const getTheme = (mode = 'dark') => {
             backdropFilter: 'blur(20px)',
             WebkitBackdropFilter: 'blur(20px)',
             border: `1px solid ${isDark ? 'rgba(54, 207, 255, 0.22)' : 'rgba(2, 132, 199, 0.18)'}`,
-            borderRadius: '24px',
+            borderRadius: '8px',
             boxShadow: isDark
               ? '0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(54, 207, 255, 0.12), inset 0 1px 1px rgba(255, 255, 255, 0.2)'
               : '0 10px 30px rgba(15, 23, 42, 0.08), 0 0 20px rgba(2, 132, 199, 0.06)',
             transition: 'background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease',
+            '@media (max-width: 600px)': {
+              borderRadius: '8px',
+              boxShadow: isDark
+                ? '0 10px 25px rgba(0, 0, 0, 0.5), 0 0 15px rgba(54, 207, 255, 0.08)'
+                : '0 6px 18px rgba(15, 23, 42, 0.06)',
+            },
           },
         },
       },
@@ -124,22 +130,31 @@ export const getTheme = (mode = 'dark') => {
             backdropFilter: 'blur(20px)',
             WebkitBackdropFilter: 'blur(20px)',
             border: `1px solid ${isDark ? 'rgba(54, 207, 255, 0.22)' : 'rgba(2, 132, 199, 0.18)'}`,
-            borderRadius: '24px',
+            borderRadius: '8px',
             boxShadow: isDark
               ? '0 20px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(54, 207, 255, 0.12), inset 0 1px 1px rgba(255, 255, 255, 0.2)'
               : '0 10px 30px rgba(15, 23, 42, 0.08), 0 0 20px rgba(2, 132, 199, 0.06)',
             transition: 'all 0.3s ease',
+            '@media (max-width: 600px)': {
+              borderRadius: '8px',
+            },
           },
         },
       },
       MuiButton: {
         styleOverrides: {
           root: {
-            borderRadius: '12px',
+            borderRadius: '8px',
             padding: '10px 22px',
             fontSize: '0.95rem',
             fontWeight: 600,
             transition: 'all 0.25s ease',
+            '@media (max-width: 600px)': {
+              padding: '6px 14px',
+              fontSize: '0.82rem',
+              borderRadius: '8px',
+              minHeight: '34px',
+            },
           },
           containedPrimary: {
             background: isDark
@@ -176,9 +191,12 @@ export const getTheme = (mode = 'dark') => {
         styleOverrides: {
           root: {
             backgroundColor: isDark ? 'rgba(16, 36, 61, 0.55)' : 'rgba(255, 255, 255, 0.95)',
-            borderRadius: '12px',
+            borderRadius: '8px',
             color: isDark ? '#F4F8FF' : '#0F172A',
             transition: 'border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.3s ease',
+            '@media (max-width: 600px)': {
+              borderRadius: '8px',
+            },
             '& .MuiOutlinedInput-notchedOutline': {
               borderColor: isDark ? '#294B70' : '#CBD5E1',
             },
@@ -197,6 +215,10 @@ export const getTheme = (mode = 'dark') => {
           },
           input: {
             padding: '13px 16px',
+            '@media (max-width: 600px)': {
+              padding: '9px 12px',
+              fontSize: '0.84rem',
+            },
             '&::placeholder': {
               color: isDark ? '#94A8C0' : '#94A3B8',
               opacity: 1,
@@ -208,6 +230,9 @@ export const getTheme = (mode = 'dark') => {
         styleOverrides: {
           root: {
             color: isDark ? '#94A8C0' : '#64748B',
+            '@media (max-width: 600px)': {
+              fontSize: '0.85rem',
+            },
             '&.Mui-focused': {
               color: isDark ? '#36CFFF' : '#0284C7',
             },
@@ -218,6 +243,9 @@ export const getTheme = (mode = 'dark') => {
         styleOverrides: {
           root: {
             color: isDark ? '#294B70' : '#CBD5E1',
+            '@media (max-width: 600px)': {
+              padding: '6px',
+            },
             '&.Mui-checked': {
               color: isDark ? '#36CFFF' : '#0284C7',
             },
@@ -229,6 +257,71 @@ export const getTheme = (mode = 'dark') => {
           root: {
             fontWeight: 600,
             borderRadius: '8px',
+            '@media (max-width: 600px)': {
+              height: '22px',
+              fontSize: '0.72rem',
+              borderRadius: '8px',
+            },
+          },
+        },
+      },
+      MuiIconButton: {
+        styleOverrides: {
+          root: {
+            '@media (max-width: 600px)': {
+              padding: '5px',
+            },
+          },
+        },
+      },
+      MuiDialog: {
+        styleOverrides: {
+          paper: {
+            borderRadius: '8px !important',
+            '@media (max-width: 600px)': {
+              margin: '8px !important',
+              width: 'calc(100% - 16px) !important',
+              maxWidth: '100% !important',
+              borderRadius: '8px !important',
+            },
+          },
+        },
+      },
+      MuiDialogTitle: {
+        styleOverrides: {
+          root: {
+            '@media (max-width: 600px)': {
+              padding: '12px 14px !important',
+              fontSize: '1.05rem !important',
+            },
+          },
+        },
+      },
+      MuiDialogContent: {
+        styleOverrides: {
+          root: {
+            '@media (max-width: 600px)': {
+              padding: '12px 14px !important',
+            },
+          },
+        },
+      },
+      MuiDialogActions: {
+        styleOverrides: {
+          root: {
+            '@media (max-width: 600px)': {
+              padding: '8px 14px 12px !important',
+            },
+          },
+        },
+      },
+      MuiTableCell: {
+        styleOverrides: {
+          root: {
+            '@media (max-width: 600px)': {
+              padding: '6px 8px',
+              fontSize: '0.78rem',
+            },
           },
         },
       },

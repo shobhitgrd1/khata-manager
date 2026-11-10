@@ -32,7 +32,7 @@
 .backBtn {
   border-color: var(--border-color, $border-dark) !important;
   color: var(--accent-cyan, $accent-cyan) !important;
-  border-radius: 10px !important;
+  border-radius: 8px !important;
   text-transform: none !important;
 }
 
@@ -62,7 +62,7 @@
 }
 
 .addBtn {
-  border-radius: 12px !important;
+  border-radius: 8px !important;
   font-weight: 700 !important;
   text-transform: none !important;
   padding: 10px 22px !important;
@@ -92,7 +92,7 @@
 .statCard {
   @include glass-panel;
   padding: 18px 20px;
-  border-radius: 18px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   gap: 16px;
@@ -108,7 +108,7 @@
 .statIconBox {
   width: 46px;
   height: 46px;
-  border-radius: 14px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -120,7 +120,7 @@
 .statIconBoxPending {
   width: 46px;
   height: 46px;
-  border-radius: 14px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -132,7 +132,7 @@
 .statIconBoxDelivered {
   width: 46px;
   height: 46px;
-  border-radius: 14px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -144,7 +144,7 @@
 .statIconBoxProfit {
   width: 46px;
   height: 46px;
-  border-radius: 14px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -195,7 +195,7 @@
 .controlsBar {
   @include glass-panel;
   padding: 14px 18px;
-  border-radius: 16px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -217,7 +217,7 @@
   min-width: 240px;
 
   :global(.MuiOutlinedInput-root) {
-    border-radius: 12px;
+    border-radius: 8px;
     background: rgba(7, 21, 38, 0.4);
 
     :global([data-theme="light"]) & {
@@ -264,7 +264,7 @@
   min-width: 150px;
 
   :global(.MuiOutlinedInput-root) {
-    border-radius: 12px;
+    border-radius: 8px;
     background: rgba(7, 21, 38, 0.4);
 
     :global([data-theme="light"]) & {
@@ -295,7 +295,7 @@
   display: flex;
   align-items: center;
   padding: 3px;
-  border-radius: 12px;
+  border-radius: 8px;
 
   :global([data-theme="dark"]) & {
     background: rgba(16, 36, 61, 0.8);
@@ -314,7 +314,7 @@
   justify-content: center;
   gap: 6px;
   padding: 6px 12px;
-  border-radius: 9px;
+  border-radius: 8px;
   border: none;
   background: transparent;
   cursor: pointer;
@@ -351,7 +351,7 @@
 .refreshBtn {
   border-color: var(--border-color, $border-dark) !important;
   color: var(--accent-cyan, $accent-cyan) !important;
-  border-radius: 10px !important;
+  border-radius: 8px !important;
   text-transform: none !important;
   font-weight: 600 !important;
 }
@@ -370,7 +370,7 @@
 /* ─── List View (MUI X Data Grid) Container ───────────────────── */
 .dataGridContainer {
   @include glass-panel;
-  border-radius: 18px;
+  border-radius: 8px;
   padding: 12px;
   overflow: hidden;
 
@@ -487,9 +487,10 @@
 
 .dealerCell {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 8px;
   flex-wrap: wrap;
+  flex-direction: column;
 }
 
 .dealerNameText {
@@ -501,13 +502,15 @@
   background: rgba(54, 207, 255, 0.1);
   color: var(--accent-cyan, #36cfff);
   border: 1px solid rgba(54, 207, 255, 0.28);
-  border-radius: 6px;
+  border-radius: 8px;
   font-size: 0.72rem;
   font-weight: 600;
   padding: 2px 7px;
   cursor: pointer;
   transition: all 0.2s ease;
   line-height: 1.2;
+  display: flex;
+  align-items: center;
 
   &:hover {
     background: rgba(54, 207, 255, 0.22);
@@ -584,7 +587,7 @@
   display: inline-flex;
   align-items: center;
   padding: 2px 8px;
-  border-radius: 10px;
+  border-radius: 8px;
   font-size: 0.72rem;
   font-weight: 600;
   color: var(--text-secondary);
@@ -660,7 +663,7 @@
   display: inline-flex;
   align-items: center;
   padding: 3px 8px;
-  border-radius: 12px;
+  border-radius: 8px;
   font-size: 0.72rem;
   font-weight: 700;
   background: rgba(245, 158, 11, 0.15);
@@ -672,7 +675,7 @@
   display: inline-flex;
   align-items: center;
   padding: 3px 8px;
-  border-radius: 12px;
+  border-radius: 8px;
   font-size: 0.72rem;
   font-weight: 700;
   background: rgba(16, 185, 129, 0.15);
@@ -707,7 +710,7 @@
   color: #36CFFF;
   background: rgba(54, 207, 255, 0.12);
   border: 1px solid rgba(54, 207, 255, 0.3);
-  border-radius: 6px;
+  border-radius: 8px;
   padding: 1px 5px;
   letter-spacing: 0.2px;
   white-space: nowrap;
@@ -734,7 +737,7 @@
   color: var(--text-secondary);
   background: rgba(148, 163, 184, 0.08);
   border: 1px solid rgba(148, 163, 184, 0.22);
-  border-radius: 6px;
+  border-radius: 8px;
   padding: 2px 7px;
   white-space: nowrap;
 }
@@ -801,7 +804,7 @@
 .emptyState {
   @include glass-panel;
   padding: 50px 30px;
-  border-radius: 20px;
+  border-radius: 8px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -841,7 +844,7 @@
 
 .emptyAddBtn {
   margin-top: 10px !important;
-  border-radius: 12px !important;
+  border-radius: 8px !important;
   font-weight: 700 !important;
   text-transform: none !important;
   padding: 10px 24px !important;
@@ -849,5 +852,67 @@
 }
 
 .alertBox {
-  border-radius: 12px;
+  border-radius: 8px;
+}
+
+/* ─── Product Cell (used in TableColumns) ────────────────────── */
+.productCellWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  max-width: 100%;
+}
+
+.productCellHeader {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+}
+
+.productCellName {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.86rem;
+  line-height: 1.3;
+}
+
+.colorDotIndicator {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  flex-shrink: 0;
+}
+
+.productCellVariantBadge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--accent-cyan, #36cfff);
+  background: rgba(54, 207, 255, 0.12);
+  border: 1px solid rgba(54, 207, 255, 0.28);
+  border-radius: 8px;
+  padding: 1px 6px;
+  white-space: nowrap;
+}
+
+.productExpandBtn {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  border-radius: 8px;
+
+  &:hover {
+    color: var(--accent-cyan, #36cfff);
+  }
 }

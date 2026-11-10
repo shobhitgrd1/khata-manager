@@ -448,9 +448,6 @@ const DealersPage = () => {
           </Button>
           <div className={styles.titleArea}>
             <h1 className={styles.pageTitle}>My Dealers</h1>
-            <p className={styles.pageSubtitle}>
-              Manage dealer contact records, multi-location delivery addresses, and realized profit.
-            </p>
           </div>
         </div>
 

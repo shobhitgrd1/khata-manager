@@ -15,6 +15,12 @@
   box-sizing: border-box;
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
 
+  @include mobile {
+    border-radius: 14px;
+    padding: 14px 12px;
+    gap: 10px;
+  }
+
   :global([data-theme='dark']) & {
     border: 1.5px solid var(--border-glow, $border-dark-glow);
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 20px var(--border-glow, $accent-cyan-glow);

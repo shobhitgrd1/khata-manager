@@ -13,6 +13,8 @@
   @include mobile {
     flex-direction: column;
     align-items: stretch;
+    gap: 8px;
+    margin-bottom: 14px;
   }
 }
 
@@ -30,7 +32,7 @@
   margin: 0;
 
   @include mobile {
-    font-size: 1.4rem;
+    font-size: 1.25rem;
   }
 }
 
@@ -100,7 +102,7 @@
   align-items: center;
   gap: 5px;
   padding: 4px 10px;
-  border-radius: 20px;
+  border-radius: 8px;
   font-size: 0.76rem;
   font-weight: 700;
   letter-spacing: 0.3px;
@@ -114,7 +116,7 @@
   align-items: center;
   gap: 5px;
   padding: 4px 10px;
-  border-radius: 20px;
+  border-radius: 8px;
   font-size: 0.76rem;
   font-weight: 700;
   letter-spacing: 0.3px;
@@ -128,7 +130,7 @@
   align-items: center;
   gap: 5px;
   padding: 4px 10px;
-  border-radius: 20px;
+  border-radius: 8px;
   font-size: 0.76rem;
   font-weight: 700;
   letter-spacing: 0.3px;
@@ -170,6 +172,12 @@
   align-items: center;
   text-align: center;
   gap: 14px;
+
+  @include mobile {
+    padding: 28px 16px;
+    border-radius: 14px;
+    gap: 10px;
+  }
 }
 
 .emptyIconBox {
@@ -182,10 +190,19 @@
   background: rgba(54, 207, 255, 0.1);
   color: var(--accent-cyan, $accent-cyan);
   border: 1px solid rgba(54, 207, 255, 0.25);
+
+  @include mobile {
+    width: 50px;
+    height: 50px;
+  }
 }
 
 .emptyIcon {
   font-size: 34px;
+
+  @include mobile {
+    font-size: 24px;
+  }
 }
 
 .emptyTitle {

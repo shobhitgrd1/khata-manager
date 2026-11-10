@@ -37,6 +37,35 @@
   box-sizing: border-box;
 }
 
+/* Responsive Root Font Size: scale down mobile view by 20% to 30% */
+html {
+  font-size: 16px;
+}
+
+@media (max-width: 900px) {
+  html {
+    font-size: 85%; /* ~15% smaller: 1rem = 13.6px */
+  }
+}
+
+@media (max-width: 600px) {
+  html {
+    font-size: 77.5%; /* ~22.5% smaller: 1rem = 12.4px */
+  }
+}
+
+@media (max-width: 420px) {
+  html {
+    font-size: 72.5%; /* ~27.5% smaller: 1rem = 11.6px */
+  }
+}
+
+@media (max-width: 360px) {
+  html {
+    font-size: 70%; /* 30% smaller: 1rem = 11.2px */
+  }
+}
+
 html, body {
   width: 100%;
   min-height: 100vh;

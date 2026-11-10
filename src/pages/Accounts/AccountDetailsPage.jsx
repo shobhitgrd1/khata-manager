@@ -121,7 +121,6 @@ const AccountDetailsPage = () => {
           </Button>
           <div className={styles.titleArea}>
             <h1 className={styles.pageTitle}>Account Details</h1>
-            <p className={styles.pageSubtitle}>{displayType}</p>
           </div>
         </div>
 

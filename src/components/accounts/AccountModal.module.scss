@@ -6,7 +6,7 @@
   backdrop-filter: blur(24px) !important;
   -webkit-backdrop-filter: blur(24px) !important;
   border: 1.5px solid var(--border-glow, $border-dark-glow) !important;
-  border-radius: 24px !important;
+  border-radius: 8px !important;
   padding: 12px !important;
   max-width: 560px !important;
   width: 100% !important;
@@ -33,7 +33,7 @@
 .titleIconBox {
   width: 40px;
   height: 40px;
-  border-radius: 10px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -73,7 +73,7 @@
 }
 
 .alertBox {
-  border-radius: 12px !important;
+  border-radius: 8px !important;
   font-size: 0.88rem !important;
 
   &.errorAlert {
@@ -117,14 +117,14 @@
 }
 
 .cancelBtn {
-  border-radius: 10px !important;
+  border-radius: 8px !important;
   color: var(--text-secondary) !important;
   border-color: var(--border-color) !important;
   text-transform: none !important;
 }
 
 .submitBtn {
-  border-radius: 10px !important;
+  border-radius: 8px !important;
   font-weight: 700 !important;
   text-transform: none !important;
   padding: 8px 20px !important;

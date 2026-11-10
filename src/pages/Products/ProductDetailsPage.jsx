@@ -112,16 +112,16 @@ const ProductDetailsPage = () => {
 
   const formattedCreated = createdAt
     ? new Date(createdAt).toLocaleString('en-IN', {
-        dateStyle: 'medium',
-        timeStyle: 'short',
-      })
+      dateStyle: 'medium',
+      timeStyle: 'short',
+    })
     : 'N/A';
 
   const formattedUpdated = updatedAt
     ? new Date(updatedAt).toLocaleString('en-IN', {
-        dateStyle: 'medium',
-        timeStyle: 'short',
-      })
+      dateStyle: 'medium',
+      timeStyle: 'short',
+    })
     : 'N/A';
 
   return (
@@ -141,9 +141,6 @@ const ProductDetailsPage = () => {
 
           <div className={styles.titleArea}>
             <h1 className={styles.pageTitle}>Product Details</h1>
-            <p className={styles.pageSubtitle}>
-              Viewing specifications, variant options, and color palette
-            </p>
           </div>
         </div>
 

@@ -196,9 +196,6 @@ const KhataBookPage = () => {
           </Button>
           <div className={styles.titleArea}>
             <h1 className={styles.pageTitle}>Khata Book</h1>
-            <p className={styles.pageSubtitle}>
-              Ledger Management • Track receivables, payables, and customer/dealer settlements
-            </p>
           </div>
         </div>
 
@@ -264,8 +261,8 @@ const KhataBookPage = () => {
                 summary.netBalance > 0
                   ? styles.summaryValGreen
                   : summary.netBalance < 0
-                  ? styles.summaryValRed
-                  : styles.summaryValSettled
+                    ? styles.summaryValRed
+                    : styles.summaryValSettled
               }
             >
               {summary.netBalance > 0 && `+${formatINR(summary.netBalance)}`}
@@ -276,8 +273,8 @@ const KhataBookPage = () => {
               {summary.netBalance > 0
                 ? 'Net positive (Receivables exceed Payables)'
                 : summary.netBalance < 0
-                ? 'Net negative (Payables exceed Receivables)'
-                : 'All accounts balanced'}
+                  ? 'Net negative (Payables exceed Receivables)'
+                  : 'All accounts balanced'}
             </span>
           </div>
         </div>

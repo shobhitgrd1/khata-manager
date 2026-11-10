@@ -119,277 +119,245 @@ export const getOrderColumns = ({
   onDuplicate,
   onDelete,
 }) => [
-  {
-    field: 'accountNameSnapshot',
-    headerName: 'Account',
-    flex: 1.2,
-    minWidth: 195,
-    renderCell: (params) => {
-      const item = params.row || params;
-      return (
-        <AccountInfoDisplay
-          order={item}
-          clickable
-          onClick={() => navigate(`/orders/${item._id}`)}
-        />
-      );
+    {
+      field: 'accountNameSnapshot',
+      headerName: 'Account',
+      flex: 1.2,
+      minWidth: 195,
+      renderCell: (params) => {
+        const item = params.row || params;
+        return (
+          <AccountInfoDisplay
+            order={item}
+            clickable
+            onClick={() => navigate(`/orders/${item._id}`)}
+          />
+        );
+      },
     },
-  },
-  {
-    field: 'dealerNameSnapshot',
-    headerName: 'Dealer / Location',
-    flex: 1.2,
-    minWidth: 180,
-    renderCell: (params) => {
-      const item = params.row || params;
-      return (
-        <DealerCell
-          item={item}
-          onOpenAddress={(ord) => setAddressModalOrder && setAddressModalOrder(ord)}
-        />
-      );
+    {
+      field: 'dealerNameSnapshot',
+      headerName: 'Dealer / Location',
+      flex: 1.2,
+      minWidth: 180,
+      renderCell: (params) => {
+        const item = params.row || params;
+        return (
+          <DealerCell
+            item={item}
+            onOpenAddress={(ord) => setAddressModalOrder && setAddressModalOrder(ord)}
+          />
+        );
+      },
     },
-  },
-  {
-    field: 'productNameSnapshot',
-    headerName: 'Product',
-    flex: 1.4,
-    minWidth: 220,
-    renderCell: (params) => {
-      const item = params.row || params;
-      return <ProductCell item={item} />;
+    {
+      field: 'productNameSnapshot',
+      headerName: 'Product',
+      flex: 1.4,
+      minWidth: 220,
+      renderCell: (params) => {
+        const item = params.row || params;
+        return <ProductCell item={item} />;
+      },
     },
-  },
-  {
-    field: 'paymentMethod',
-    headerName: 'Payment',
-    flex: 1.2,
-    minWidth: 195,
-    renderCell: (params) => {
-      const item = params.row || params;
-      return <PaymentInfoDisplay order={item} />;
+    {
+      field: 'paymentMethod',
+      headerName: 'Payment',
+      flex: 1.2,
+      minWidth: 195,
+      renderCell: (params) => {
+        const item = params.row || params;
+        return <PaymentInfoDisplay order={item} />;
+      },
     },
-  },
-  {
-    field: 'purchasePrice',
-    headerName: 'Purchase Price',
-    width: 140,
-    valueGetter: (value, row) => {
-      const item = row || value?.row || value;
-      return item?.purchasePrice ?? 0;
+    {
+      field: 'purchasePrice',
+      headerName: 'Purchase Price',
+      width: 140,
+      valueGetter: (value, row) => {
+        const item = row || value?.row || value;
+        return item?.purchasePrice ?? 0;
+      },
+      renderCell: (params) => {
+        const item = params.row || params;
+        return formatINR(item.purchasePrice);
+      },
     },
-    renderCell: (params) => {
-      const item = params.row || params;
-      return formatINR(item.purchasePrice);
+    {
+      field: 'deliveryPrice',
+      headerName: 'Delivery Price',
+      width: 140,
+      renderCell: (params) => {
+        const item = params.row || params;
+        if (
+          item.status === 'Order In Process' ||
+          item.deliveryPrice === null ||
+          item.deliveryPrice === undefined
+        ) {
+          return <span className={styles.pendingBadge}>Pending</span>;
+        }
+        return formatINR(item.deliveryPrice);
+      },
     },
-  },
-  {
-    field: 'deliveryPrice',
-    headerName: 'Delivery Price',
-    width: 140,
-    renderCell: (params) => {
-      const item = params.row || params;
-      if (
-        item.status === 'Order In Process' ||
-        item.deliveryPrice === null ||
-        item.deliveryPrice === undefined
-      ) {
-        return <span className={styles.pendingBadge}>Pending</span>;
-      }
-      return formatINR(item.deliveryPrice);
+    {
+      field: 'status',
+      headerName: 'Status',
+      width: 145,
+      renderCell: (params) => {
+        const item = params.row || params;
+        return item.status === 'Delivered' ? (
+          <span className={styles.statusChipDeliveredTable}>Delivered</span>
+        ) : (
+          <span className={styles.statusChipInProcessTable}>Order In Process</span>
+        );
+      },
     },
-  },
-  {
-    field: 'status',
-    headerName: 'Status',
-    width: 145,
-    renderCell: (params) => {
-      const item = params.row || params;
-      return item.status === 'Delivered' ? (
-        <span className={styles.statusChipDeliveredTable}>Delivered</span>
-      ) : (
-        <span className={styles.statusChipInProcessTable}>Order In Process</span>
-      );
-    },
-  },
-  {
-    field: 'profit',
-    headerName: 'Profit / Loss',
-    width: 175,
-    renderCell: (params) => {
-      const item = params.row || params;
-      if (
-        item.status === 'Order In Process' ||
-        item.profit === null ||
-        item.profit === undefined
-      ) {
-        return <span className={styles.pendingBadge}>Pending</span>;
-      }
+    {
+      field: 'profit',
+      headerName: 'Profit / Loss',
+      width: 175,
+      renderCell: (params) => {
+        const item = params.row || params;
+        if (
+          item.status === 'Order In Process' ||
+          item.profit === null ||
+          item.profit === undefined
+        ) {
+          return <span className={styles.pendingBadge}>Pending</span>;
+        }
 
-      const cbAmount = item.cashbackApplied && item.cashbackAmount ? Number(item.cashbackAmount) : 0;
-      const effectiveNetProfit = item.netProfit !== null && item.netProfit !== undefined
-        ? Number(item.netProfit)
-        : Number(item.profit) + cbAmount;
+        const cbAmount = item.cashbackApplied && item.cashbackAmount ? Number(item.cashbackAmount) : 0;
+        const effectiveNetProfit = item.netProfit !== null && item.netProfit !== undefined
+          ? Number(item.netProfit)
+          : Number(item.profit) + cbAmount;
 
-      const pct = item.purchasePrice > 0
-        ? Math.round(((effectiveNetProfit / item.purchasePrice) * 100) * 100) / 100
-        : null;
+        const pct = item.purchasePrice > 0
+          ? Math.round(((effectiveNetProfit / item.purchasePrice) * 100) * 100) / 100
+          : null;
 
-      return (
-        <div className={styles.profitCellWrapper}>
-          {effectiveNetProfit >= 0 ? (
-            <span className={styles.profitTextGreen}>
-              +{formatINR(effectiveNetProfit)}
-              {pct !== null && <span className={styles.pctSubTag}> (+{pct}%)</span>}
-            </span>
-          ) : (
-            <span className={styles.profitTextRed}>
-              -{formatINR(Math.abs(effectiveNetProfit))}
-              {pct !== null && <span className={styles.pctSubTag}> ({pct}%)</span>}
-            </span>
-          )}
-          {item.cashbackApplied && item.cashbackAmount > 0 && (
-            <span
-              className={styles.cashbackTag}
-              title={`Gross Profit: ${formatINR(item.profit)} | Profit Cashback: +${formatINR(item.cashbackAmount)} | Net Profit: +${formatINR(effectiveNetProfit)}`}
-            >
-              +CB: {formatINR(item.cashbackAmount)}
-            </span>
-          )}
-        </div>
-      );
-    },
-  },
-  {
-    field: 'cashbackProfit',
-    headerName: 'Cashback Profit',
-    width: 155,
-    valueGetter: (value, row) => {
-      const item = row || value?.row || value;
-      if (item?.status !== 'Delivered') return -1;
-      if (!item?.cashbackApplied) return 0;
-      return item?.cashbackAmount ?? 0;
-    },
-    renderCell: (params) => {
-      const item = params.row || params;
-      if (item.status === 'Order In Process') {
-        return <span className={styles.pendingBadge}>Pending</span>;
-      }
-      if (!item.cashbackApplied || !item.cashbackAmount) {
-        return <span className={styles.cashbackNotAppliedBadge}>Not Applied</span>;
-      }
-      return (
-        <span
-          className={styles.cashbackProfitCell}
-          title={`Profit Cashback: +${formatINR(item.cashbackAmount)} | Gross: ${formatINR(item.profit)} | Net Profit: ${formatINR(
-            item.netProfit !== null && item.netProfit !== undefined
-              ? item.netProfit
-              : Number(item.profit) + Number(item.cashbackAmount)
-          )}`}
-        >
-          {formatINR(item.cashbackAmount)}
-        </span>
-      );
-    },
-  },
-  {
-    field: 'orderDate',
-    headerName: 'Order Date',
-    width: 135,
-    valueGetter: (value, row) => {
-      const item = row || value?.row || value;
-      return item?.orderDate || '';
-    },
-    renderCell: (params) => {
-      const item = params.row || params;
-      return formatDate(item.orderDate);
-    },
-  },
-  {
-    field: 'deliveryDate',
-    headerName: 'Delivery Date',
-    width: 135,
-    renderCell: (params) => {
-      const item = params.row || params;
-      if (item.status === 'Order In Process' || !item.deliveryDate) {
-        return <span className={styles.pendingBadge}>Pending</span>;
-      }
-      return formatDate(item.deliveryDate);
-    },
-  },
-  {
-    field: 'actions',
-    headerName: 'Actions',
-    width: 175,
-    sortable: false,
-    renderCell: (params) => {
-      const item = params.row || params;
-      const isDelivered = item.status === 'Delivered';
-
-      return (
-        <div className={styles.tableActions}>
-          <Tooltip title="View Details">
-            <IconButton
-              size="small"
-              onClick={() => navigate(`/orders/${item._id}`)}
-              className={styles.actionBtnPrimary}
-            >
-              <VisibilityOutlinedIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
-
-          {!isDelivered && canEdit && (
-            <Tooltip title="Mark Delivered">
-              <IconButton
-                size="small"
-                onClick={() => onDeliver && onDeliver(item)}
-                className={styles.actionBtnSuccess}
+        return (
+          <div className={styles.profitCellWrapper}>
+            {effectiveNetProfit >= 0 ? (
+              <span className={styles.profitTextGreen}>
+                +{formatINR(effectiveNetProfit)}
+                {pct !== null && <span className={styles.pctSubTag}> (+{pct}%)</span>}
+              </span>
+            ) : (
+              <span className={styles.profitTextRed}>
+                -{formatINR(Math.abs(effectiveNetProfit))}
+                {pct !== null && <span className={styles.pctSubTag}> ({pct}%)</span>}
+              </span>
+            )}
+            {item.cashbackApplied && item.cashbackAmount > 0 && (
+              <span
+                className={styles.cashbackTag}
+                title={`Gross Profit: ${formatINR(item.profit)} | Profit Cashback: +${formatINR(item.cashbackAmount)} | Net Profit: +${formatINR(effectiveNetProfit)}`}
               >
-                <LocalShippingOutlinedIcon fontSize="small" />
-              </IconButton>
-            </Tooltip>
-          )}
+                +CB: {formatINR(item.cashbackAmount)}
+              </span>
+            )}
+          </div>
+        );
+      },
+    },
+    {
+      field: 'orderDate',
+      headerName: 'Order Date',
+      width: 135,
+      valueGetter: (value, row) => {
+        const item = row || value?.row || value;
+        return item?.orderDate || '';
+      },
+      renderCell: (params) => {
+        const item = params.row || params;
+        return formatDate(item.orderDate);
+      },
+    },
+    {
+      field: 'deliveryDate',
+      headerName: 'Delivery Date',
+      width: 135,
+      renderCell: (params) => {
+        const item = params.row || params;
+        if (item.status === 'Order In Process' || !item.deliveryDate) {
+          return <span className={styles.pendingBadge}>Pending</span>;
+        }
+        return formatDate(item.deliveryDate);
+      },
+    },
+    {
+      field: 'actions',
+      headerName: 'Actions',
+      width: 175,
+      sortable: false,
+      renderCell: (params) => {
+        const item = params.row || params;
+        const isDelivered = item.status === 'Delivered';
 
-          {canEdit && (
-            <Tooltip title="Edit Order">
+        return (
+          <div className={styles.tableActions}>
+            <Tooltip title="View Details">
               <IconButton
                 size="small"
-                onClick={() => onEdit && onEdit(item)}
+                onClick={() => navigate(`/orders/${item._id}`)}
                 className={styles.actionBtnPrimary}
               >
-                <EditOutlinedIcon fontSize="small" />
+                <VisibilityOutlinedIcon fontSize="small" />
               </IconButton>
             </Tooltip>
-          )}
 
-          {canCreate && (
-            <Tooltip title="Duplicate Order">
-              <IconButton
-                size="small"
-                onClick={() => onDuplicate && onDuplicate(item)}
-                className={styles.actionBtnSecondary}
-              >
-                <ContentCopyIcon fontSize="small" />
-              </IconButton>
-            </Tooltip>
-          )}
+            {!isDelivered && canEdit && (
+              <Tooltip title="Mark Delivered">
+                <IconButton
+                  size="small"
+                  onClick={() => onDeliver && onDeliver(item)}
+                  className={styles.actionBtnSuccess}
+                >
+                  <LocalShippingOutlinedIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+            )}
 
-          {canDelete && (
-            <Tooltip title="Delete Order">
-              <IconButton
-                size="small"
-                onClick={() => onDelete && onDelete(item)}
-                className={styles.actionBtnDanger}
-              >
-                <DeleteOutlinedIcon fontSize="small" />
-              </IconButton>
-            </Tooltip>
-          )}
-        </div>
-      );
+            {canEdit && (
+              <Tooltip title="Edit Order">
+                <IconButton
+                  size="small"
+                  onClick={() => onEdit && onEdit(item)}
+                  className={styles.actionBtnPrimary}
+                >
+                  <EditOutlinedIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+            )}
+
+            {canCreate && (
+              <Tooltip title="Duplicate Order">
+                <IconButton
+                  size="small"
+                  onClick={() => onDuplicate && onDuplicate(item)}
+                  className={styles.actionBtnSecondary}
+                >
+                  <ContentCopyIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+            )}
+
+            {canDelete && (
+              <Tooltip title="Delete Order">
+                <IconButton
+                  size="small"
+                  onClick={() => onDelete && onDelete(item)}
+                  className={styles.actionBtnDanger}
+                >
+                  <DeleteOutlinedIcon fontSize="small" />
+                </IconButton>
+              </Tooltip>
+            )}
+          </div>
+        );
+      },
     },
-  },
-];
+  ];
 
 export default getOrderColumns;
 
