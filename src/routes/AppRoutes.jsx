@@ -85,11 +85,13 @@ const AppRoutes = () => {
         <Route element={<DashboardLayout />}>
           <Route path="/dashboard" element={<DashboardPage />} />
 
-          {/* User Management strictly requires Admin role */}
+          {/* User Management listing strictly requires Admin role */}
           <Route element={<ProtectedRoute checkUserManagement={true} />}>
             <Route path="/users" element={<UsersPage />} />
-            <Route path="/users/:id" element={<UserDetailsPage />} />
           </Route>
+
+          {/* User Details / My Profile: Admins can view any user; Standard Users can view/edit their own profile */}
+          <Route path="/users/:id" element={<UserDetailsPage />} />
 
           {/* Credit Card Management */}
           <Route element={<ProtectedRoute checkCreditCards={true} />}>

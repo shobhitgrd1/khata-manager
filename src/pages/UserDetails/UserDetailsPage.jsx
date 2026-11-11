@@ -31,31 +31,47 @@ import styles from './UserDetailsPage.module.scss';
 
 const ALL_AVAILABLE_PERMISSIONS = [
   'dashboard',
-  'user',
-  'create_user',
-  'edit_user',
-  'delete_user',
-  'view_user',
-  'view_credit_cards',
-  'create_credit_card',
-  'edit_credit_card',
-  'delete_credit_card',
-  'view_accounts',
-  'create_account',
-  'edit_account',
-  'delete_account',
-  'view_dealers',
-  'create_dealer',
-  'edit_dealer',
-  'delete_dealer',
-  'view_products',
-  'create_product',
-  'edit_product',
-  'delete_product',
+  // Orders
   'view_orders',
   'create_order',
   'edit_order',
   'delete_order',
+  // Khata Book
+  'view_khatabook',
+  'create_khatabook',
+  'edit_khatabook',
+  'delete_khatabook',
+  'khatabook',
+  // Dealers
+  'view_dealers',
+  'create_dealer',
+  'edit_dealer',
+  'delete_dealer',
+  // Profit & Loss
+  'view_profit_loss',
+  'profit_loss',
+  // Credit Cards
+  'view_credit_cards',
+  'create_credit_card',
+  'edit_credit_card',
+  'delete_credit_card',
+  // Accounts
+  'view_accounts',
+  'create_account',
+  'edit_account',
+  'delete_account',
+  // Products
+  'view_products',
+  'create_product',
+  'edit_product',
+  'delete_product',
+  // User Management (Admin only)
+  'user',
+  'view_user',
+  'create_user',
+  'edit_user',
+  'delete_user',
+  'users',
 ];
 
 const UserDetailsPage = () => {
@@ -86,6 +102,13 @@ const UserDetailsPage = () => {
   const isAdmin = currentUser?.role === 'admin';
   const canEditAny = isAdmin && hasPermission('edit_user');
   const canEdit = isSelf || canEditAny;
+
+  // Non-admin standard users can only view and edit their own profile
+  useEffect(() => {
+    if (currentUser && !isAdmin && currentUser._id !== id) {
+      navigate('/unauthorized', { replace: true });
+    }
+  }, [currentUser, isAdmin, id, navigate]);
 
   // Fetch target user data
   const fetchUser = useCallback(async () => {
@@ -251,17 +274,19 @@ const UserDetailsPage = () => {
       {/* Header bar */}
       <div className={styles.header}>
         <div className={styles.headerLeft}>
-          <Button
-            onClick={() => navigate('/users')}
-            startIcon={<ArrowBackIcon />}
-            variant="outlined"
-            size="small"
-            className={styles.backBtn}
-          >
-            All Users
-          </Button>
+          {isAdmin && (
+            <Button
+              onClick={() => navigate('/users')}
+              startIcon={<ArrowBackIcon />}
+              variant="outlined"
+              size="small"
+              className={styles.backBtn}
+            >
+              All Users
+            </Button>
+          )}
           <h1 className={styles.pageTitle}>
-            User Details
+            {isSelf ? 'My Profile' : 'User Details'}
           </h1>
         </div>
 
